@@ -12,6 +12,10 @@ import android.view.Window
 import android.view.WindowManager
 import java.lang.reflect.InvocationTargetException
 
+const val NAV_POSITION_BOTTOM = 0
+const val NAV_POSITION_RIGHT = 1
+const val NO_NAV_BAR = -1
+
 internal fun getStatusBarHeightInPixels(activity: Activity): Int {
     val rectangle = Rect()
     val window = activity.window
@@ -24,26 +28,26 @@ internal fun getStatusBarHeightInPixels(activity: Activity): Int {
     return contentViewTop - statusBarHeight
 }
 
-internal fun getNavigationBarHeightInPixels(context: Context): Int {
-    return getNavigationBarHeight(context).y
-}
-
-internal fun getNavigationBarHeight(context: Context): Point {
+internal fun getNavigationBarPostion(context: Context): Int {
     val appUsableSize = getAppUsableScreenSize(context)
     val realScreenSize = getRealScreenSize(context)
 
-    // Navigation bar is at the bottom
-    if (appUsableSize.y < realScreenSize.y) {
-        return Point(appUsableSize.x, realScreenSize.y - appUsableSize.y)
-    }
+    if (realScreenSize.y > appUsableSize.y) return NAV_POSITION_BOTTOM
+    if (realScreenSize.x > appUsableSize.x) return NAV_POSITION_RIGHT
 
-    // Navigation bar is on the right
-    if (appUsableSize.x < realScreenSize.x) {
-        return Point()
-    }
+    return NO_NAV_BAR
+}
 
-    // Navigation bar is not present
-    return Point()
+internal fun getNavigationBarHeightInPixels(context: Context): Int {
+    val appUsableSize = getAppUsableScreenSize(context)
+    val realScreenSize = getRealScreenSize(context)
+    return realScreenSize.y - appUsableSize.y
+}
+
+internal fun getNavigationBarWidthInPixels(context: Context): Int {
+    val appUsableSize = getAppUsableScreenSize(context)
+    val realScreenSize = getRealScreenSize(context)
+    return realScreenSize.x - appUsableSize.x
 }
 
 internal fun isOrientationLandscape(context: Context): Boolean =
