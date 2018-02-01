@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
         val activity = this
         show.setOnClickListener {
             Flashbar.Builder(activity)
+                    .position(Flashbar.POSITION_BOTTOM)
                     .show()
         }
     }

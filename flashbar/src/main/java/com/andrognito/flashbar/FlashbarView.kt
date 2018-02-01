@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.RelativeLayout
 
-
 class FlashbarView : RelativeLayout {
 
     constructor(context: Context) : super(context, null, 0) {
@@ -25,4 +24,7 @@ class FlashbarView : RelativeLayout {
     }
 }
 
+/**
+ * Container view matching the height and width of the parent to hold a FlashBarView
+ */
 class FlashbarContainerView(context: Context) : RelativeLayout(context)
