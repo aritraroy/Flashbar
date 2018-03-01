@@ -11,10 +11,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val activity = this
+        var flashbar: Flashbar? = null
         show.setOnClickListener {
-            Flashbar.Builder(activity)
-                    .position(Flashbar.POSITION_BOTTOM)
-                    .show()
+            flashbar = Flashbar.Builder(activity)
+                    .position(Flashbar.FlashbarPosition.TOP)
+                    .build()
+            flashbar?.show()
         }
+
+        dismiss.setOnClickListener { flashbar?.dismiss() }
     }
 }

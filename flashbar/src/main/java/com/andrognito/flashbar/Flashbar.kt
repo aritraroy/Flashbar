@@ -3,73 +3,79 @@ package com.andrognito.flashbar
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import android.widget.RelativeLayout.LayoutParams.MATCH_PARENT
-import com.andrognito.flashbar.utils.getNavigationBarHeightInPixels
-import com.andrognito.flashbar.utils.getNavigationBarWidthInPixels
-import com.andrognito.flashbar.utils.getStatusBarHeightInPixels
-import com.andrognito.flashbar.utils.isOrientationLandscape
+import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
+import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
+import com.andrognito.flashbar.utils.*
+import com.andrognito.flashbar.utils.NavigationBarPosition.LEFT
+import com.andrognito.flashbar.utils.NavigationBarPosition.RIGHT
 
 class Flashbar {
 
     private var builder: Builder
 
+    private var flashbarContainerView: FlashbarContainerView? = null
+
     private constructor(builder: Builder) {
         this.builder = builder
-        initialize(builder)
+        initialize()
+    }
+
+    fun show() {
+        val rootView = getActivityRootView(builder.activity)
+        rootView?.addView(flashbarContainerView, ViewGroup.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT))
     }
 
     fun dismiss() {
+        (flashbarContainerView?.parent as? ViewGroup)?.removeView(flashbarContainerView)
     }
 
-    private fun initialize(builder: Builder) {
+    private lateinit var flashbarView: FlashbarView
 
-    }
+    private fun initialize() {
+        flashbarContainerView = FlashbarContainerView(builder.activity)
+        flashbarView = FlashbarView(builder.activity)
 
-    private fun show() {
-        val flashBarContainerView = FlashbarContainerView(builder.activity)
+        val flashbarViewLayoutParams = RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT)
 
-        val flashBarView = FlashbarView(builder.activity)
-        val flashBarViewLayoutParams = RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-
-        if (builder.position == POSITION_TOP) {
-            val flashBarViewContent = flashBarView.findViewById<View>(R.id.flash_bar_content)
-            val flashBarViewContentLayoutParams = flashBarViewContent.layoutParams as LinearLayout.LayoutParams
-            flashBarViewContentLayoutParams.topMargin = getStatusBarHeightInPixels(builder.activity)
-            flashBarViewContent.layoutParams = flashBarViewContentLayoutParams
-            flashBarViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-        } else {
-            flashBarViewLayoutParams.bottomMargin = getNavigationBarHeightInPixels(builder.activity)
-            flashBarViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+        when (builder.position) {
+            TOP -> {
+                val flashbarViewContent = flashbarView.findViewById<View>(R.id.flash_bar_content)
+                val flashbarViewContentLayoutParams =
+                        flashbarViewContent.layoutParams as LinearLayout.LayoutParams
+                flashbarViewContentLayoutParams.topMargin = getStatusBarHeightInPixels(builder.activity)
+                flashbarViewContent.layoutParams = flashbarViewContentLayoutParams
+                flashbarViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+            }
+            BOTTOM -> {
+                flashbarViewLayoutParams.bottomMargin = getNavigationBarHeightInPixels(builder.activity)
+                flashbarViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+            }
         }
 
-        if (isOrientationLandscape(builder.activity)) {
-            flashBarViewLayoutParams.rightMargin = getNavigationBarWidthInPixels(builder.activity)
+        val navigationBarPosition = getNavigationBarPosition(builder.activity)
+        val navigationBarWidth = getNavigationBarWidthInPixels(builder.activity)
+
+        when (navigationBarPosition) {
+            LEFT -> flashbarViewLayoutParams.leftMargin = navigationBarWidth
+            RIGHT -> flashbarViewLayoutParams.rightMargin = navigationBarWidth
         }
 
-        flashBarView.layoutParams = flashBarViewLayoutParams
-        flashBarContainerView.addView(flashBarView)
-
-        val rootView = getActivityRootView(builder.activity)
-        rootView?.addView(flashBarContainerView, ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT))
-    }
-
-    private fun getActivityRootView(activity: Activity?): ViewGroup? {
-        if (activity == null || activity.window == null || activity.window.decorView == null) {
-            return null
-        }
-        return activity.window.decorView as ViewGroup
+        flashbarView.layoutParams = flashbarViewLayoutParams
+        flashbarContainerView?.add(flashbarView)
     }
 
     class Builder {
 
         internal var activity: Activity
+        internal var position: FlashbarPosition = TOP
 
-        internal lateinit var title: String
-
-        internal var position: Int = POSITION_TOP
+        private lateinit var title: String
 
         constructor(activity: Activity) {
             this.activity = activity
@@ -77,15 +83,15 @@ class Flashbar {
 
         fun title(title: String) = apply { this.title = title }
 
-        fun position(position: Int) = apply { this.position = position }
+        fun position(position: FlashbarPosition) = apply { this.position = position }
 
         fun build() = Flashbar(this)
 
         fun show() = build().show()
     }
 
-    companion object {
-        const val POSITION_TOP = 0
-        const val POSITION_BOTTOM = 1
+    enum class FlashbarPosition {
+        TOP,
+        BOTTOM
     }
 }

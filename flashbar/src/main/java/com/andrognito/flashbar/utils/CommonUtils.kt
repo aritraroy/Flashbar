@@ -6,15 +6,17 @@ import android.content.res.Configuration
 import android.graphics.Point
 import android.graphics.Rect
 import android.os.Build
-import android.view.Display
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
+import android.view.Surface.*
+import com.andrognito.flashbar.utils.NavigationBarPosition.*
 import java.lang.reflect.InvocationTargetException
 
-const val NAV_POSITION_BOTTOM = 0
-const val NAV_POSITION_RIGHT = 1
-const val NO_NAV_BAR = -1
+enum class NavigationBarPosition {
+    BOTTOM,
+    RIGHT,
+    LEFT,
+    TOP
+}
 
 internal fun getStatusBarHeightInPixels(activity: Activity): Int {
     val rectangle = Rect()
@@ -28,14 +30,13 @@ internal fun getStatusBarHeightInPixels(activity: Activity): Int {
     return contentViewTop - statusBarHeight
 }
 
-internal fun getNavigationBarPostion(context: Context): Int {
-    val appUsableSize = getAppUsableScreenSize(context)
-    val realScreenSize = getRealScreenSize(context)
-
-    if (realScreenSize.y > appUsableSize.y) return NAV_POSITION_BOTTOM
-    if (realScreenSize.x > appUsableSize.x) return NAV_POSITION_RIGHT
-
-    return NO_NAV_BAR
+internal fun getNavigationBarPosition(activity: Activity): NavigationBarPosition {
+    return when (activity.windowManager.defaultDisplay.rotation) {
+        ROTATION_0 -> BOTTOM
+        ROTATION_90 -> RIGHT
+        ROTATION_270 -> LEFT
+        else -> TOP
+    }
 }
 
 internal fun getNavigationBarHeightInPixels(context: Context): Int {
@@ -55,6 +56,13 @@ internal fun isOrientationLandscape(context: Context): Boolean =
 
 internal fun isOrientationPortrait(context: Context): Boolean =
         context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+
+internal fun getActivityRootView(activity: Activity?): ViewGroup? {
+    if (activity == null || activity.window == null || activity.window.decorView == null) {
+        return null
+    }
+    return activity.window.decorView as ViewGroup
+}
 
 private fun getAppUsableScreenSize(context: Context): Point {
     val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
