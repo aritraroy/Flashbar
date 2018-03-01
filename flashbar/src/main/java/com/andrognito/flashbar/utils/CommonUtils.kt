@@ -2,7 +2,6 @@ package com.andrognito.flashbar.utils
 
 import android.app.Activity
 import android.content.Context
-import android.content.res.Configuration
 import android.graphics.Point
 import android.graphics.Rect
 import android.os.Build
@@ -18,7 +17,7 @@ enum class NavigationBarPosition {
     TOP
 }
 
-internal fun getStatusBarHeightInPixels(activity: Activity): Int {
+internal fun getStatusBarHeightInPx(activity: Activity): Int {
     val rectangle = Rect()
     val window = activity.window
 
@@ -39,23 +38,11 @@ internal fun getNavigationBarPosition(activity: Activity): NavigationBarPosition
     }
 }
 
-internal fun getNavigationBarHeightInPixels(context: Context): Int {
-    val appUsableSize = getAppUsableScreenSize(context)
+internal fun getNavigationBarSizeInPixels(context: Context): Int {
     val realScreenSize = getRealScreenSize(context)
-    return realScreenSize.y - appUsableSize.y
+    val appUsableScreenSize = getAppUsableScreenSize(context)
+    return realScreenSize.y - appUsableScreenSize.y
 }
-
-internal fun getNavigationBarWidthInPixels(context: Context): Int {
-    val appUsableSize = getAppUsableScreenSize(context)
-    val realScreenSize = getRealScreenSize(context)
-    return realScreenSize.x - appUsableSize.x
-}
-
-internal fun isOrientationLandscape(context: Context): Boolean =
-        context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-
-internal fun isOrientationPortrait(context: Context): Boolean =
-        context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
 internal fun getActivityRootView(activity: Activity?): ViewGroup? {
     if (activity == null || activity.window == null || activity.window.decorView == null) {

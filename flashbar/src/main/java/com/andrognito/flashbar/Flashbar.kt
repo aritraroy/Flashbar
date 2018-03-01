@@ -7,9 +7,12 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
-import com.andrognito.flashbar.utils.*
 import com.andrognito.flashbar.utils.NavigationBarPosition.LEFT
 import com.andrognito.flashbar.utils.NavigationBarPosition.RIGHT
+import com.andrognito.flashbar.utils.getActivityRootView
+import com.andrognito.flashbar.utils.getNavigationBarPosition
+import com.andrognito.flashbar.utils.getNavigationBarSizeInPixels
+import com.andrognito.flashbar.utils.getStatusBarHeightInPx
 
 class Flashbar {
 
@@ -48,18 +51,18 @@ class Flashbar {
                 val flashbarViewContent = flashbarView.findViewById<View>(R.id.flash_bar_content)
                 val flashbarViewContentLayoutParams =
                         flashbarViewContent.layoutParams as LinearLayout.LayoutParams
-                flashbarViewContentLayoutParams.topMargin = getStatusBarHeightInPixels(builder.activity)
+                flashbarViewContentLayoutParams.topMargin = getStatusBarHeightInPx(builder.activity)
                 flashbarViewContent.layoutParams = flashbarViewContentLayoutParams
                 flashbarViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
             }
             BOTTOM -> {
-                flashbarViewLayoutParams.bottomMargin = getNavigationBarHeightInPixels(builder.activity)
+                flashbarViewLayoutParams.bottomMargin = getNavigationBarSizeInPixels(builder.activity)
                 flashbarViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
             }
         }
 
         val navigationBarPosition = getNavigationBarPosition(builder.activity)
-        val navigationBarWidth = getNavigationBarWidthInPixels(builder.activity)
+        val navigationBarWidth = getNavigationBarSizeInPixels(builder.activity)
 
         when (navigationBarPosition) {
             LEFT -> flashbarViewLayoutParams.leftMargin = navigationBarWidth
