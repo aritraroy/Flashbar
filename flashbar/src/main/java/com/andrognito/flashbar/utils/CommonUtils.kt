@@ -38,10 +38,16 @@ internal fun getNavigationBarPosition(activity: Activity): NavigationBarPosition
     }
 }
 
-internal fun getNavigationBarSizeInPixels(context: Context): Int {
-    val realScreenSize = getRealScreenSize(context)
-    val appUsableScreenSize = getAppUsableScreenSize(context)
-    return realScreenSize.y - appUsableScreenSize.y
+internal fun getNavigationBarSizeInPixels(activity: Activity): Int {
+    val realScreenSize = getRealScreenSize(activity)
+    val appUsableScreenSize = getAppUsableScreenSize(activity)
+    val navigationBarPosition = getNavigationBarPosition(activity)
+
+    return if (navigationBarPosition == LEFT || navigationBarPosition == RIGHT) {
+        realScreenSize.x - appUsableScreenSize.x
+    } else {
+        realScreenSize.y - appUsableScreenSize.y
+    }
 }
 
 internal fun getActivityRootView(activity: Activity?): ViewGroup? {

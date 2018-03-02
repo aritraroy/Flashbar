@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         var flashbar: Flashbar? = null
         show.setOnClickListener {
             flashbar = Flashbar.Builder(activity)
-                    .position(Flashbar.FlashbarPosition.TOP)
+                    .position(Flashbar.FlashbarPosition.BOTTOM)
                     .build()
             flashbar?.show()
         }
