@@ -2,14 +2,10 @@ package com.andrognito.flashbar
 
 import android.app.Activity
 import android.graphics.drawable.Drawable
-import android.view.View.VISIBLE
-import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.RelativeLayout.LayoutParams.MATCH_PARENT
+import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
-import com.andrognito.flashbar.utils.getActivityRootView
 
 
 class Flashbar {
@@ -19,81 +15,35 @@ class Flashbar {
     private lateinit var flashbarContainerView: FlashbarContainerView
     private lateinit var flashbarView: FlashbarView
 
-    private var isShowing = false
-    private var isShown = false
-    private var isDismissing = false
-
-    private val enterAnimationListener = object : Animation.AnimationListener {
-
-        override fun onAnimationStart(animation: Animation) {
-            isShowing = true
-            flashbarContainerView.visibility = VISIBLE
-        }
-
-        override fun onAnimationEnd(animation: Animation) {
-            isShowing = false
-            isShown = true
-        }
-
-        override fun onAnimationRepeat(animation: Animation) {
-            // NO-OP
-        }
-    }
-
-    private val exitAnimationListener = object : Animation.AnimationListener {
-
-        override fun onAnimationStart(animation: Animation?) {
-            isDismissing = true
-        }
-
-        override fun onAnimationEnd(animation: Animation?) {
-            isDismissing = false
-            isShown = false
-            (flashbarContainerView.parent as? ViewGroup)?.removeView(flashbarContainerView)
-        }
-
-        override fun onAnimationRepeat(animation: Animation?) {
-            // NO-OP
-        }
-    }
-
     private constructor(builder: Builder) {
         this.builder = builder
         initialize()
     }
 
     fun show() {
-        if (isShowing || isShown) {
-            return
-        }
-
-        val activityRootView = getActivityRootView(builder.activity)
-        activityRootView?.addView(flashbarContainerView, LayoutParams(MATCH_PARENT, MATCH_PARENT))
-
-        builder.enterAnimation.setAnimationListener(enterAnimationListener)
-        flashbarContainerView.startAnimation(builder.enterAnimation)
+        flashbarContainerView.show(builder.activity)
     }
 
     fun dismiss() {
-        if (isDismissing) {
-            return
-        }
-
-        builder.exitAnimation.setAnimationListener(exitAnimationListener)
-        flashbarContainerView.startAnimation(builder.exitAnimation)
+        flashbarContainerView.dismiss()
     }
-
-    fun isShowing() = isShowing
-
-    fun isShown() = isShown
 
     private fun initialize() {
         flashbarContainerView = FlashbarContainerView(builder.activity)
         flashbarView = FlashbarView(builder.activity)
 
+        flashbarContainerView.adjustPositionAndOrientation(builder.activity)
         flashbarView.adjustWitPositionAndOrientation(builder.activity, builder.position)
+
+        flashbarContainerView.setEnterAnimation(builder.enterAnimation)
+        flashbarContainerView.setExitAnimation(builder.exitAnimation)
+
         flashbarContainerView.add(flashbarView)
     }
+
+    fun isShowing() = flashbarContainerView.isBarShowing()
+
+    fun isShown() = flashbarContainerView.isBarShown()
 
     class Builder {
         internal var activity: Activity
@@ -108,8 +58,8 @@ class Flashbar {
             this.activity = activity
 
             position = TOP
-            enterAnimation = AnimationUtils.loadAnimation(activity, R.anim.slide_in_from_top)
-            exitAnimation = AnimationUtils.loadAnimation(activity, R.anim.slide_out_from_top)
+            enterAnimation = AnimationUtils.loadAnimation(activity, R.anim.enter_from_top)
+            exitAnimation = AnimationUtils.loadAnimation(activity, R.anim.exit_from_top)
         }
 
         fun title(title: String) = apply { this.title = title }
@@ -118,7 +68,13 @@ class Flashbar {
 
         fun background(drawable: Drawable) = apply { this.backgroundDrawable = drawable }
 
-        fun build() = Flashbar(this)
+        fun build(): Flashbar {
+            if (position == BOTTOM) {
+                enterAnimation = AnimationUtils.loadAnimation(activity, R.anim.enter_from_bottom)
+                exitAnimation = AnimationUtils.loadAnimation(activity, R.anim.exit_from_bottom)
+            }
+            return Flashbar(this)
+        }
 
         fun show() = build().show()
     }
