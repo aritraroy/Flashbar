@@ -13,12 +13,17 @@ class MainActivity : AppCompatActivity() {
         val activity = this
         var flashbar: Flashbar? = null
         show.setOnClickListener {
-            flashbar = Flashbar.Builder(activity)
-                    .position(Flashbar.FlashbarPosition.BOTTOM)
-                    .build()
+            if (flashbar == null) {
+                flashbar = Flashbar.Builder(activity)
+                        .position(Flashbar.FlashbarPosition.TOP)
+                        .build()
+            }
             flashbar?.show()
         }
 
-        dismiss.setOnClickListener { flashbar?.dismiss() }
+        dismiss.setOnClickListener {
+            flashbar?.dismiss()
+            flashbar = null
+        }
     }
 }
