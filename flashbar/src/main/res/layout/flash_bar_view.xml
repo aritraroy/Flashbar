@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/flash_bar_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/warm_grey"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/flash_bar_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/flashbar_content_padding_all">
+        android:layout_margin="@dimen/fb_content_padding_all">
 
         <TextView
+            android:id="@+id/title"
+            style="@style/FbTitleTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="A quick brown fox jumps over the lazy dog." />
-    </LinearLayout>
+            android:visibility="gone"
+            tools:text="Title" />
+
+        <TextView
+            android:id="@+id/message"
+            style="@style/FbTitleMessageStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginTop="@dimen/fb_message_margin_top"
+            android:visibility="gone"
+            tools:text="This is a new message." />
+
+    </RelativeLayout>
 
 </LinearLayout>

@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="flashbar_content_padding_all">16dp</dimen>
+    <dimen name="fb_content_padding_all">16dp</dimen>
+    <dimen name="fb_title_text_size">16dp</dimen>
+    <dimen name="fb_title_message_size">12dp</dimen>
+    <dimen name="fb_message_margin_top">4dp</dimen>
 </resources>

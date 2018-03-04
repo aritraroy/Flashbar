@@ -3,8 +3,10 @@ package com.andrognito.flashbar
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.os.Build
+import android.os.Build.VERSION.SDK_INT
+import android.os.Build.VERSION_CODES.JELLY_BEAN
 import android.support.annotation.ColorInt
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.Animation
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.TextView
 import com.andrognito.flashbar.Flashbar.FlashbarPosition
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
@@ -30,6 +33,9 @@ class FlashbarView : RelativeLayout {
 
     private lateinit var flashbarRootView: LinearLayout
 
+    private lateinit var title: TextView
+    private lateinit var message: TextView
+
     constructor(context: Context) : super(context, null, 0) {
         initView()
     }
@@ -45,7 +51,10 @@ class FlashbarView : RelativeLayout {
 
     private fun initView() {
         inflate(context, R.layout.flash_bar_view, this)
+
         flashbarRootView = findViewById(R.id.flash_bar_root)
+        title = flashbarRootView.findViewById(R.id.title)
+        message = flashbarRootView.findViewById(R.id.message)
     }
 
     internal fun adjustWitPositionAndOrientation(activity: Activity, flashbarPosition: FlashbarPosition) {
@@ -69,16 +78,33 @@ class FlashbarView : RelativeLayout {
         layoutParams = flashbarViewLp
     }
 
-    internal fun setBarBackground(drawable: Drawable) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+    internal fun setBarBackground(drawable: Drawable?) {
+        if (drawable == null) return
+
+        if (SDK_INT >= JELLY_BEAN) {
             this.flashbarRootView.background = drawable
         } else {
             this.flashbarRootView.setBackgroundDrawable(drawable)
         }
     }
 
-    internal fun setBarBackgroundColor(@ColorInt color: Int) {
+    internal fun setBarBackgroundColor(@ColorInt color: Int?) {
+        if (color == null) return
         this.flashbarRootView.setBackgroundColor(color)
+    }
+
+    internal fun setTitle(title: String?) {
+        if (TextUtils.isEmpty(title)) return
+
+        this.title.text = title
+        this.title.visibility = VISIBLE
+    }
+
+    internal fun setMessage(message: String?) {
+        if (TextUtils.isEmpty(message)) return
+
+        this.message.text = message
+        this.message.visibility = VISIBLE
     }
 }
 
@@ -90,6 +116,7 @@ class FlashbarView : RelativeLayout {
 class FlashbarContainerView(context: Context) : RelativeLayout(context) {
 
     private lateinit var flashbarView: FlashbarView
+
     private lateinit var enterAnimation: Animation
     private lateinit var exitAnimation: Animation
 
@@ -123,8 +150,8 @@ class FlashbarContainerView(context: Context) : RelativeLayout(context) {
             isBarDismissing = false
             isBarShown = false
 
-            removeView(flashbarView)
-            (parent as? ViewGroup)?.removeView(this@FlashbarContainerView)
+            // Removing container after animation end
+            post { (parent as? ViewGroup)?.removeView(this@FlashbarContainerView) }
         }
 
         override fun onAnimationRepeat(animation: Animation?) {
@@ -132,12 +159,12 @@ class FlashbarContainerView(context: Context) : RelativeLayout(context) {
         }
     }
 
-    fun add(flashbarView: FlashbarView) {
+    internal fun add(flashbarView: FlashbarView) {
         this.flashbarView = flashbarView
         addView(flashbarView)
     }
 
-    fun adjustPositionAndOrientation(activity: Activity) {
+    internal fun adjustPositionAndOrientation(activity: Activity) {
         val flashbarContainerViewLp = RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
 
         val navigationBarPosition = getNavigationBarPosition(activity)
@@ -152,7 +179,7 @@ class FlashbarContainerView(context: Context) : RelativeLayout(context) {
         layoutParams = flashbarContainerViewLp
     }
 
-    fun show(activity: Activity) {
+    internal fun show(activity: Activity) {
         if (isBarShowing || isBarShown) {
             return
         }
@@ -164,8 +191,8 @@ class FlashbarContainerView(context: Context) : RelativeLayout(context) {
         flashbarView.startAnimation(enterAnimation)
     }
 
-    fun dismiss() {
-        if (isBarDismissing) {
+    internal fun dismiss() {
+        if (isBarDismissing || isBarShowing || !isBarShown) {
             return
         }
 
@@ -173,15 +200,31 @@ class FlashbarContainerView(context: Context) : RelativeLayout(context) {
         flashbarView.startAnimation(exitAnimation)
     }
 
-    fun isBarShowing() = isBarShowing
+    internal fun isBarShowing() = isBarShowing
 
-    fun isBarShown() = isBarShown
+    internal fun isBarShown() = isBarShown
 
-    fun setEnterAnimation(animation: Animation) {
+    internal fun setTitle(title: String?) {
+        flashbarView.setTitle(title)
+    }
+
+    internal fun setMessage(message: String?) {
+        flashbarView.setMessage(message)
+    }
+
+    internal fun setEnterAnimation(animation: Animation) {
         enterAnimation = animation
     }
 
-    fun setExitAnimation(animation: Animation) {
+    internal fun setExitAnimation(animation: Animation) {
         exitAnimation = animation
+    }
+
+    internal fun setBarBackgroundColor(@ColorInt color: Int?) {
+        flashbarView.setBarBackgroundColor(color)
+    }
+
+    internal fun setBarBackgroundDrawable(drawable: Drawable?) {
+        flashbarView.setBarBackground(drawable)
     }
 }
