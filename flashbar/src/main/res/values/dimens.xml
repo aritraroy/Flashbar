@@ -3,5 +3,6 @@
     <dimen name="fb_content_padding_all">16dp</dimen>
     <dimen name="fb_title_text_size">16dp</dimen>
     <dimen name="fb_title_message_size">12dp</dimen>
-    <dimen name="fb_message_margin_top">4dp</dimen>
+    <dimen name="fb_title_message_gap">2dp</dimen>
+    <dimen name="fb_elevation">4dp</dimen>
 </resources>

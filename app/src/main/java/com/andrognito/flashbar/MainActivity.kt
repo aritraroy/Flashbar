@@ -15,9 +15,8 @@ class MainActivity : AppCompatActivity() {
         show.setOnClickListener {
             if (flashbar == null) {
                 flashbar = Flashbar.Builder(activity)
-                        .position(Flashbar.FlashbarPosition.BOTTOM)
+                        .position(Flashbar.FlashbarPosition.TOP)
                         .title("Hello!")
-                        .message("This is a new message.")
                         .build()
             }
             flashbar?.show()

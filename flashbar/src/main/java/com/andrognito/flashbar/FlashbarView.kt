@@ -59,7 +59,7 @@ class FlashbarView : RelativeLayout {
 
     internal fun adjustWitPositionAndOrientation(activity: Activity, flashbarPosition: FlashbarPosition) {
         val flashbarViewLp = RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-        val statusBarHeight = getStatusBarHeightInPx(activity)
+        val statusBarHeight = activity.getStatusBarHeightInPx()
 
         when (flashbarPosition) {
             TOP -> {
@@ -167,8 +167,8 @@ class FlashbarContainerView(context: Context) : RelativeLayout(context) {
     internal fun adjustPositionAndOrientation(activity: Activity) {
         val flashbarContainerViewLp = RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
 
-        val navigationBarPosition = getNavigationBarPosition(activity)
-        val navigationBarSize = getNavigationBarSizeInPixels(activity)
+        val navigationBarPosition = activity.getNavigationBarPosition()
+        val navigationBarSize = activity.getNavigationBarSizeInPx()
 
         when (navigationBarPosition) {
             NavigationBarPosition.LEFT -> flashbarContainerViewLp.leftMargin = navigationBarSize
@@ -184,7 +184,7 @@ class FlashbarContainerView(context: Context) : RelativeLayout(context) {
             return
         }
 
-        val activityRootView = getActivityRootView(activity)
+        val activityRootView = activity.getRootView()
         activityRootView?.addView(this)
 
         enterAnimation.setAnimationListener(enterAnimationListener)

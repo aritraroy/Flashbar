@@ -41,10 +41,10 @@ class Flashbar {
         flashbarView.adjustWitPositionAndOrientation(builder.activity, builder.position)
         flashbarContainerView.add(flashbarView)
 
-        initializeContainer()
+        decorateContainer()
     }
 
-    private fun initializeContainer() {
+    private fun decorateContainer() {
         with(flashbarContainerView) {
             setTitle(builder.title)
             setMessage(builder.message)
@@ -121,15 +121,15 @@ class Flashbar {
         private fun initializeAnimation() {
             if (enterAnimation == null) {
                 enterAnimation = when (position) {
-                    BOTTOM -> AnimationUtils.loadAnimation(activity, R.anim.enter_from_bottom)
                     TOP -> AnimationUtils.loadAnimation(activity, R.anim.enter_from_top)
+                    BOTTOM -> AnimationUtils.loadAnimation(activity, R.anim.enter_from_bottom)
                 }
             }
 
             if (exitAnimation == null) {
                 exitAnimation = when (position) {
-                    BOTTOM -> AnimationUtils.loadAnimation(activity, R.anim.exit_from_bottom)
                     TOP -> AnimationUtils.loadAnimation(activity, R.anim.exit_from_top)
+                    BOTTOM -> AnimationUtils.loadAnimation(activity, R.anim.exit_from_bottom)
                 }
             }
         }

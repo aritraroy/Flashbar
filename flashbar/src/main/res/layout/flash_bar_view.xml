@@ -5,6 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/warm_grey"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -18,8 +21,10 @@
             style="@style/FbTitleTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/fb_title_message_gap"
             android:visibility="gone"
-            tools:text="Title" />
+            tools:text="Title"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/message"
@@ -27,9 +32,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
-            android:layout_marginTop="@dimen/fb_message_margin_top"
+            android:layout_marginTop="@dimen/fb_title_message_gap"
             android:visibility="gone"
-            tools:text="This is a new message." />
+            tools:text="This is a new message."
+            tools:visibility="visible" />
 
     </RelativeLayout>
 
