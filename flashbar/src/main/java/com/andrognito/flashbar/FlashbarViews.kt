@@ -2,6 +2,8 @@ package com.andrognito.flashbar
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build.VERSION.SDK_INT
@@ -15,12 +17,12 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.Animation
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.andrognito.flashbar.Flashbar.FlashbarPosition
-import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
-import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
+import com.andrognito.flashbar.FlashbarPosition.BOTTOM
+import com.andrognito.flashbar.FlashbarPosition.TOP
 import com.andrognito.flashbar.utils.*
 
 /**
@@ -37,6 +39,7 @@ internal class FlashbarView : RelativeLayout {
 
     private lateinit var title: TextView
     private lateinit var message: TextView
+    private lateinit var icon: ImageView
 
     constructor(context: Context) : super(context, null, 0) {
         initView()
@@ -55,8 +58,12 @@ internal class FlashbarView : RelativeLayout {
         inflate(context, R.layout.flash_bar_view, this)
 
         flashbarRootView = findViewById(R.id.fb_root)
-        title = flashbarRootView.findViewById(R.id.fb_title)
-        message = flashbarRootView.findViewById(R.id.fb_message)
+
+        with(flashbarRootView) {
+            title = findViewById(R.id.fb_title)
+            message = findViewById(R.id.fb_message)
+            icon = findViewById(R.id.fb_icon)
+        }
     }
 
     internal fun adjustWitPositionAndOrientation(activity: Activity,
@@ -108,14 +115,19 @@ internal class FlashbarView : RelativeLayout {
         title.typeface = typeface
     }
 
-    fun setTitleSizeInPx(size: Float?) {
+    internal fun setTitleSizeInPx(size: Float?) {
         if (size == null) return
         title.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
     }
 
-    fun setTitleSizeInSp(size: Float?) {
+    internal fun setTitleSizeInSp(size: Float?) {
         if (size == null) return
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+    }
+
+    internal fun setTitleColor(color: Int?) {
+        if (color == null) return
+        title.setTextColor(color)
     }
 
     internal fun setMessage(message: String?) {
@@ -130,14 +142,42 @@ internal class FlashbarView : RelativeLayout {
         message.typeface = typeface
     }
 
-    fun setMessageSizeInPx(size: Float?) {
+    internal fun setMessageSizeInPx(size: Float?) {
         if (size == null) return
         message.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
     }
 
-    fun setMessageSizeInSp(size: Float?) {
+    internal fun setMessageSizeInSp(size: Float?) {
         if (size == null) return
         message.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+    }
+
+    internal fun setMessageColor(color: Int?) {
+        if (color == null) return
+        message.setTextColor(color)
+    }
+
+    internal fun showIcon(showIcon: Boolean) {
+        icon.visibility = if (showIcon) VISIBLE else GONE
+    }
+
+    internal fun setIconDrawable(icon: Drawable?) {
+        if (icon == null) return
+        this.icon.setImageDrawable(icon)
+    }
+
+    internal fun setIconBitmap(bitmap: Bitmap?) {
+        if (bitmap == null) return
+        this.icon.setImageBitmap(bitmap)
+    }
+
+    internal fun setIconFilter(colorFilter: Int?, filterMode: PorterDuff.Mode?) {
+        if (colorFilter == null) return
+        if (filterMode == null) {
+            this.icon.setColorFilter(colorFilter)
+        } else {
+            this.icon.setColorFilter(colorFilter, filterMode)
+        }
     }
 }
 
@@ -241,6 +281,10 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         flashbarView.setTitle(title)
     }
 
+    internal fun setTitleTypeface(typeface: Typeface?) {
+        flashbarView.setTitleTypeface(typeface)
+    }
+
     internal fun setTitleSizeInPx(size: Float?) {
         flashbarView.setTitleSizeInPx(size)
     }
@@ -249,8 +293,8 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         flashbarView.setTitleSizeInSp(size)
     }
 
-    internal fun setTitleTypeface(typeface: Typeface?) {
-        flashbarView.setTitleTypeface(typeface)
+    internal fun setTitleColor(color: Int?) {
+        flashbarView.setTitleColor(color)
     }
 
     internal fun setMessage(message: String?) {
@@ -269,6 +313,14 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         flashbarView.setMessageSizeInSp(size)
     }
 
+    internal fun setMessageColor(color: Int?) {
+        flashbarView.setMessageColor(color)
+    }
+
+    internal fun showIcon(showIcon: Boolean) {
+        flashbarView.showIcon(showIcon)
+    }
+
     internal fun setEnterAnimation(animation: Animation) {
         enterAnimation = animation
     }
@@ -283,5 +335,17 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
 
     internal fun setBarBackgroundDrawable(drawable: Drawable?) {
         flashbarView.setBarBackground(drawable)
+    }
+
+    internal fun setIconDrawable(icon: Drawable?) {
+        flashbarView.setIconDrawable(icon)
+    }
+
+    internal fun setIconBitmap(bitmap: Bitmap?) {
+        flashbarView.setIconBitmap(bitmap)
+    }
+
+    internal fun setIconColorFilter(colorFilter: Int?, filterMode: PorterDuff.Mode?) {
+        flashbarView.setIconFilter(colorFilter, filterMode)
     }
 }

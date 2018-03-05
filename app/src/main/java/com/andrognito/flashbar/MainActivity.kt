@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         show.setOnClickListener {
             if (flashbar == null) {
                 flashbar = Flashbar.Builder(activity)
-                        .position(Flashbar.FlashbarPosition.TOP)
+                        .position(FlashbarPosition.TOP)
                         .title("Hello!")
                         .message("A quick brown fox jumps over the lazy dog!")
                         .build()
