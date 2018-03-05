@@ -53,8 +53,10 @@ class Flashbar {
             setMessageTypeface(builder.messageTypeface)
             setMessageSizeInPx(builder.messageSizeInPx)
             setMessageSizeInSp(builder.messageSizeInSp)
+
             setBarBackgroundColor(builder.backgroundColor)
             setBarBackgroundDrawable(builder.backgroundDrawable)
+
             setEnterAnimation(builder.enterAnimation!!)
             setExitAnimation(builder.exitAnimation!!)
         }
@@ -66,16 +68,18 @@ class Flashbar {
 
     class Builder(internal var activity: Activity) {
 
+        internal var position: FlashbarPosition = TOP
+
         internal var title: String? = null
         internal var titleTypeface: Typeface? = null
         internal var titleSizeInPx: Float? = null
-        internal var titleSizeInSp: Float? = null
 
+        internal var titleSizeInSp: Float? = null
         internal var message: String? = null
         internal var messageTypeface: Typeface? = null
         internal var messageSizeInPx: Float? = null
+
         internal var messageSizeInSp: Float? = null
-        internal var position: FlashbarPosition = TOP
         internal var backgroundColor: Int? = null
         internal var backgroundDrawable: Drawable? = null
 

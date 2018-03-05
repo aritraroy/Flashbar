@@ -31,7 +31,7 @@ import com.andrognito.flashbar.utils.*
  * It can either be present at the top or at the bottom of the screen. It will always consume touch
  * events and respond as necessary.
  */
-class FlashbarView : RelativeLayout {
+internal class FlashbarView : RelativeLayout {
 
     private lateinit var flashbarRootView: LinearLayout
 
@@ -54,18 +54,19 @@ class FlashbarView : RelativeLayout {
     private fun initView() {
         inflate(context, R.layout.flash_bar_view, this)
 
-        flashbarRootView = findViewById(R.id.flash_bar_root)
-        title = flashbarRootView.findViewById(R.id.title)
-        message = flashbarRootView.findViewById(R.id.message)
+        flashbarRootView = findViewById(R.id.fb_root)
+        title = flashbarRootView.findViewById(R.id.fb_title)
+        message = flashbarRootView.findViewById(R.id.fb_message)
     }
 
-    internal fun adjustWitPositionAndOrientation(activity: Activity, flashbarPosition: FlashbarPosition) {
+    internal fun adjustWitPositionAndOrientation(activity: Activity,
+                                                 flashbarPosition: FlashbarPosition) {
         val flashbarViewLp = RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
         val statusBarHeight = activity.getStatusBarHeightInPx()
 
         when (flashbarPosition) {
             TOP -> {
-                val flashbarViewContent = findViewById<View>(R.id.flash_bar_content)
+                val flashbarViewContent = findViewById<View>(R.id.fb_content)
                 val flashbarViewContentLp = flashbarViewContent.layoutParams as LinearLayout.LayoutParams
 
                 flashbarViewContentLp.topMargin = statusBarHeight
@@ -145,7 +146,7 @@ class FlashbarView : RelativeLayout {
  * It will occupy the entire screens size but will be completely transparent. The
  * FlashbarView inside is the only visible component in it.
  */
-class FlashbarContainerView(context: Context) : RelativeLayout(context) {
+internal class FlashbarContainerView(context: Context) : RelativeLayout(context) {
 
     private lateinit var flashbarView: FlashbarView
 
@@ -240,11 +241,11 @@ class FlashbarContainerView(context: Context) : RelativeLayout(context) {
         flashbarView.setTitle(title)
     }
 
-    fun setTitleSizeInPx(size: Float?) {
+    internal fun setTitleSizeInPx(size: Float?) {
         flashbarView.setTitleSizeInPx(size)
     }
 
-    fun setTitleSizeInSp(size: Float?) {
+    internal fun setTitleSizeInSp(size: Float?) {
         flashbarView.setTitleSizeInSp(size)
     }
 
@@ -260,11 +261,11 @@ class FlashbarContainerView(context: Context) : RelativeLayout(context) {
         flashbarView.setMessageTypeface(typeface)
     }
 
-    fun setMessageSizeInPx(size: Float?) {
+    internal fun setMessageSizeInPx(size: Float?) {
         flashbarView.setMessageSizeInPx(size)
     }
 
-    fun setMessageSizeInSp(size: Float?) {
+    internal fun setMessageSizeInSp(size: Float?) {
         flashbarView.setMessageSizeInSp(size)
     }
 

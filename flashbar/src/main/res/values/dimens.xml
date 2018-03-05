@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="fb_content_padding_all">16dp</dimen>
-    <dimen name="fb_title_text_size">16dp</dimen>
-    <dimen name="fb_title_message_size">12dp</dimen>
-    <dimen name="fb_title_message_gap">2dp</dimen>
+    <dimen name="fb_title_text_size">16sp</dimen>
+    <dimen name="fb_title_message_size">12sp</dimen>
+    <dimen name="fb_title_message_margin">2dp</dimen>
     <dimen name="fb_elevation">4dp</dimen>
+    <dimen name="fb_icon_size">28dp</dimen>
+    <dimen name="fb_margin_right_icon">16dp</dimen>
+    <dimen name="fb_button_text_size">16sp</dimen>
 </resources>
