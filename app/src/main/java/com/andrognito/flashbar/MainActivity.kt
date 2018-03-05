@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
                 flashbar = Flashbar.Builder(activity)
                         .position(Flashbar.FlashbarPosition.TOP)
                         .title("Hello!")
+                        .message("A quick brown fox jumps over the lazy dog!")
                         .build()
             }
             flashbar?.show()

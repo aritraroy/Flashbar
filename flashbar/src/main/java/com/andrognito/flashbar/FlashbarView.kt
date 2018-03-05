@@ -2,12 +2,14 @@ package com.andrognito.flashbar
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.JELLY_BEAN
 import android.support.annotation.ColorInt
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -100,11 +102,41 @@ class FlashbarView : RelativeLayout {
         this.title.visibility = VISIBLE
     }
 
+    internal fun setTitleTypeface(typeface: Typeface?) {
+        if (typeface == null) return
+        title.typeface = typeface
+    }
+
+    fun setTitleSizeInPx(size: Float?) {
+        if (size == null) return
+        title.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+    }
+
+    fun setTitleSizeInSp(size: Float?) {
+        if (size == null) return
+        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+    }
+
     internal fun setMessage(message: String?) {
         if (TextUtils.isEmpty(message)) return
 
         this.message.text = message
         this.message.visibility = VISIBLE
+    }
+
+    internal fun setMessageTypeface(typeface: Typeface?) {
+        if (typeface == null) return
+        message.typeface = typeface
+    }
+
+    fun setMessageSizeInPx(size: Float?) {
+        if (size == null) return
+        message.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+    }
+
+    fun setMessageSizeInSp(size: Float?) {
+        if (size == null) return
+        message.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
     }
 }
 
@@ -208,8 +240,32 @@ class FlashbarContainerView(context: Context) : RelativeLayout(context) {
         flashbarView.setTitle(title)
     }
 
+    fun setTitleSizeInPx(size: Float?) {
+        flashbarView.setTitleSizeInPx(size)
+    }
+
+    fun setTitleSizeInSp(size: Float?) {
+        flashbarView.setTitleSizeInSp(size)
+    }
+
+    internal fun setTitleTypeface(typeface: Typeface?) {
+        flashbarView.setTitleTypeface(typeface)
+    }
+
     internal fun setMessage(message: String?) {
         flashbarView.setMessage(message)
+    }
+
+    internal fun setMessageTypeface(typeface: Typeface?) {
+        flashbarView.setMessageTypeface(typeface)
+    }
+
+    fun setMessageSizeInPx(size: Float?) {
+        flashbarView.setMessageSizeInPx(size)
+    }
+
+    fun setMessageSizeInSp(size: Float?) {
+        flashbarView.setMessageSizeInSp(size)
     }
 
     internal fun setEnterAnimation(animation: Animation) {

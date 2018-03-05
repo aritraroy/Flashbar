@@ -1,11 +1,9 @@
 package com.andrognito.flashbar
 
 import android.app.Activity
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.support.annotation.ColorInt
-import android.support.annotation.ColorRes
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
+import android.support.annotation.*
 import android.support.v4.content.ContextCompat
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -47,7 +45,14 @@ class Flashbar {
     private fun decorateContainer() {
         with(flashbarContainerView) {
             setTitle(builder.title)
+            setTitleTypeface(builder.titleTypeface)
+            setTitleSizeInPx(builder.titleSizeInPx)
+            setTitleSizeInSp(builder.titleSizeInSp)
+
             setMessage(builder.message)
+            setMessageTypeface(builder.messageTypeface)
+            setMessageSizeInPx(builder.messageSizeInPx)
+            setMessageSizeInSp(builder.messageSizeInSp)
             setBarBackgroundColor(builder.backgroundColor)
             setBarBackgroundDrawable(builder.backgroundDrawable)
             setEnterAnimation(builder.enterAnimation!!)
@@ -59,11 +64,17 @@ class Flashbar {
 
     fun isShown() = flashbarContainerView.isBarShown()
 
-    class Builder {
-        internal var activity: Activity
+    class Builder(internal var activity: Activity) {
 
         internal var title: String? = null
+        internal var titleTypeface: Typeface? = null
+        internal var titleSizeInPx: Float? = null
+        internal var titleSizeInSp: Float? = null
+
         internal var message: String? = null
+        internal var messageTypeface: Typeface? = null
+        internal var messageSizeInPx: Float? = null
+        internal var messageSizeInSp: Float? = null
         internal var position: FlashbarPosition = TOP
         internal var backgroundColor: Int? = null
         internal var backgroundDrawable: Drawable? = null
@@ -71,19 +82,27 @@ class Flashbar {
         internal var enterAnimation: Animation? = null
         internal var exitAnimation: Animation? = null
 
-        constructor(activity: Activity) {
-            this.activity = activity
-        }
-
         fun title(title: String) = apply { this.title = title }
 
         fun title(@StringRes titleId: Int) = apply { this.title = activity.getString(titleId) }
+
+        fun titleTypeface(typeface: Typeface) = apply { this.titleTypeface = typeface }
+
+        fun titleSizeInPx(size: Float) = apply { this.titleSizeInPx = size }
+
+        fun titleSizeInSp(size: Float) = apply { this.titleSizeInSp = size }
 
         fun message(message: String) = apply { this.message = message }
 
         fun message(@StringRes messageId: Int) = apply {
             this.message = activity.getString(messageId)
         }
+
+        fun messageTypeface(typeface: Typeface) = apply { this.messageTypeface = typeface }
+
+        fun messageSizeInPx(size: Float) = apply { this.messageSizeInPx = size }
+
+        fun messageSizeInSp(size: Float) = apply { this.messageSizeInSp = size }
 
         fun position(position: FlashbarPosition) = apply { this.position = position }
 
@@ -101,13 +120,13 @@ class Flashbar {
 
         fun enterAnimation(animation: Animation) = apply { this.enterAnimation = animation }
 
-        fun enterAnimation(animationId: Int) = apply {
+        fun enterAnimation(@AnimRes animationId: Int) = apply {
             this.enterAnimation = AnimationUtils.loadAnimation(activity, animationId)
         }
 
         fun exitAnimation(animation: Animation) = apply { this.exitAnimation = animation }
 
-        fun exitAnimation(animationId: Int) = apply {
+        fun exitAnimation(@AnimRes animationId: Int) = apply {
             this.exitAnimation = AnimationUtils.loadAnimation(activity, animationId)
         }
 
