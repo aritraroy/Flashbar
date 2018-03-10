@@ -5,8 +5,11 @@ import android.content.Context
 import android.graphics.Point
 import android.graphics.Rect
 import android.os.Build
-import android.view.*
+import android.view.Display
 import android.view.Surface.*
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import com.andrognito.flashbar.utils.NavigationBarPosition.*
 import java.lang.reflect.InvocationTargetException
 
@@ -23,7 +26,7 @@ internal fun Activity.getStatusBarHeightInPx(): Int {
     window.decorView.getWindowVisibleDisplayFrame(rectangle)
 
     val statusBarHeight = rectangle.top
-    val contentViewTop = window.findViewById<View>(Window.ID_ANDROID_CONTENT).top
+    val contentViewTop = window.findViewById(Window.ID_ANDROID_CONTENT).top
 
     return contentViewTop - statusBarHeight
 }

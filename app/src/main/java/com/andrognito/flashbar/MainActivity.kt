@@ -15,8 +15,11 @@ class MainActivity : AppCompatActivity() {
         show.setOnClickListener {
             if (flashbar == null) {
                 flashbar = Flashbar.Builder(activity)
-                        .position(FlashbarPosition.TOP)
-                        .title("Hello!")
+                        .position(FlashbarPosition.BOTTOM )
+                        .buttonText("Click")
+                        .buttonTextColorRes(R.color.colorPrimary)
+                        .iconColorFilterRes(R.color.colorAccent)
+                        .showIcon(true)
                         .message("A quick brown fox jumps over the lazy dog!")
                         .build()
             }

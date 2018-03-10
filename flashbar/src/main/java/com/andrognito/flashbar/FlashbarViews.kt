@@ -8,19 +8,17 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.JELLY_BEAN
+import android.os.Build.VERSION_CODES.M
 import android.support.annotation.ColorInt
+import android.text.Spanned
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.Animation
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import com.andrognito.flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.FlashbarPosition.TOP
 import com.andrognito.flashbar.utils.*
@@ -40,6 +38,7 @@ internal class FlashbarView : RelativeLayout {
     private lateinit var title: TextView
     private lateinit var message: TextView
     private lateinit var icon: ImageView
+    private lateinit var button: Button
 
     constructor(context: Context) : super(context, null, 0) {
         initView()
@@ -57,12 +56,13 @@ internal class FlashbarView : RelativeLayout {
     private fun initView() {
         inflate(context, R.layout.flash_bar_view, this)
 
-        flashbarRootView = findViewById(R.id.fb_root)
+        flashbarRootView = findViewById(R.id.fb_root) as LinearLayout
 
         with(flashbarRootView) {
-            title = findViewById(R.id.fb_title)
-            message = findViewById(R.id.fb_message)
-            icon = findViewById(R.id.fb_icon)
+            title = findViewById(R.id.fb_title) as TextView
+            message = findViewById(R.id.fb_message) as TextView
+            icon = findViewById(R.id.fb_icon) as ImageView
+            button = findViewById(R.id.fb_action) as Button
         }
     }
 
@@ -73,7 +73,7 @@ internal class FlashbarView : RelativeLayout {
 
         when (flashbarPosition) {
             TOP -> {
-                val flashbarViewContent = findViewById<View>(R.id.fb_content)
+                val flashbarViewContent = findViewById(R.id.fb_content)
                 val flashbarViewContentLp = flashbarViewContent.layoutParams as LinearLayout.LayoutParams
 
                 flashbarViewContentLp.topMargin = statusBarHeight
@@ -110,6 +110,13 @@ internal class FlashbarView : RelativeLayout {
         this.title.visibility = VISIBLE
     }
 
+    internal fun setTitleSpanned(title: Spanned?) {
+        if (title == null) return
+
+        this.title.text = title
+        this.title.visibility = VISIBLE
+    }
+
     internal fun setTitleTypeface(typeface: Typeface?) {
         if (typeface == null) return
         title.typeface = typeface
@@ -130,6 +137,16 @@ internal class FlashbarView : RelativeLayout {
         title.setTextColor(color)
     }
 
+    internal fun setTitleAppearance(titleAppearance: Int?) {
+        if (titleAppearance == null) return
+        
+        if (SDK_INT >= M) {
+            this.title.setTextAppearance(titleAppearance)
+        } else {
+            this.title.setTextAppearance(title.context, titleAppearance)
+        }
+    }
+
     internal fun setMessage(message: String?) {
         if (TextUtils.isEmpty(message)) return
 
@@ -137,24 +154,85 @@ internal class FlashbarView : RelativeLayout {
         this.message.visibility = VISIBLE
     }
 
+    fun setMessageSpanned(message: Spanned?) {
+        if (message == null) return
+
+        this.message.text = message
+        this.message.visibility = VISIBLE
+    }
+
     internal fun setMessageTypeface(typeface: Typeface?) {
         if (typeface == null) return
-        message.typeface = typeface
+        this.message.typeface = typeface
     }
 
     internal fun setMessageSizeInPx(size: Float?) {
         if (size == null) return
-        message.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+        this.message.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
     }
 
     internal fun setMessageSizeInSp(size: Float?) {
         if (size == null) return
-        message.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+        this.message.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
     }
 
     internal fun setMessageColor(color: Int?) {
         if (color == null) return
-        message.setTextColor(color)
+        this.message.setTextColor(color)
+    }
+
+    fun setMessageAppearance(messageAppearance: Int?) {
+        if (messageAppearance == null) return
+
+        if (SDK_INT >= M) {
+            this.message.setTextAppearance(messageAppearance)
+        } else {
+            this.message.setTextAppearance(message.context, messageAppearance)
+        }
+    }
+
+    internal fun setButtonText(text: String?) {
+        if (TextUtils.isEmpty(text)) return
+
+        this.button.text = text
+        this.button.visibility = VISIBLE
+    }
+
+    fun setButtonTextSpanned(text: Spanned?) {
+        if (text == null) return
+
+        this.button.text = text
+        this.button.visibility = VISIBLE
+    }
+
+    internal fun setButtonTextTypeface(typeface: Typeface?) {
+        if (typeface == null) return
+        this.button.typeface = typeface
+    }
+
+    internal fun setButtonTextSizeInPx(size: Float?) {
+        if (size == null) return
+        this.button.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+    }
+
+    internal fun setButtonTextSizeInSp(size: Float?) {
+        if (size == null) return
+        this.button.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+    }
+
+    internal fun setButtonTextColor(color: Int?) {
+        if (color == null) return
+        this.button.setTextColor(color)
+    }
+
+    fun setButtonTextAppearance(messageAppearance: Int?) {
+        if (messageAppearance == null) return
+
+        if (SDK_INT >= M) {
+            this.button.setTextAppearance(messageAppearance)
+        } else {
+            this.button.setTextAppearance(button.context, messageAppearance)
+        }
     }
 
     internal fun showIcon(showIcon: Boolean) {
@@ -281,6 +359,10 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         flashbarView.setTitle(title)
     }
 
+    internal fun setTitleSpanned(title: Spanned?) {
+        flashbarView.setTitleSpanned(title)
+    }
+
     internal fun setTitleTypeface(typeface: Typeface?) {
         flashbarView.setTitleTypeface(typeface)
     }
@@ -297,8 +379,16 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         flashbarView.setTitleColor(color)
     }
 
+    internal fun setTitleAppearance(titleAppearance: Int?) {
+        flashbarView.setTitleAppearance(titleAppearance)
+    }
+
     internal fun setMessage(message: String?) {
         flashbarView.setMessage(message)
+    }
+
+    internal fun setMessageSpanned(message: Spanned?) {
+        flashbarView.setMessageSpanned(message)
     }
 
     internal fun setMessageTypeface(typeface: Typeface?) {
@@ -315,6 +405,38 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
 
     internal fun setMessageColor(color: Int?) {
         flashbarView.setMessageColor(color)
+    }
+
+    internal fun setMessageAppearance(messageAppearance: Int?) {
+        flashbarView.setMessageAppearance(messageAppearance)
+    }
+
+    internal fun setButtonText(text: String?) {
+        flashbarView.setButtonText(text)
+    }
+
+    internal fun setButtonTextSpanned(text: Spanned?) {
+        flashbarView.setButtonTextSpanned(text)
+    }
+
+    internal fun setButtonTextTypeface(typeface: Typeface?) {
+        flashbarView.setButtonTextTypeface(typeface)
+    }
+
+    internal fun setButtonTextSizeInPx(size: Float?) {
+        flashbarView.setButtonTextSizeInPx(size)
+    }
+
+    internal fun setButtonTextSizeInSp(size: Float?) {
+        flashbarView.setButtonTextSizeInSp(size)
+    }
+
+    internal fun setButtonTextColor(color: Int?) {
+        flashbarView.setButtonTextColor(color)
+    }
+
+    internal fun setButtonTextAppearance(appearance: Int?) {
+        flashbarView.setButtonTextAppearance(appearance)
     }
 
     internal fun showIcon(showIcon: Boolean) {

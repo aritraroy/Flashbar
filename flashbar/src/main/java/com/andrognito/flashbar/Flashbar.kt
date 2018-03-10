@@ -7,6 +7,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.support.annotation.*
 import android.support.v4.content.ContextCompat
+import android.text.Spanned
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import com.andrognito.flashbar.FlashbarPosition.BOTTOM
@@ -47,16 +48,28 @@ class Flashbar {
     private fun decorateContainer() {
         with(flashbarContainerView) {
             setTitle(builder.title)
+            setTitleSpanned(builder.titleSpanned)
             setTitleTypeface(builder.titleTypeface)
             setTitleSizeInPx(builder.titleSizeInPx)
             setTitleSizeInSp(builder.titleSizeInSp)
             setTitleColor(builder.titleColor)
+            setTitleAppearance(builder.titleAppearance)
 
             setMessage(builder.message)
+            setMessageSpanned(builder.messageSpanned)
             setMessageTypeface(builder.messageTypeface)
             setMessageSizeInPx(builder.messageSizeInPx)
             setMessageSizeInSp(builder.messageSizeInSp)
             setMessageColor(builder.messageColor)
+            setMessageAppearance(builder.messageAppearance)
+
+            setButtonText(builder.buttonText)
+            setButtonTextSpanned(builder.buttonTextSpanned)
+            setButtonTextTypeface(builder.buttonTextTypeface)
+            setButtonTextSizeInPx(builder.buttonTextSizeInPx)
+            setButtonTextSizeInSp(builder.buttonTextSizeInSp)
+            setButtonTextColor(builder.buttonTextColor)
+            setButtonTextAppearance(builder.buttonTextAppearance)
 
             showIcon(builder.showIcon)
             setIconDrawable(builder.iconDrawable)
@@ -80,16 +93,28 @@ class Flashbar {
         internal var position: FlashbarPosition = TOP
 
         internal var title: String? = null
+        internal var titleSpanned: Spanned? = null
         internal var titleTypeface: Typeface? = null
         internal var titleSizeInPx: Float? = null
         internal var titleSizeInSp: Float? = null
         internal var titleColor: Int? = null
+        internal var titleAppearance: Int? = null
 
         internal var message: String? = null
+        internal var messageSpanned: Spanned? = null
         internal var messageTypeface: Typeface? = null
         internal var messageSizeInPx: Float? = null
         internal var messageSizeInSp: Float? = null
         internal var messageColor: Int? = null
+        internal var messageAppearance: Int? = null
+
+        internal var buttonText: String? = null
+        internal var buttonTextSpanned: Spanned? = null
+        internal var buttonTextTypeface: Typeface? = null
+        internal var buttonTextSizeInPx: Float? = null
+        internal var buttonTextSizeInSp: Float? = null
+        internal var buttonTextColor: Int? = null
+        internal var buttonTextAppearance: Int? = null
 
         internal var showIcon: Boolean = false
         internal var iconDrawable: Drawable? = null
@@ -107,6 +132,8 @@ class Flashbar {
 
         fun title(@StringRes titleId: Int) = apply { this.title = activity.getString(titleId) }
 
+        fun title(title: Spanned) = apply { this.titleSpanned = title }
+
         fun titleTypeface(typeface: Typeface) = apply { this.titleTypeface = typeface }
 
         fun titleSizeInPx(size: Float) = apply { this.titleSizeInPx = size }
@@ -119,11 +146,17 @@ class Flashbar {
             this.titleColor = ContextCompat.getColor(activity, colorId)
         }
 
+        fun titleAppearance(@StyleRes appearance: Int) = apply {
+            this.titleAppearance = appearance
+        }
+
         fun message(message: String) = apply { this.message = message }
 
         fun message(@StringRes messageId: Int) = apply {
             this.message = activity.getString(messageId)
         }
+
+        fun message(message: Spanned) = apply { this.messageSpanned = message }
 
         fun messageTypeface(typeface: Typeface) = apply { this.messageTypeface = typeface }
 
@@ -135,6 +168,34 @@ class Flashbar {
 
         fun messageColorRes(colorId: Int) = apply {
             this.messageColor = ContextCompat.getColor(activity, colorId)
+        }
+
+        fun messageAppearance(@StyleRes appearance: Int) = apply {
+            this.titleAppearance = appearance
+        }
+
+        fun buttonText(text: String) = apply { this.buttonText = text }
+
+        fun buttonText(@StringRes buttonTextId: Int) = apply {
+            this.buttonText = activity.getString(buttonTextId)
+        }
+
+        fun buttonText(buttonText: Spanned) = apply { this.buttonTextSpanned = buttonText }
+
+        fun buttonTextTypeface(typeface: Typeface) = apply { this.buttonTextTypeface = typeface }
+
+        fun buttonTextSizeInPx(size: Float) = apply { this.buttonTextSizeInPx = size }
+
+        fun buttonTextSizeInSp(size: Float) = apply { this.buttonTextSizeInSp = size }
+
+        fun buttonTextColor(color: Int) = apply { this.buttonTextColor = color }
+
+        fun buttonTextColorRes(colorId: Int) = apply {
+            this.buttonTextColor = ContextCompat.getColor(activity, colorId)
+        }
+
+        fun buttonTextAppearance(@StyleRes appearance: Int) = apply {
+            this.buttonTextAppearance = appearance
         }
 
         fun showIcon(showIcon: Boolean) = apply { this.showIcon = showIcon }
