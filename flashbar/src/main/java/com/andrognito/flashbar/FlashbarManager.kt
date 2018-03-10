@@ -4,7 +4,7 @@ import android.app.Activity
 
 class FlashbarManager {
 
-    internal val flashbarList = mutableListOf<FlashbarContainerView>()
+    internal val flashbarList = mutableListOf<Flashbar>()
 
     internal fun show(activity: Activity) {
 

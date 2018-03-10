@@ -12,14 +12,13 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import com.andrognito.flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.FlashbarPosition.TOP
-
+import com.andrognito.flashbar.listeners.OnActionTapListener
+import com.andrognito.flashbar.listeners.OnBarTapListener
 
 class Flashbar {
 
     private var builder: Builder
-
     private lateinit var flashbarContainerView: FlashbarContainerView
-    private lateinit var flashbarView: FlashbarView
 
     private constructor(builder: Builder) {
         this.builder = builder
@@ -36,17 +35,20 @@ class Flashbar {
 
     private fun construct() {
         flashbarContainerView = FlashbarContainerView(builder.activity)
-        flashbarView = FlashbarView(builder.activity)
+        flashbarContainerView.addParent(this)
 
         flashbarContainerView.adjustPositionAndOrientation(builder.activity)
-        flashbarView.adjustWitPositionAndOrientation(builder.activity, builder.position)
-        flashbarContainerView.add(flashbarView)
+        flashbarContainerView.construct(builder.activity, builder.position)
 
         decorateContainer()
     }
 
     private fun decorateContainer() {
         with(flashbarContainerView) {
+            setBarBackgroundColor(builder.backgroundColor)
+            setBarBackgroundDrawable(builder.backgroundDrawable)
+            setBarTapListener(builder.onBarTapListener)
+
             setTitle(builder.title)
             setTitleSpanned(builder.titleSpanned)
             setTitleTypeface(builder.titleTypeface)
@@ -63,21 +65,19 @@ class Flashbar {
             setMessageColor(builder.messageColor)
             setMessageAppearance(builder.messageAppearance)
 
-            setButtonText(builder.buttonText)
-            setButtonTextSpanned(builder.buttonTextSpanned)
-            setButtonTextTypeface(builder.buttonTextTypeface)
-            setButtonTextSizeInPx(builder.buttonTextSizeInPx)
-            setButtonTextSizeInSp(builder.buttonTextSizeInSp)
-            setButtonTextColor(builder.buttonTextColor)
-            setButtonTextAppearance(builder.buttonTextAppearance)
+            setActionText(builder.actionText)
+            setActionTextSpanned(builder.actionTextSpanned)
+            setActionTextTypeface(builder.actionTextTypeface)
+            setActionTextSizeInPx(builder.actionTextSizeInPx)
+            setActionTextSizeInSp(builder.actionTextSizeInSp)
+            setActionTextColor(builder.actionTextColor)
+            setActionTextAppearance(builder.actionTextAppearance)
+            setActionOnTapListener(builder.onActionTapListener)
 
             showIcon(builder.showIcon)
             setIconDrawable(builder.iconDrawable)
             setIconBitmap(builder.iconBitmap)
             setIconColorFilter(builder.iconColorFilter, builder.iconColorFilterMode)
-
-            setBarBackgroundColor(builder.backgroundColor)
-            setBarBackgroundDrawable(builder.backgroundDrawable)
 
             setEnterAnimation(builder.enterAnimation!!)
             setExitAnimation(builder.exitAnimation!!)
@@ -91,6 +91,9 @@ class Flashbar {
     class Builder(internal var activity: Activity) {
 
         internal var position: FlashbarPosition = TOP
+        internal var backgroundColor: Int? = null
+        internal var backgroundDrawable: Drawable? = null
+        internal var onBarTapListener: OnBarTapListener? = null
 
         internal var title: String? = null
         internal var titleSpanned: Spanned? = null
@@ -108,13 +111,14 @@ class Flashbar {
         internal var messageColor: Int? = null
         internal var messageAppearance: Int? = null
 
-        internal var buttonText: String? = null
-        internal var buttonTextSpanned: Spanned? = null
-        internal var buttonTextTypeface: Typeface? = null
-        internal var buttonTextSizeInPx: Float? = null
-        internal var buttonTextSizeInSp: Float? = null
-        internal var buttonTextColor: Int? = null
-        internal var buttonTextAppearance: Int? = null
+        internal var actionText: String? = null
+        internal var actionTextSpanned: Spanned? = null
+        internal var actionTextTypeface: Typeface? = null
+        internal var actionTextSizeInPx: Float? = null
+        internal var actionTextSizeInSp: Float? = null
+        internal var actionTextColor: Int? = null
+        internal var actionTextAppearance: Int? = null
+        internal var onActionTapListener: OnActionTapListener? = null
 
         internal var showIcon: Boolean = false
         internal var iconDrawable: Drawable? = null
@@ -122,11 +126,36 @@ class Flashbar {
         internal var iconColorFilter: Int? = null
         internal var iconColorFilterMode: PorterDuff.Mode? = null
 
-        internal var backgroundColor: Int? = null
-        internal var backgroundDrawable: Drawable? = null
-
         internal var enterAnimation: Animation? = null
         internal var exitAnimation: Animation? = null
+
+        fun position(position: FlashbarPosition) = apply { this.position = position }
+
+        fun backgroundDrawable(drawable: Drawable) = apply { this.backgroundDrawable = drawable }
+
+        fun backgroundDrawable(@DrawableRes drawableId: Int) = apply {
+            this.backgroundDrawable = ContextCompat.getDrawable(activity, drawableId)
+        }
+
+        fun backgroundColor(@ColorInt color: Int) = apply { this.backgroundColor = color }
+
+        fun barTapListener(barTapListener: OnBarTapListener) = apply { this.onBarTapListener = barTapListener }
+
+        fun backgroundColorRes(@ColorRes colorId: Int) = apply {
+            this.backgroundColor = ContextCompat.getColor(activity, colorId)
+        }
+
+        fun enterAnimation(animation: Animation) = apply { this.enterAnimation = animation }
+
+        fun enterAnimation(@AnimRes animationId: Int) = apply {
+            this.enterAnimation = AnimationUtils.loadAnimation(activity, animationId)
+        }
+
+        fun exitAnimation(animation: Animation) = apply { this.exitAnimation = animation }
+
+        fun exitAnimation(@AnimRes animationId: Int) = apply {
+            this.exitAnimation = AnimationUtils.loadAnimation(activity, animationId)
+        }
 
         fun title(title: String) = apply { this.title = title }
 
@@ -174,28 +203,32 @@ class Flashbar {
             this.titleAppearance = appearance
         }
 
-        fun buttonText(text: String) = apply { this.buttonText = text }
+        fun actionText(text: String) = apply { this.actionText = text }
 
-        fun buttonText(@StringRes buttonTextId: Int) = apply {
-            this.buttonText = activity.getString(buttonTextId)
+        fun actionText(@StringRes actionTextId: Int) = apply {
+            this.actionText = activity.getString(actionTextId)
         }
 
-        fun buttonText(buttonText: Spanned) = apply { this.buttonTextSpanned = buttonText }
+        fun actionText(actionText: Spanned) = apply { this.actionTextSpanned = actionText }
 
-        fun buttonTextTypeface(typeface: Typeface) = apply { this.buttonTextTypeface = typeface }
+        fun actionTextTypeface(typeface: Typeface) = apply { this.actionTextTypeface = typeface }
 
-        fun buttonTextSizeInPx(size: Float) = apply { this.buttonTextSizeInPx = size }
+        fun actionTextSizeInPx(size: Float) = apply { this.actionTextSizeInPx = size }
 
-        fun buttonTextSizeInSp(size: Float) = apply { this.buttonTextSizeInSp = size }
+        fun actionTextSizeInSp(size: Float) = apply { this.actionTextSizeInSp = size }
 
-        fun buttonTextColor(color: Int) = apply { this.buttonTextColor = color }
+        fun actionTextColor(color: Int) = apply { this.actionTextColor = color }
 
-        fun buttonTextColorRes(colorId: Int) = apply {
-            this.buttonTextColor = ContextCompat.getColor(activity, colorId)
+        fun actionTextColorRes(colorId: Int) = apply {
+            this.actionTextColor = ContextCompat.getColor(activity, colorId)
         }
 
-        fun buttonTextAppearance(@StyleRes appearance: Int) = apply {
-            this.buttonTextAppearance = appearance
+        fun actionTextAppearance(@StyleRes appearance: Int) = apply {
+            this.actionTextAppearance = appearance
+        }
+
+        fun actionTapListener(onActionTapListener: OnActionTapListener) = apply {
+            this.onActionTapListener = onActionTapListener
         }
 
         fun showIcon(showIcon: Boolean) = apply { this.showIcon = showIcon }
@@ -216,32 +249,6 @@ class Flashbar {
         fun iconColorFilterRes(@ColorRes colorId: Int, mode: PorterDuff.Mode? = null) = apply {
             this.iconColorFilter = ContextCompat.getColor(activity, colorId)
             this.iconColorFilterMode = mode
-        }
-
-        fun position(position: FlashbarPosition) = apply { this.position = position }
-
-        fun backgroundDrawable(drawable: Drawable) = apply { this.backgroundDrawable = drawable }
-
-        fun backgroundDrawable(@DrawableRes drawableId: Int) = apply {
-            this.backgroundDrawable = ContextCompat.getDrawable(activity, drawableId)
-        }
-
-        fun backgroundColor(@ColorInt color: Int) = apply { this.backgroundColor = color }
-
-        fun backgroundColorRes(@ColorRes colorId: Int) = apply {
-            this.backgroundColor = ContextCompat.getColor(activity, colorId)
-        }
-
-        fun enterAnimation(animation: Animation) = apply { this.enterAnimation = animation }
-
-        fun enterAnimation(@AnimRes animationId: Int) = apply {
-            this.enterAnimation = AnimationUtils.loadAnimation(activity, animationId)
-        }
-
-        fun exitAnimation(animation: Animation) = apply { this.exitAnimation = animation }
-
-        fun exitAnimation(@AnimRes animationId: Int) = apply {
-            this.exitAnimation = AnimationUtils.loadAnimation(activity, animationId)
         }
 
         fun build(): Flashbar {
