@@ -17,8 +17,9 @@ import android.util.TypedValue
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
-import com.andrognito.flashbar.FlashbarPosition.BOTTOM
-import com.andrognito.flashbar.FlashbarPosition.TOP
+import com.andrognito.flashbar.Flashbar.FlashbarPosition
+import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
+import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
 import com.andrognito.flashbar.listeners.OnActionTapListener
 import com.andrognito.flashbar.listeners.OnBarTapListener
 import com.andrognito.flashbar.utils.getStatusBarHeightInPx

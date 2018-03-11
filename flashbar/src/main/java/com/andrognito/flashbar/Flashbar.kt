@@ -10,20 +10,16 @@ import android.support.v4.content.ContextCompat
 import android.text.Spanned
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import com.andrognito.flashbar.FlashbarPosition.BOTTOM
-import com.andrognito.flashbar.FlashbarPosition.TOP
+import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
+import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
 import com.andrognito.flashbar.listeners.OnActionTapListener
+import com.andrognito.flashbar.listeners.OnBarDismissListener
+import com.andrognito.flashbar.listeners.OnBarShowListener
 import com.andrognito.flashbar.listeners.OnBarTapListener
 
-class Flashbar {
+class Flashbar private constructor(private var builder: Builder) {
 
-    private var builder: Builder
     private lateinit var flashbarContainerView: FlashbarContainerView
-
-    private constructor(builder: Builder) {
-        this.builder = builder
-        construct()
-    }
 
     fun show() {
         flashbarContainerView.show(builder.activity)
@@ -32,6 +28,10 @@ class Flashbar {
     fun dismiss() {
         flashbarContainerView.dismiss()
     }
+
+    fun isShowing() = flashbarContainerView.isBarShowing()
+
+    fun isShown() = flashbarContainerView.isBarShown()
 
     private fun construct() {
         flashbarContainerView = FlashbarContainerView(builder.activity)
@@ -48,6 +48,9 @@ class Flashbar {
             setBarBackgroundColor(builder.backgroundColor)
             setBarBackgroundDrawable(builder.backgroundDrawable)
             setBarTapListener(builder.onBarTapListener)
+            setDuration(builder.duration)
+            setBarShownListener(builder.onBarShownListener)
+            setBarDismissListener(builder.onBarDismissListener)
 
             setTitle(builder.title)
             setTitleSpanned(builder.titleSpanned)
@@ -84,16 +87,15 @@ class Flashbar {
         }
     }
 
-    fun isShowing() = flashbarContainerView.isBarShowing()
-
-    fun isShown() = flashbarContainerView.isBarShown()
-
     class Builder(internal var activity: Activity) {
 
         internal var position: FlashbarPosition = TOP
         internal var backgroundColor: Int? = null
         internal var backgroundDrawable: Drawable? = null
         internal var onBarTapListener: OnBarTapListener? = null
+        internal var duration: Long = DURATION_INDEFINITE
+        internal var onBarShownListener: OnBarShowListener? = null
+        internal var onBarDismissListener: OnBarDismissListener? = null
 
         internal var title: String? = null
         internal var titleSpanned: Spanned? = null
@@ -139,7 +141,24 @@ class Flashbar {
 
         fun backgroundColor(@ColorInt color: Int) = apply { this.backgroundColor = color }
 
-        fun barTapListener(barTapListener: OnBarTapListener) = apply { this.onBarTapListener = barTapListener }
+        fun barTapListener(listener: OnBarTapListener) = apply {
+            this.onBarTapListener = listener
+        }
+
+        fun duration(duration: Long) = apply {
+            if (duration < 0) {
+                throw IllegalArgumentException("Duration can not be negative")
+            }
+            this.duration = duration
+        }
+
+        fun barShownListener(listener: OnBarShowListener) = apply {
+            this.onBarShownListener = listener
+        }
+
+        fun barDismissListener(listener: OnBarDismissListener) = apply {
+            this.onBarDismissListener = listener
+        }
 
         fun backgroundColorRes(@ColorRes colorId: Int) = apply {
             this.backgroundColor = ContextCompat.getColor(activity, colorId)
@@ -252,13 +271,16 @@ class Flashbar {
         }
 
         fun build(): Flashbar {
-            initializeAnimation()
-            return Flashbar(this)
+            configureAnimation()
+
+            val flashbar = Flashbar(this)
+            flashbar.construct()
+            return flashbar
         }
 
         fun show() = build().show()
 
-        private fun initializeAnimation() {
+        private fun configureAnimation() {
             if (enterAnimation == null) {
                 enterAnimation = when (position) {
                     TOP -> AnimationUtils.loadAnimation(activity, R.anim.enter_from_top)
@@ -274,9 +296,20 @@ class Flashbar {
             }
         }
     }
-}
 
-enum class FlashbarPosition {
-    TOP,
-    BOTTOM
+    enum class FlashbarPosition {
+        TOP,
+        BOTTOM
+    }
+
+    enum class FlashbarDismissEvent {
+        TIMEOUT,
+        MANUAL
+    }
+
+    companion object {
+        const val DURATION_SHORT = 1000L
+        const val DURATION_LONG = 2500L
+        const val DURATION_INDEFINITE = -1L
+    }
 }

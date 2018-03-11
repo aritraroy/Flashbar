@@ -12,7 +12,14 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.animation.Animation
 import android.widget.RelativeLayout
+import com.andrognito.flashbar.Flashbar.Companion.DURATION_INDEFINITE
+import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent
+import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent.MANUAL
+import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent.TIMEOUT
+import com.andrognito.flashbar.Flashbar.FlashbarPosition
 import com.andrognito.flashbar.listeners.OnActionTapListener
+import com.andrognito.flashbar.listeners.OnBarDismissListener
+import com.andrognito.flashbar.listeners.OnBarShowListener
 import com.andrognito.flashbar.listeners.OnBarTapListener
 import com.andrognito.flashbar.utils.NavigationBarPosition
 import com.andrognito.flashbar.utils.getNavigationBarPosition
@@ -27,50 +34,18 @@ import com.andrognito.flashbar.utils.getRootView
 internal class FlashbarContainerView(context: Context) : RelativeLayout(context) {
 
     private lateinit var flashbarView: FlashbarView
+    internal lateinit var parentFlashbar: Flashbar
 
     private lateinit var enterAnimation: Animation
     private lateinit var exitAnimation: Animation
 
+    private var onBarShowListener: OnBarShowListener? = null
+    private var onBarDismissListener: OnBarDismissListener? = null
+
+    private var duration = DURATION_INDEFINITE
     private var isBarShowing = false
     private var isBarShown = false
     private var isBarDismissing = false
-
-    private val enterAnimationListener = object : Animation.AnimationListener {
-
-        override fun onAnimationStart(animation: Animation) {
-            isBarShowing = true
-        }
-
-        override fun onAnimationEnd(animation: Animation) {
-            isBarShowing = false
-            isBarShown = true
-        }
-
-        override fun onAnimationRepeat(animation: Animation) {
-            // NO-OP
-        }
-    }
-
-    private val exitAnimationListener = object : Animation.AnimationListener {
-
-        override fun onAnimationStart(animation: Animation?) {
-            isBarDismissing = true
-        }
-
-        override fun onAnimationEnd(animation: Animation?) {
-            isBarDismissing = false
-            isBarShown = false
-
-            // Removing container after animation end
-            post { (parent as? ViewGroup)?.removeView(this@FlashbarContainerView) }
-        }
-
-        override fun onAnimationRepeat(animation: Animation?) {
-            // NO-OP
-        }
-    }
-
-    internal lateinit var parentFlashbar: Flashbar
 
     internal fun construct(activity: Activity, position: FlashbarPosition) {
         flashbarView = FlashbarView(activity)
@@ -107,17 +82,30 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         val activityRootView = activity.getRootView()
         activityRootView?.addView(this)
 
-        enterAnimation.setAnimationListener(enterAnimationListener)
+        enterAnimation.setAnimationListener(object : Animation.AnimationListener {
+
+            override fun onAnimationStart(animation: Animation) {
+                isBarShowing = true
+                onBarShowListener?.onShowing(parentFlashbar)
+            }
+
+            override fun onAnimationEnd(animation: Animation) {
+                isBarShowing = false
+                isBarShown = true
+                onBarShowListener?.onShown(parentFlashbar)
+            }
+
+            override fun onAnimationRepeat(animation: Animation) {
+                // NO-OP
+            }
+        })
+
         flashbarView.startAnimation(enterAnimation)
+        handleDismiss()
     }
 
     internal fun dismiss() {
-        if (isBarDismissing || isBarShowing || !isBarShown) {
-            return
-        }
-
-        exitAnimation.setAnimationListener(exitAnimationListener)
-        flashbarView.startAnimation(exitAnimation)
+        dismissInternal(MANUAL)
     }
 
     internal fun isBarShowing() = isBarShowing
@@ -136,12 +124,24 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         flashbarView.setBarBackground(drawable)
     }
 
+    internal fun setDuration(duration: Long) {
+        this.duration = duration
+    }
+
+    internal fun setBarShownListener(listener: OnBarShowListener?) {
+        this.onBarShowListener = listener
+    }
+
+    internal fun setBarDismissListener(listener: OnBarDismissListener?) {
+        this.onBarDismissListener = listener
+    }
+
     internal fun setEnterAnimation(animation: Animation) {
-        enterAnimation = animation
+        this.enterAnimation = animation
     }
 
     internal fun setExitAnimation(animation: Animation) {
-        exitAnimation = animation
+        this.exitAnimation = animation
     }
 
     internal fun setTitle(title: String?) {
@@ -246,5 +246,40 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
 
     internal fun setIconColorFilter(colorFilter: Int?, filterMode: PorterDuff.Mode?) {
         flashbarView.setIconFilter(colorFilter, filterMode)
+    }
+
+    private fun handleDismiss() {
+        if (duration != DURATION_INDEFINITE) {
+            postDelayed({ dismissInternal(TIMEOUT) }, duration)
+        }
+    }
+
+    private fun dismissInternal(event: FlashbarDismissEvent) {
+        if (isBarDismissing || isBarShowing || !isBarShown) {
+            return
+        }
+
+        exitAnimation.setAnimationListener(object : Animation.AnimationListener {
+
+            override fun onAnimationStart(animation: Animation?) {
+                isBarDismissing = true
+                onBarDismissListener?.onDismissing(parentFlashbar)
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                isBarDismissing = false
+                isBarShown = false
+
+                onBarDismissListener?.onDismissed(parentFlashbar, event)
+
+                // Removing container after animation end
+                post { (parent as? ViewGroup)?.removeView(this@FlashbarContainerView) }
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+                // NO-OP
+            }
+        })
+        flashbarView.startAnimation(exitAnimation)
     }
 }

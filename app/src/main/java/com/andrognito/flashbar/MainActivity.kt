@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.andrognito.flashbar.listeners.OnActionTapListener
+import com.andrognito.flashbar.listeners.OnBarDismissListener
+import com.andrognito.flashbar.listeners.OnBarShowListener
 import com.andrognito.flashbar.listeners.OnBarTapListener
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         show.setOnClickListener {
             if (flashbar == null) {
                 flashbar = Flashbar.Builder(activity)
-                        .position(FlashbarPosition.BOTTOM)
+                        .position(Flashbar.FlashbarPosition.TOP)
                         .title("Hello!")
                         .actionText("Click")
                         .actionTapListener(object : OnActionTapListener {
@@ -31,10 +33,28 @@ class MainActivity : AppCompatActivity() {
                                 Log.d("Flashbar", "onBarTapped")
                             }
                         })
+                        .barShownListener(object : OnBarShowListener {
+                            override fun onShowing(bar: Flashbar) {
+                                Log.d("Flashbar", "onShowing")
+                            }
+
+                            override fun onShown(bar: Flashbar) {
+                                Log.d("Flashbar", "onShown")
+                            }
+                        })
+                        .duration(1000)
+                        .barDismissListener(object : OnBarDismissListener {
+                            override fun onDismissing(bar: Flashbar) {
+                                Log.d("Flashbar", "onDismissing")
+                            }
+
+                            override fun onDismissed(bar: Flashbar, event: Flashbar.FlashbarDismissEvent) {
+                                Log.d("Flashbar", "onDismissed: $event")
+                            }
+                        })
                         .showIcon(true)
                         .message("A quick brown fox jumps over the lazy dog!")
                         .build()
-                Log.d("Flashbar", "Build: $flashbar")
             }
             flashbar?.show()
         }
