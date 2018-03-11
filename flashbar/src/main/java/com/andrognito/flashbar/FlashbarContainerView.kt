@@ -4,18 +4,19 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.support.annotation.ColorInt
 import android.text.Spanned
+import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.animation.Animation
 import android.widget.RelativeLayout
 import com.andrognito.flashbar.Flashbar.Companion.DURATION_INDEFINITE
 import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent
-import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent.MANUAL
-import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent.TIMEOUT
+import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent.*
 import com.andrognito.flashbar.Flashbar.FlashbarPosition
 import com.andrognito.flashbar.listeners.OnActionTapListener
 import com.andrognito.flashbar.listeners.OnBarDismissListener
@@ -25,6 +26,7 @@ import com.andrognito.flashbar.utils.NavigationBarPosition
 import com.andrognito.flashbar.utils.getNavigationBarPosition
 import com.andrognito.flashbar.utils.getNavigationBarSizeInPx
 import com.andrognito.flashbar.utils.getRootView
+
 
 /**
  * Container view matching the height and width of the parent to hold a FlashbarView.
@@ -46,6 +48,25 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
     private var isBarShowing = false
     private var isBarShown = false
     private var isBarDismissing = false
+    private var barDismissOnTapOutside: Boolean = false
+
+    override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
+        val action = event.action
+        when (action) {
+            MotionEvent.ACTION_DOWN -> {
+                if (barDismissOnTapOutside) {
+                    val rect = Rect()
+                    flashbarView.getHitRect(rect)
+
+                    // Checks if the tap was outside the bar
+                    if (!rect.contains(event.x.toInt(), event.y.toInt())) {
+                        dismissInternal(TAP_OUTSIDE)
+                    }
+                }
+            }
+        }
+        return super.onInterceptTouchEvent(event)
+    }
 
     internal fun construct(activity: Activity, position: FlashbarPosition) {
         flashbarView = FlashbarView(activity)
@@ -134,6 +155,10 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
 
     internal fun setBarDismissListener(listener: OnBarDismissListener?) {
         this.onBarDismissListener = listener
+    }
+
+    internal fun setBarDismissOnTapOutside(dismiss: Boolean) {
+        this.barDismissOnTapOutside = dismiss
     }
 
     internal fun setEnterAnimation(animation: Animation) {

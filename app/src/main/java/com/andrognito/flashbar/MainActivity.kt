@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
                         .position(Flashbar.FlashbarPosition.TOP)
                         .title("Hello!")
                         .actionText("Click")
+                        .dismissOnTapOutside(true)
                         .actionTapListener(object : OnActionTapListener {
                             override fun onActionTapped(bar: Flashbar) {
                                 Log.d("Flashbar", "onActionTapped")
@@ -42,7 +43,6 @@ class MainActivity : AppCompatActivity() {
                                 Log.d("Flashbar", "onShown")
                             }
                         })
-                        .duration(1000)
                         .barDismissListener(object : OnBarDismissListener {
                             override fun onDismissing(bar: Flashbar) {
                                 Log.d("Flashbar", "onDismissing")
@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                                 Log.d("Flashbar", "onDismissed: $event")
                             }
                         })
+                        .duration(5000)
                         .showIcon(true)
                         .message("A quick brown fox jumps over the lazy dog!")
                         .build()

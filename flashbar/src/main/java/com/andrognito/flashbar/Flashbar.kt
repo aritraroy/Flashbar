@@ -51,6 +51,7 @@ class Flashbar private constructor(private var builder: Builder) {
             setDuration(builder.duration)
             setBarShownListener(builder.onBarShownListener)
             setBarDismissListener(builder.onBarDismissListener)
+            setBarDismissOnTapOutside(builder.barDismissOnTapOutside)
 
             setTitle(builder.title)
             setTitleSpanned(builder.titleSpanned)
@@ -96,6 +97,7 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var duration: Long = DURATION_INDEFINITE
         internal var onBarShownListener: OnBarShowListener? = null
         internal var onBarDismissListener: OnBarDismissListener? = null
+        internal var barDismissOnTapOutside: Boolean = false
 
         internal var title: String? = null
         internal var titleSpanned: Spanned? = null
@@ -141,6 +143,10 @@ class Flashbar private constructor(private var builder: Builder) {
 
         fun backgroundColor(@ColorInt color: Int) = apply { this.backgroundColor = color }
 
+        fun backgroundColorRes(@ColorRes colorId: Int) = apply {
+            this.backgroundColor = ContextCompat.getColor(activity, colorId)
+        }
+
         fun barTapListener(listener: OnBarTapListener) = apply {
             this.onBarTapListener = listener
         }
@@ -160,8 +166,8 @@ class Flashbar private constructor(private var builder: Builder) {
             this.onBarDismissListener = listener
         }
 
-        fun backgroundColorRes(@ColorRes colorId: Int) = apply {
-            this.backgroundColor = ContextCompat.getColor(activity, colorId)
+        fun dismissOnTapOutside(dismiss: Boolean) = apply {
+            this.barDismissOnTapOutside = dismiss
         }
 
         fun enterAnimation(animation: Animation) = apply { this.enterAnimation = animation }
@@ -304,7 +310,8 @@ class Flashbar private constructor(private var builder: Builder) {
 
     enum class FlashbarDismissEvent {
         TIMEOUT,
-        MANUAL
+        MANUAL,
+        TAP_OUTSIDE
     }
 
     companion object {
