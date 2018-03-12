@@ -12,14 +12,15 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
-import com.andrognito.flashbar.listeners.OnActionTapListener
-import com.andrognito.flashbar.listeners.OnBarDismissListener
-import com.andrognito.flashbar.listeners.OnBarShowListener
-import com.andrognito.flashbar.listeners.OnBarTapListener
+import com.andrognito.flashbar.listener.OnActionTapListener
+import com.andrognito.flashbar.listener.OnBarDismissListener
+import com.andrognito.flashbar.listener.OnBarShowListener
+import com.andrognito.flashbar.listener.OnBarTapListener
 
 class Flashbar private constructor(private var builder: Builder) {
 
     private lateinit var flashbarContainerView: FlashbarContainerView
+    private lateinit var flashbarView: FlashbarView
 
     fun show() {
         flashbarContainerView.show(builder.activity)
@@ -37,21 +38,39 @@ class Flashbar private constructor(private var builder: Builder) {
         flashbarContainerView = FlashbarContainerView(builder.activity)
         flashbarContainerView.addParent(this)
 
-        flashbarContainerView.adjustPositionAndOrientation(builder.activity)
-        flashbarContainerView.construct(builder.activity, builder.position)
+        flashbarView = FlashbarView(builder.activity)
+        flashbarView.addParent(flashbarContainerView)
 
-        decorateContainer()
+        flashbarContainerView.attach(flashbarView)
+
+        flashbarContainerView.adjustPositionAndOrientation(builder.activity)
+        flashbarView.adjustWitPositionAndOrientation(builder.activity, builder.position)
+
+        initializeContainerDecor()
+        initializeBarDecor()
+
+        flashbarContainerView.construct()
     }
 
-    private fun decorateContainer() {
+    private fun initializeContainerDecor() {
         with(flashbarContainerView) {
-            setBarBackgroundColor(builder.backgroundColor)
-            setBarBackgroundDrawable(builder.backgroundDrawable)
-            setBarTapListener(builder.onBarTapListener)
             setDuration(builder.duration)
             setBarShownListener(builder.onBarShownListener)
             setBarDismissListener(builder.onBarDismissListener)
             setBarDismissOnTapOutside(builder.barDismissOnTapOutside)
+            setModalOverlayColor(builder.modalOverlayColor)
+            setModalOverlayBlockable(builder.modalOverlayBlockable)
+
+            setEnterAnimation(builder.enterAnimation!!)
+            setExitAnimation(builder.exitAnimation!!)
+        }
+    }
+
+    private fun initializeBarDecor() {
+        with(flashbarView) {
+            setBarBackgroundColor(builder.backgroundColor)
+            setBarBackgroundDrawable(builder.backgroundDrawable)
+            setBarTapListener(builder.onBarTapListener)
 
             setTitle(builder.title)
             setTitleSpanned(builder.titleSpanned)
@@ -76,15 +95,12 @@ class Flashbar private constructor(private var builder: Builder) {
             setActionTextSizeInSp(builder.actionTextSizeInSp)
             setActionTextColor(builder.actionTextColor)
             setActionTextAppearance(builder.actionTextAppearance)
-            setActionOnTapListener(builder.onActionTapListener)
+            setActionTapListener(builder.onActionTapListener)
 
             showIcon(builder.showIcon)
             setIconDrawable(builder.iconDrawable)
             setIconBitmap(builder.iconBitmap)
             setIconColorFilter(builder.iconColorFilter, builder.iconColorFilterMode)
-
-            setEnterAnimation(builder.enterAnimation!!)
-            setExitAnimation(builder.exitAnimation!!)
         }
     }
 
@@ -98,6 +114,8 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var onBarShownListener: OnBarShowListener? = null
         internal var onBarDismissListener: OnBarDismissListener? = null
         internal var barDismissOnTapOutside: Boolean = false
+        internal var modalOverlayColor: Int? = null
+        internal var modalOverlayBlockable: Boolean = false
 
         internal var title: String? = null
         internal var titleSpanned: Spanned? = null
@@ -168,6 +186,16 @@ class Flashbar private constructor(private var builder: Builder) {
 
         fun dismissOnTapOutside(dismiss: Boolean) = apply {
             this.barDismissOnTapOutside = dismiss
+        }
+
+        fun modalOverlayColor(@ColorInt color: Int) = apply { this.modalOverlayColor = color }
+
+        fun modalOverlayColorRes(@ColorRes colorId: Int) = apply {
+            this.modalOverlayColor = ContextCompat.getColor(activity, colorId)
+        }
+
+        fun modalOverlayBlockable(blockable: Boolean) = apply {
+            this.modalOverlayBlockable = blockable
         }
 
         fun enterAnimation(animation: Animation) = apply { this.enterAnimation = animation }

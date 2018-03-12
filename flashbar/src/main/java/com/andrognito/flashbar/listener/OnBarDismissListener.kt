@@ -1,4 +1,4 @@
-package com.andrognito.flashbar.listeners
+package com.andrognito.flashbar.listener
 
 import com.andrognito.flashbar.Flashbar
 import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent

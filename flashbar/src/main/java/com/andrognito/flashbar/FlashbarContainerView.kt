@@ -2,13 +2,7 @@ package com.andrognito.flashbar
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.PorterDuff
 import android.graphics.Rect
-import android.graphics.Typeface
-import android.graphics.drawable.Drawable
-import android.support.annotation.ColorInt
-import android.text.Spanned
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -17,15 +11,12 @@ import android.widget.RelativeLayout
 import com.andrognito.flashbar.Flashbar.Companion.DURATION_INDEFINITE
 import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent
 import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent.*
-import com.andrognito.flashbar.Flashbar.FlashbarPosition
-import com.andrognito.flashbar.listeners.OnActionTapListener
-import com.andrognito.flashbar.listeners.OnBarDismissListener
-import com.andrognito.flashbar.listeners.OnBarShowListener
-import com.andrognito.flashbar.listeners.OnBarTapListener
-import com.andrognito.flashbar.utils.NavigationBarPosition
-import com.andrognito.flashbar.utils.getNavigationBarPosition
-import com.andrognito.flashbar.utils.getNavigationBarSizeInPx
-import com.andrognito.flashbar.utils.getRootView
+import com.andrognito.flashbar.listener.OnBarDismissListener
+import com.andrognito.flashbar.listener.OnBarShowListener
+import com.andrognito.flashbar.util.NavigationBarPosition
+import com.andrognito.flashbar.util.getNavigationBarPosition
+import com.andrognito.flashbar.util.getNavigationBarSizeInPx
+import com.andrognito.flashbar.util.getRootView
 
 
 /**
@@ -43,12 +34,14 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
 
     private var onBarShowListener: OnBarShowListener? = null
     private var onBarDismissListener: OnBarDismissListener? = null
+    private var modalOverlayColor: Int? = null
 
     private var duration = DURATION_INDEFINITE
     private var isBarShowing = false
     private var isBarShown = false
     private var isBarDismissing = false
     private var barDismissOnTapOutside: Boolean = false
+    private var modalOverlayBlockable: Boolean = false
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         val action = event.action
@@ -68,11 +61,19 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         return super.onInterceptTouchEvent(event)
     }
 
-    internal fun construct(activity: Activity, position: FlashbarPosition) {
-        flashbarView = FlashbarView(activity)
-        flashbarView.addParent(this)
+    internal fun attach(flashbarView: FlashbarView) {
+        this.flashbarView = flashbarView
+    }
 
-        flashbarView.adjustWitPositionAndOrientation(activity, position)
+    internal fun construct() {
+        if (modalOverlayColor != null) {
+            setBackgroundColor(modalOverlayColor!!)
+
+            if (modalOverlayBlockable) {
+                isClickable = true
+                isFocusable = true
+            }
+        }
         addView(flashbarView)
     }
 
@@ -133,18 +134,6 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
 
     internal fun isBarShown() = isBarShown
 
-    internal fun setBarBackgroundColor(@ColorInt color: Int?) {
-        flashbarView.setBarBackgroundColor(color)
-    }
-
-    internal fun setBarTapListener(listener: OnBarTapListener?) {
-        flashbarView.setBarTapListener(listener)
-    }
-
-    internal fun setBarBackgroundDrawable(drawable: Drawable?) {
-        flashbarView.setBarBackground(drawable)
-    }
-
     internal fun setDuration(duration: Long) {
         this.duration = duration
     }
@@ -161,116 +150,20 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         this.barDismissOnTapOutside = dismiss
     }
 
+    internal fun setModalOverlayColor(color: Int?) {
+        this.modalOverlayColor = color
+    }
+
+    internal fun setModalOverlayBlockable(blockable: Boolean) {
+        this.modalOverlayBlockable = blockable
+    }
+
     internal fun setEnterAnimation(animation: Animation) {
         this.enterAnimation = animation
     }
 
     internal fun setExitAnimation(animation: Animation) {
         this.exitAnimation = animation
-    }
-
-    internal fun setTitle(title: String?) {
-        flashbarView.setTitle(title)
-    }
-
-    internal fun setTitleSpanned(title: Spanned?) {
-        flashbarView.setTitleSpanned(title)
-    }
-
-    internal fun setTitleTypeface(typeface: Typeface?) {
-        flashbarView.setTitleTypeface(typeface)
-    }
-
-    internal fun setTitleSizeInPx(size: Float?) {
-        flashbarView.setTitleSizeInPx(size)
-    }
-
-    internal fun setTitleSizeInSp(size: Float?) {
-        flashbarView.setTitleSizeInSp(size)
-    }
-
-    internal fun setTitleColor(color: Int?) {
-        flashbarView.setTitleColor(color)
-    }
-
-    internal fun setTitleAppearance(titleAppearance: Int?) {
-        flashbarView.setTitleAppearance(titleAppearance)
-    }
-
-    internal fun setMessage(message: String?) {
-        flashbarView.setMessage(message)
-    }
-
-    internal fun setMessageSpanned(message: Spanned?) {
-        flashbarView.setMessageSpanned(message)
-    }
-
-    internal fun setMessageTypeface(typeface: Typeface?) {
-        flashbarView.setMessageTypeface(typeface)
-    }
-
-    internal fun setMessageSizeInPx(size: Float?) {
-        flashbarView.setMessageSizeInPx(size)
-    }
-
-    internal fun setMessageSizeInSp(size: Float?) {
-        flashbarView.setMessageSizeInSp(size)
-    }
-
-    internal fun setMessageColor(color: Int?) {
-        flashbarView.setMessageColor(color)
-    }
-
-    internal fun setMessageAppearance(messageAppearance: Int?) {
-        flashbarView.setMessageAppearance(messageAppearance)
-    }
-
-    internal fun setActionText(text: String?) {
-        flashbarView.setActionText(text)
-    }
-
-    internal fun setActionTextSpanned(text: Spanned?) {
-        flashbarView.setActionTextSpanned(text)
-    }
-
-    internal fun setActionTextTypeface(typeface: Typeface?) {
-        flashbarView.setActionTextTypeface(typeface)
-    }
-
-    internal fun setActionTextSizeInPx(size: Float?) {
-        flashbarView.setActionTextSizeInPx(size)
-    }
-
-    internal fun setActionTextSizeInSp(size: Float?) {
-        flashbarView.setActionTextSizeInSp(size)
-    }
-
-    internal fun setActionTextColor(color: Int?) {
-        flashbarView.setActionTextColor(color)
-    }
-
-    internal fun setActionTextAppearance(appearance: Int?) {
-        flashbarView.setActionTextAppearance(appearance)
-    }
-
-    internal fun setActionOnTapListener(listener: OnActionTapListener?) {
-        flashbarView.setActionTapListener(listener)
-    }
-
-    internal fun showIcon(showIcon: Boolean) {
-        flashbarView.showIcon(showIcon)
-    }
-
-    internal fun setIconDrawable(icon: Drawable?) {
-        flashbarView.setIconDrawable(icon)
-    }
-
-    internal fun setIconBitmap(bitmap: Bitmap?) {
-        flashbarView.setIconBitmap(bitmap)
-    }
-
-    internal fun setIconColorFilter(colorFilter: Int?, filterMode: PorterDuff.Mode?) {
-        flashbarView.setIconFilter(colorFilter, filterMode)
     }
 
     private fun handleDismiss() {

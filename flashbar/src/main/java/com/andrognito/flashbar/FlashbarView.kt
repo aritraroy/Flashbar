@@ -20,9 +20,9 @@ import android.widget.*
 import com.andrognito.flashbar.Flashbar.FlashbarPosition
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
-import com.andrognito.flashbar.listeners.OnActionTapListener
-import com.andrognito.flashbar.listeners.OnBarTapListener
-import com.andrognito.flashbar.utils.getStatusBarHeightInPx
+import com.andrognito.flashbar.listener.OnActionTapListener
+import com.andrognito.flashbar.listener.OnBarTapListener
+import com.andrognito.flashbar.util.getStatusBarHeightInPx
 
 /**
  * The actual Flashbar view representation that can consist of the message, button, icon, etc.
@@ -94,7 +94,7 @@ internal class FlashbarView : RelativeLayout {
         this.parentFlashbarContainerView = flashbarContainerView
     }
 
-    internal fun setBarBackground(drawable: Drawable?) {
+    internal fun setBarBackgroundDrawable(drawable: Drawable?) {
         if (drawable == null) return
 
         if (SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -271,7 +271,7 @@ internal class FlashbarView : RelativeLayout {
         this.icon.setImageBitmap(bitmap)
     }
 
-    internal fun setIconFilter(colorFilter: Int?, filterMode: PorterDuff.Mode?) {
+    internal fun setIconColorFilter(colorFilter: Int?, filterMode: PorterDuff.Mode?) {
         if (colorFilter == null) return
         if (filterMode == null) {
             this.icon.setColorFilter(colorFilter)

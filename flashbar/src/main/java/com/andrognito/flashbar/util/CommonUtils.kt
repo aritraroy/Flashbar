@@ -1,4 +1,4 @@
-package com.andrognito.flashbar.utils
+package com.andrognito.flashbar.util
 
 import android.app.Activity
 import android.content.Context
@@ -7,7 +7,7 @@ import android.graphics.Rect
 import android.os.Build
 import android.view.*
 import android.view.Surface.*
-import com.andrognito.flashbar.utils.NavigationBarPosition.*
+import com.andrognito.flashbar.util.NavigationBarPosition.*
 import java.lang.reflect.InvocationTargetException
 
 enum class NavigationBarPosition {
