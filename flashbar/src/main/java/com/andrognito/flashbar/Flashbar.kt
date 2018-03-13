@@ -12,10 +12,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
-import com.andrognito.flashbar.listener.OnActionTapListener
-import com.andrognito.flashbar.listener.OnBarDismissListener
-import com.andrognito.flashbar.listener.OnBarShowListener
-import com.andrognito.flashbar.listener.OnBarTapListener
 
 class Flashbar private constructor(private var builder: Builder) {
 
@@ -40,7 +36,7 @@ class Flashbar private constructor(private var builder: Builder) {
         flashbarContainerView.addParent(this)
 
         flashbarView = FlashbarView(builder.activity)
-        flashbarView.init(builder.position)
+        flashbarView.init(builder.position, builder.castShadow, builder.shadowStrength)
         flashbarView.adjustWitPositionAndOrientation(builder.activity, builder.position)
         flashbarView.addParent(flashbarContainerView)
 
@@ -116,6 +112,8 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var barDismissOnTapOutside: Boolean = false
         internal var modalOverlayColor: Int? = null
         internal var modalOverlayBlockable: Boolean = false
+        internal var castShadow: Boolean = true
+        internal var shadowStrength: Int? = null
 
         internal var title: String? = null
         internal var titleSpanned: Spanned? = null
@@ -196,6 +194,17 @@ class Flashbar private constructor(private var builder: Builder) {
 
         fun modalOverlayBlockable(blockable: Boolean) = apply {
             this.modalOverlayBlockable = blockable
+        }
+
+        fun castShadow(shadow: Boolean) = apply {
+            this.castShadow = shadow
+        }
+
+        fun shadowStrength(strength: Int) = apply {
+            if (duration < 0) {
+                throw IllegalArgumentException("Shadow strength can not be negative")
+            }
+            this.shadowStrength = strength
         }
 
         fun enterAnimation(animation: Animation) = apply { this.enterAnimation = animation }
@@ -346,5 +355,23 @@ class Flashbar private constructor(private var builder: Builder) {
         const val DURATION_SHORT = 1000L
         const val DURATION_LONG = 2500L
         const val DURATION_INDEFINITE = -1L
+    }
+
+    interface OnActionTapListener {
+        fun onActionTapped(bar: Flashbar)
+    }
+
+    interface OnBarDismissListener {
+        fun onDismissing(bar: Flashbar)
+        fun onDismissed(bar: Flashbar, event: FlashbarDismissEvent)
+    }
+
+    interface OnBarShowListener {
+        fun onShowing(bar: Flashbar)
+        fun onShown(bar: Flashbar)
+    }
+
+    interface OnBarTapListener {
+        fun onBarTapped(flashbar: Flashbar)
     }
 }

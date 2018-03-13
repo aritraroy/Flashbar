@@ -19,8 +19,8 @@ class ShadowView @JvmOverloads constructor(
 
     fun applyShadow(type: ShadowType) {
         when (type) {
-            TOP -> setShadow(R.drawable.bottom_shadow)
-            BOTTOM -> setShadow(R.drawable.top_shadow)
+            TOP -> setShadow(R.drawable.top_shadow)
+            BOTTOM -> setShadow(R.drawable.bottom_shadow)
         }
     }
 

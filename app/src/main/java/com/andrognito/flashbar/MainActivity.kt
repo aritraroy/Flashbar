@@ -3,10 +3,6 @@ package com.andrognito.flashbar
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import com.andrognito.flashbar.listener.OnActionTapListener
-import com.andrognito.flashbar.listener.OnBarDismissListener
-import com.andrognito.flashbar.listener.OnBarShowListener
-import com.andrognito.flashbar.listener.OnBarTapListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -20,22 +16,23 @@ class MainActivity : AppCompatActivity() {
         show.setOnClickListener {
             if (flashbar == null) {
                 flashbar = Flashbar.Builder(activity)
-                        .position(Flashbar.FlashbarPosition.TOP)
+                        .position(Flashbar.FlashbarPosition.BOTTOM)
                         .backgroundColorRes(R.color.colorPrimary)
                         .title("Hello!")
-                        .actionText("Click")
-                        .actionTapListener(object : OnActionTapListener {
+                        .modalOverlayColorRes(R.color.modal)
+                        .actionText("Close")
+                        .actionTapListener(object : Flashbar.OnActionTapListener {
                             override fun onActionTapped(bar: Flashbar) {
                                 Log.d("Flashbar", "onActionTapped")
+                                bar.dismiss()
                             }
                         })
-                        .barTapListener(object : OnBarTapListener {
+                        .barTapListener(object : Flashbar.OnBarTapListener {
                             override fun onBarTapped(flashbar: Flashbar) {
                                 Log.d("Flashbar", "onBarTapped")
-                                flashbar.dismiss()
                             }
                         })
-                        .barShownListener(object : OnBarShowListener {
+                        .barShownListener(object : Flashbar.OnBarShowListener {
                             override fun onShowing(bar: Flashbar) {
                                 Log.d("Flashbar", "onShowing")
                             }
@@ -44,7 +41,7 @@ class MainActivity : AppCompatActivity() {
                                 Log.d("Flashbar", "onShown")
                             }
                         })
-                        .barDismissListener(object : OnBarDismissListener {
+                        .barDismissListener(object : Flashbar.OnBarDismissListener {
                             override fun onDismissing(bar: Flashbar) {
                                 Log.d("Flashbar", "onDismissing")
                             }

@@ -11,8 +11,6 @@ import android.widget.RelativeLayout
 import com.andrognito.flashbar.Flashbar.Companion.DURATION_INDEFINITE
 import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent
 import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent.*
-import com.andrognito.flashbar.listener.OnBarDismissListener
-import com.andrognito.flashbar.listener.OnBarShowListener
 import com.andrognito.flashbar.util.NavigationBarPosition
 import com.andrognito.flashbar.util.getNavigationBarPosition
 import com.andrognito.flashbar.util.getNavigationBarSizeInPx
@@ -32,8 +30,8 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
     private lateinit var enterAnimation: Animation
     private lateinit var exitAnimation: Animation
 
-    private var onBarShowListener: OnBarShowListener? = null
-    private var onBarDismissListener: OnBarDismissListener? = null
+    private var onBarShowListener: Flashbar.OnBarShowListener? = null
+    private var onBarDismissListener: Flashbar.OnBarDismissListener? = null
     private var modalOverlayColor: Int? = null
 
     private var duration = DURATION_INDEFINITE
@@ -139,11 +137,11 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         this.duration = duration
     }
 
-    internal fun setBarShownListener(listener: OnBarShowListener?) {
+    internal fun setBarShownListener(listener: Flashbar.OnBarShowListener?) {
         this.onBarShowListener = listener
     }
 
-    internal fun setBarDismissListener(listener: OnBarDismissListener?) {
+    internal fun setBarDismissListener(listener: Flashbar.OnBarDismissListener?) {
         this.onBarDismissListener = listener
     }
 

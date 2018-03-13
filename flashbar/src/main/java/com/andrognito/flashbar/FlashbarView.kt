@@ -21,12 +21,11 @@ import android.widget.RelativeLayout.ALIGN_PARENT_TOP
 import com.andrognito.flashbar.Flashbar.FlashbarPosition
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
-import com.andrognito.flashbar.listener.OnActionTapListener
-import com.andrognito.flashbar.listener.OnBarTapListener
 import com.andrognito.flashbar.util.convertDpToPx
 import com.andrognito.flashbar.util.getStatusBarHeightInPx
 import com.andrognito.flashbar.view.ShadowView
 
+private const val DEFAULT_ELEVATION = 4
 
 /**
  * The actual Flashbar view representation that can consist of the message, button, icon, etc.
@@ -38,8 +37,6 @@ import com.andrognito.flashbar.view.ShadowView
  */
 internal class FlashbarView(context: Context) : LinearLayout(context) {
 
-    private val DEFAULT_ELEVATION = 4
-
     private lateinit var flashbarRootView: LinearLayout
     private lateinit var parentFlashbarContainerView: FlashbarContainerView
 
@@ -48,21 +45,24 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     private lateinit var icon: ImageView
     private lateinit var button: Button
 
-    internal fun init(position: FlashbarPosition) {
+    internal fun init(
+            position: FlashbarPosition,
+            castShadow: Boolean,
+            shadowStrength: Int?) {
         orientation = VERTICAL
 
         // If the bar appears from the bottom, then the shadow needs to added to the top of it.
         // Thus, before the inflation of the bar
-        if (position == BOTTOM) {
-            addShadow(ShadowView.ShadowType.TOP)
+        if (castShadow && position == BOTTOM) {
+            castShadow(ShadowView.ShadowType.TOP, shadowStrength ?: DEFAULT_ELEVATION)
         }
 
         inflate(context, R.layout.flash_bar_view, this)
 
         // If the bar appears from the top, then the shadow needs to added to the bottom of it.
         // Thus, after the inflation of the bar
-        if (position == TOP) {
-            addShadow(ShadowView.ShadowType.BOTTOM)
+        if (castShadow && position == TOP) {
+            castShadow(ShadowView.ShadowType.BOTTOM, shadowStrength ?: DEFAULT_ELEVATION)
         }
 
         flashbarRootView = findViewById(R.id.fb_root)
@@ -75,12 +75,10 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         }
     }
 
-    private fun addShadow(shadowType: ShadowView.ShadowType) {
-        val shadowStrength = context.convertDpToPx(DEFAULT_ELEVATION)
-        val params = RelativeLayout.LayoutParams(MATCH_PARENT, shadowStrength)
+    private fun castShadow(shadowType: ShadowView.ShadowType, strength: Int) {
+        val params = RelativeLayout.LayoutParams(MATCH_PARENT, context.convertDpToPx(strength))
         val shadow = ShadowView(context)
         shadow.applyShadow(shadowType)
-
         addView(shadow, params)
     }
 
@@ -125,7 +123,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         this.flashbarRootView.setBackgroundColor(color)
     }
 
-    internal fun setBarTapListener(listener: OnBarTapListener?) {
+    internal fun setBarTapListener(listener: Flashbar.OnBarTapListener?) {
         if (listener == null) return
 
         this.flashbarRootView.setOnClickListener {
@@ -265,7 +263,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         }
     }
 
-    internal fun setActionTapListener(listener: OnActionTapListener?) {
+    internal fun setActionTapListener(listener: Flashbar.OnActionTapListener?) {
         if (listener == null) return
 
         this.button.setOnClickListener {
