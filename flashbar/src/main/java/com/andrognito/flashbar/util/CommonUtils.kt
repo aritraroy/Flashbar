@@ -5,10 +5,12 @@ import android.content.Context
 import android.graphics.Point
 import android.graphics.Rect
 import android.os.Build
+import android.util.DisplayMetrics
 import android.view.*
 import android.view.Surface.*
 import com.andrognito.flashbar.util.NavigationBarPosition.*
 import java.lang.reflect.InvocationTargetException
+
 
 enum class NavigationBarPosition {
     BOTTOM,
@@ -54,6 +56,15 @@ internal fun Activity?.getRootView(): ViewGroup? {
         return null
     }
     return window.decorView as ViewGroup
+}
+
+
+internal fun Context.convertDpToPx(dp: Int): Int {
+    return Math.round(dp * (resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
+}
+
+internal fun Context.convertPxToDp(px: Int): Int {
+    return Math.round(px / (resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 }
 
 private fun Activity.getRealScreenSize(): Point {

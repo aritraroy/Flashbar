@@ -12,17 +12,21 @@ import android.os.Build.VERSION_CODES.M
 import android.support.annotation.ColorInt
 import android.text.Spanned
 import android.text.TextUtils
-import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
+import android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM
+import android.widget.RelativeLayout.ALIGN_PARENT_TOP
 import com.andrognito.flashbar.Flashbar.FlashbarPosition
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
 import com.andrognito.flashbar.listener.OnActionTapListener
 import com.andrognito.flashbar.listener.OnBarTapListener
+import com.andrognito.flashbar.util.convertDpToPx
 import com.andrognito.flashbar.util.getStatusBarHeightInPx
+import com.andrognito.flashbar.view.ShadowView
+
 
 /**
  * The actual Flashbar view representation that can consist of the message, button, icon, etc.
@@ -32,7 +36,9 @@ import com.andrognito.flashbar.util.getStatusBarHeightInPx
  * It can either be present at the top or at the bottom of the screen. It will always consume touch
  * events and respond as necessary.
  */
-internal class FlashbarView : RelativeLayout {
+internal class FlashbarView(context: Context) : LinearLayout(context) {
+
+    private val DEFAULT_ELEVATION = 4
 
     private lateinit var flashbarRootView: LinearLayout
     private lateinit var parentFlashbarContainerView: FlashbarContainerView
@@ -42,21 +48,22 @@ internal class FlashbarView : RelativeLayout {
     private lateinit var icon: ImageView
     private lateinit var button: Button
 
-    constructor(context: Context) : super(context, null, 0) {
-        initView()
-    }
+    internal fun init(position: FlashbarPosition) {
+        orientation = VERTICAL
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs, 0) {
-        initView()
-    }
+        // If the bar appears from the bottom, then the shadow needs to added to the top of it.
+        // Thus, before the inflation of the bar
+        if (position == BOTTOM) {
+            addShadow(ShadowView.ShadowType.TOP)
+        }
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr) {
-        initView()
-    }
-
-    private fun initView() {
         inflate(context, R.layout.flash_bar_view, this)
+
+        // If the bar appears from the top, then the shadow needs to added to the bottom of it.
+        // Thus, after the inflation of the bar
+        if (position == TOP) {
+            addShadow(ShadowView.ShadowType.BOTTOM)
+        }
 
         flashbarRootView = findViewById(R.id.fb_root)
 
@@ -66,6 +73,15 @@ internal class FlashbarView : RelativeLayout {
             icon = findViewById(R.id.fb_icon)
             button = findViewById(R.id.fb_action)
         }
+    }
+
+    private fun addShadow(shadowType: ShadowView.ShadowType) {
+        val shadowStrength = context.convertDpToPx(DEFAULT_ELEVATION)
+        val params = RelativeLayout.LayoutParams(MATCH_PARENT, shadowStrength)
+        val shadow = ShadowView(context)
+        shadow.applyShadow(shadowType)
+
+        addView(shadow, params)
     }
 
     internal fun adjustWitPositionAndOrientation(activity: Activity,
@@ -80,10 +96,10 @@ internal class FlashbarView : RelativeLayout {
 
                 flashbarViewContentLp.topMargin = statusBarHeight
                 flashbarViewContent.layoutParams = flashbarViewContentLp
-                flashbarViewLp.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+                flashbarViewLp.addRule(ALIGN_PARENT_TOP)
             }
             BOTTOM -> {
-                flashbarViewLp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+                flashbarViewLp.addRule(ALIGN_PARENT_BOTTOM)
             }
         }
 

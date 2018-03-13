@@ -2,4 +2,5 @@
 <resources>
     <color name="warm_grey">#8e8e8e</color>
     <color name="white">#fff</color>
+    <color name="shadow_color">#94444444</color>
 </resources>

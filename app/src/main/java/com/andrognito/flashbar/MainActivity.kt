@@ -24,8 +24,6 @@ class MainActivity : AppCompatActivity() {
                         .backgroundColorRes(R.color.colorPrimary)
                         .title("Hello!")
                         .actionText("Click")
-                        .modalOverlayColorRes(R.color.modal)
-                        .modalOverlayBlockable(true)
                         .actionTapListener(object : OnActionTapListener {
                             override fun onActionTapped(bar: Flashbar) {
                                 Log.d("Flashbar", "onActionTapped")

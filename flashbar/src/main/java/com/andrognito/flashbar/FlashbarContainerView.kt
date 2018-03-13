@@ -74,6 +74,7 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
                 isFocusable = true
             }
         }
+
         addView(flashbarView)
     }
 
