@@ -59,6 +59,7 @@ class Flashbar private constructor(private var builder: Builder) {
 
             setEnterAnimation(builder.enterAnimation!!)
             setExitAnimation(builder.exitAnimation!!)
+            enableSwipeToDismiss(builder.enableSwipeToDismiss)
         }
     }
 
@@ -114,6 +115,7 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var modalOverlayBlockable: Boolean = false
         internal var castShadow: Boolean = true
         internal var shadowStrength: Int? = null
+        internal var enableSwipeToDismiss: Boolean = false
 
         internal var title: String? = null
         internal var titleSpanned: Spanned? = null
@@ -168,9 +170,7 @@ class Flashbar private constructor(private var builder: Builder) {
         }
 
         fun duration(duration: Long) = apply {
-            if (duration < 0) {
-                throw IllegalArgumentException("Duration can not be negative")
-            }
+            require(duration > 0) { "Duration can not be negative" }
             this.duration = duration
         }
 
@@ -182,8 +182,8 @@ class Flashbar private constructor(private var builder: Builder) {
             this.onBarDismissListener = listener
         }
 
-        fun dismissOnTapOutside(dismiss: Boolean) = apply {
-            this.barDismissOnTapOutside = dismiss
+        fun dismissOnTapOutside() = apply {
+            this.barDismissOnTapOutside = true
         }
 
         fun modalOverlayColor(@ColorInt color: Int) = apply { this.modalOverlayColor = color }
@@ -201,9 +201,7 @@ class Flashbar private constructor(private var builder: Builder) {
         }
 
         fun shadowStrength(strength: Int) = apply {
-            if (duration < 0) {
-                throw IllegalArgumentException("Shadow strength can not be negative")
-            }
+            require(strength > 0) { "Shadow strength can not be negative" }
             this.shadowStrength = strength
         }
 
@@ -217,6 +215,10 @@ class Flashbar private constructor(private var builder: Builder) {
 
         fun exitAnimation(@AnimRes animationId: Int) = apply {
             this.exitAnimation = AnimationUtils.loadAnimation(activity, animationId)
+        }
+
+        fun enableSwipeToDismiss() = apply {
+            this.enableSwipeToDismiss = true
         }
 
         fun title(title: String) = apply { this.title = title }
@@ -348,7 +350,8 @@ class Flashbar private constructor(private var builder: Builder) {
     enum class FlashbarDismissEvent {
         TIMEOUT,
         MANUAL,
-        TAP_OUTSIDE
+        TAP_OUTSIDE,
+        SWIPE
     }
 
     companion object {
@@ -362,7 +365,7 @@ class Flashbar private constructor(private var builder: Builder) {
     }
 
     interface OnBarDismissListener {
-        fun onDismissing(bar: Flashbar)
+        fun onDismissing(bar: Flashbar, isSwiping: Boolean)
         fun onDismissed(bar: Flashbar, event: FlashbarDismissEvent)
     }
 

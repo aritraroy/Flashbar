@@ -24,6 +24,8 @@ import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
 import com.andrognito.flashbar.util.convertDpToPx
 import com.andrognito.flashbar.util.getStatusBarHeightInPx
 import com.andrognito.flashbar.view.ShadowView
+import com.andrognito.flashbar.view.SwipeDismissTouchListener
+import com.andrognito.flashbar.view.SwipeDismissTouchListener.DismissCallbacks
 
 private const val DEFAULT_ELEVATION = 4
 
@@ -66,20 +68,13 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         }
 
         flashbarRootView = findViewById(R.id.fb_root)
-
         with(flashbarRootView) {
             title = findViewById(R.id.fb_title)
             message = findViewById(R.id.fb_message)
             icon = findViewById(R.id.fb_icon)
             button = findViewById(R.id.fb_action)
         }
-    }
 
-    private fun castShadow(shadowType: ShadowView.ShadowType, strength: Int) {
-        val params = RelativeLayout.LayoutParams(MATCH_PARENT, context.convertDpToPx(strength))
-        val shadow = ShadowView(context)
-        shadow.applyShadow(shadowType)
-        addView(shadow, params)
     }
 
     internal fun adjustWitPositionAndOrientation(activity: Activity,
@@ -292,5 +287,18 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         } else {
             this.icon.setColorFilter(colorFilter, filterMode)
         }
+    }
+
+    internal fun enableSwipeToDismiss(enable: Boolean, callbacks: DismissCallbacks) {
+        if (enable) {
+            flashbarRootView.setOnTouchListener(SwipeDismissTouchListener(this, callbacks))
+        }
+    }
+
+    private fun castShadow(shadowType: ShadowView.ShadowType, strength: Int) {
+        val params = RelativeLayout.LayoutParams(MATCH_PARENT, context.convertDpToPx(strength))
+        val shadow = ShadowView(context)
+        shadow.applyShadow(shadowType)
+        addView(shadow, params)
     }
 }

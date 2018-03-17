@@ -16,11 +16,13 @@ class MainActivity : AppCompatActivity() {
         show.setOnClickListener {
             if (flashbar == null) {
                 flashbar = Flashbar.Builder(activity)
-                        .position(Flashbar.FlashbarPosition.BOTTOM)
+                        .position(Flashbar.FlashbarPosition.TOP)
                         .backgroundColorRes(R.color.colorPrimary)
                         .title("Hello!")
-                        .modalOverlayColorRes(R.color.modal)
                         .actionText("Close")
+                        .modalOverlayColorRes(R.color.modal)
+                        .enableSwipeToDismiss()
+                        .dismissOnTapOutside()
                         .actionTapListener(object : Flashbar.OnActionTapListener {
                             override fun onActionTapped(bar: Flashbar) {
                                 Log.d("Flashbar", "onActionTapped")
@@ -42,8 +44,8 @@ class MainActivity : AppCompatActivity() {
                             }
                         })
                         .barDismissListener(object : Flashbar.OnBarDismissListener {
-                            override fun onDismissing(bar: Flashbar) {
-                                Log.d("Flashbar", "onDismissing")
+                            override fun onDismissing(bar: Flashbar, isSwiping: Boolean) {
+                                Log.d("Flashbar", "onDismissing: Swipe $isSwiping")
                             }
 
                             override fun onDismissed(bar: Flashbar, event: Flashbar.FlashbarDismissEvent) {

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.animation.Animation
@@ -15,6 +16,7 @@ import com.andrognito.flashbar.util.NavigationBarPosition
 import com.andrognito.flashbar.util.getNavigationBarPosition
 import com.andrognito.flashbar.util.getNavigationBarSizeInPx
 import com.andrognito.flashbar.util.getRootView
+import com.andrognito.flashbar.view.SwipeDismissTouchListener.DismissCallbacks
 
 
 /**
@@ -22,7 +24,7 @@ import com.andrognito.flashbar.util.getRootView
  * It will occupy the entire screens size but will be completely transparent. The
  * FlashbarView inside is the only visible component in it.
  */
-internal class FlashbarContainerView(context: Context) : RelativeLayout(context) {
+internal class FlashbarContainerView(context: Context) : RelativeLayout(context), DismissCallbacks {
 
     private lateinit var flashbarView: FlashbarView
     internal lateinit var parentFlashbar: Flashbar
@@ -57,6 +59,19 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
             }
         }
         return super.onInterceptTouchEvent(event)
+    }
+
+    override fun onSwipe(isSwiping: Boolean) {
+        isBarDismissing = isSwiping
+        if (isSwiping) {
+            onBarDismissListener?.onDismissing(parentFlashbar, true)
+        }
+    }
+
+    override fun onDismiss(view: View) {
+        (parent as? ViewGroup)?.removeView(this@FlashbarContainerView)
+        isBarShown = false
+        onBarDismissListener?.onDismissed(parentFlashbar, SWIPE)
     }
 
     internal fun attach(flashbarView: FlashbarView) {
@@ -165,6 +180,10 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         this.exitAnimation = animation
     }
 
+    internal fun enableSwipeToDismiss(enable: Boolean) {
+        this.flashbarView.enableSwipeToDismiss(enable, this)
+    }
+
     private fun handleDismiss() {
         if (duration != DURATION_INDEFINITE) {
             postDelayed({ dismissInternal(TIMEOUT) }, duration)
@@ -180,7 +199,7 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
 
             override fun onAnimationStart(animation: Animation?) {
                 isBarDismissing = true
-                onBarDismissListener?.onDismissing(parentFlashbar)
+                onBarDismissListener?.onDismissing(parentFlashbar, false)
             }
 
             override fun onAnimationEnd(animation: Animation?) {
@@ -189,7 +208,6 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
 
                 onBarDismissListener?.onDismissed(parentFlashbar, event)
 
-                // Removing container after animation end
                 post { (parent as? ViewGroup)?.removeView(this@FlashbarContainerView) }
             }
 
