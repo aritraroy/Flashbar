@@ -3,6 +3,7 @@ package com.andrognito.flashbar
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
+import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import android.widget.RelativeLayout
 import com.andrognito.flashbar.Flashbar.Companion.DURATION_INDEFINITE
 import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent
 import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent.*
+import com.andrognito.flashbar.Flashbar.Vibration.DISMISS
+import com.andrognito.flashbar.Flashbar.Vibration.SHOW
 import com.andrognito.flashbar.util.NavigationBarPosition
 import com.andrognito.flashbar.util.getNavigationBarPosition
 import com.andrognito.flashbar.util.getNavigationBarSizeInPx
@@ -31,6 +34,7 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
 
     private lateinit var enterAnimation: Animation
     private lateinit var exitAnimation: Animation
+    private lateinit var vibrationTargets: List<Flashbar.Vibration>
 
     private var onBarShowListener: Flashbar.OnBarShowListener? = null
     private var onBarDismissListener: Flashbar.OnBarDismissListener? = null
@@ -71,6 +75,11 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
     override fun onDismiss(view: View) {
         (parent as? ViewGroup)?.removeView(this@FlashbarContainerView)
         isBarShown = false
+
+        if (vibrationTargets.contains(DISMISS)) {
+            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        }
+
         onBarDismissListener?.onDismissed(parentFlashbar, SWIPE)
     }
 
@@ -79,6 +88,8 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
     }
 
     internal fun construct() {
+        isHapticFeedbackEnabled = true
+
         if (modalOverlayColor != null) {
             setBackgroundColor(modalOverlayColor!!)
 
@@ -128,6 +139,11 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
             override fun onAnimationEnd(animation: Animation) {
                 isBarShowing = false
                 isBarShown = true
+
+                if (vibrationTargets.contains(SHOW)) {
+                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                }
+
                 onBarShowListener?.onShown(parentFlashbar)
             }
 
@@ -184,6 +200,10 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         this.flashbarView.enableSwipeToDismiss(enable, this)
     }
 
+    internal fun setVibrationTargets(targets: List<Flashbar.Vibration>) {
+        this.vibrationTargets = targets
+    }
+
     private fun handleDismiss() {
         if (duration != DURATION_INDEFINITE) {
             postDelayed({ dismissInternal(TIMEOUT) }, duration)
@@ -205,6 +225,10 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
             override fun onAnimationEnd(animation: Animation?) {
                 isBarDismissing = false
                 isBarShown = false
+
+                if (vibrationTargets != null && vibrationTargets!!.contains(DISMISS)) {
+                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                }
 
                 onBarDismissListener?.onDismissed(parentFlashbar, event)
 

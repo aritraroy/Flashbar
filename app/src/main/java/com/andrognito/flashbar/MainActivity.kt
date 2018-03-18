@@ -13,15 +13,17 @@ class MainActivity : AppCompatActivity() {
 
         val activity = this
         var flashbar: Flashbar? = null
+
         show.setOnClickListener {
             if (flashbar == null) {
                 flashbar = Flashbar.Builder(activity)
-                        .position(Flashbar.FlashbarPosition.TOP)
+                        .position(Flashbar.FlashbarPosition.BOTTOM)
                         .backgroundColorRes(R.color.colorPrimary)
                         .title("Hello!")
                         .actionText("Close")
                         .modalOverlayColorRes(R.color.modal)
                         .enableSwipeToDismiss()
+                        .vibrateOn(Flashbar.Vibration.SHOW, Flashbar.Vibration.DISMISS)
                         .dismissOnTapOutside()
                         .actionTapListener(object : Flashbar.OnActionTapListener {
                             override fun onActionTapped(bar: Flashbar) {

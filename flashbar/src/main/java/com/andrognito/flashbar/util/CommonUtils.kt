@@ -11,8 +11,7 @@ import android.view.Surface.*
 import com.andrognito.flashbar.util.NavigationBarPosition.*
 import java.lang.reflect.InvocationTargetException
 
-
-enum class NavigationBarPosition {
+internal enum class NavigationBarPosition {
     BOTTOM,
     RIGHT,
     LEFT,

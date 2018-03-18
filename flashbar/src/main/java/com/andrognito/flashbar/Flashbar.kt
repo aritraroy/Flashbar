@@ -56,6 +56,7 @@ class Flashbar private constructor(private var builder: Builder) {
             setBarDismissOnTapOutside(builder.barDismissOnTapOutside)
             setModalOverlayColor(builder.modalOverlayColor)
             setModalOverlayBlockable(builder.modalOverlayBlockable)
+            setVibrationTargets(builder.vibrationTargets)
 
             setEnterAnimation(builder.enterAnimation!!)
             setExitAnimation(builder.exitAnimation!!)
@@ -116,6 +117,7 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var castShadow: Boolean = true
         internal var shadowStrength: Int? = null
         internal var enableSwipeToDismiss: Boolean = false
+        internal var vibrationTargets: List<Vibration> = emptyList()
 
         internal var title: String? = null
         internal var titleSpanned: Spanned? = null
@@ -169,9 +171,9 @@ class Flashbar private constructor(private var builder: Builder) {
             this.onBarTapListener = listener
         }
 
-        fun duration(duration: Long) = apply {
-            require(duration > 0) { "Duration can not be negative" }
-            this.duration = duration
+        fun duration(milliseconds: Long) = apply {
+            require(milliseconds > 0) { "Duration can not be negative" }
+            this.duration = milliseconds
         }
 
         fun barShownListener(listener: OnBarShowListener) = apply {
@@ -219,6 +221,10 @@ class Flashbar private constructor(private var builder: Builder) {
 
         fun enableSwipeToDismiss() = apply {
             this.enableSwipeToDismiss = true
+        }
+
+        fun vibrateOn(vararg vibrate: Vibration) = apply {
+            this.vibrationTargets = vibrate.toList()
         }
 
         fun title(title: String) = apply { this.title = title }
@@ -352,6 +358,11 @@ class Flashbar private constructor(private var builder: Builder) {
         MANUAL,
         TAP_OUTSIDE,
         SWIPE
+    }
+
+    enum class Vibration {
+        SHOW,
+        DISMISS
     }
 
     companion object {
