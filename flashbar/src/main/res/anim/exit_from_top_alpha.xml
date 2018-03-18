@@ -3,6 +3,10 @@
     android:fillAfter="true">
 
     <translate
-        android:fromYDelta="-100%"
-        android:toYDelta="0%" />
+        android:fromYDelta="0%"
+        android:toYDelta="-100%" />
+
+    <alpha
+        android:fromAlpha="1.0"
+        android:toAlpha="0.2" />
 </set>

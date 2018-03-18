@@ -8,8 +8,7 @@ import android.graphics.drawable.Drawable
 import android.support.annotation.*
 import android.support.v4.content.ContextCompat
 import android.text.Spanned
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
+import com.andrognito.flashbar.FlashAnimFactory.AnimType.*
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
 
@@ -58,8 +57,8 @@ class Flashbar private constructor(private var builder: Builder) {
             setModalOverlayBlockable(builder.modalOverlayBlockable)
             setVibrationTargets(builder.vibrationTargets)
 
-            setEnterAnimation(builder.enterAnimation!!)
-            setExitAnimation(builder.exitAnimation!!)
+            setEnterAnimation(builder.enterAnimation!!.build())
+            setExitAnimation(builder.exitAnimation!!.build())
             enableSwipeToDismiss(builder.enableSwipeToDismiss)
         }
     }
@@ -150,8 +149,8 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var iconColorFilter: Int? = null
         internal var iconColorFilterMode: PorterDuff.Mode? = null
 
-        internal var enterAnimation: Animation? = null
-        internal var exitAnimation: Animation? = null
+        internal var enterAnimation: FlashAnim? = null
+        internal var exitAnimation: FlashAnim? = null
 
         fun position(position: FlashbarPosition) = apply { this.position = position }
 
@@ -207,17 +206,9 @@ class Flashbar private constructor(private var builder: Builder) {
             this.shadowStrength = strength
         }
 
-        fun enterAnimation(animation: Animation) = apply { this.enterAnimation = animation }
+        fun enterAnimation(animation: FlashAnim) = apply { this.enterAnimation = animation }
 
-        fun enterAnimation(@AnimRes animationId: Int) = apply {
-            this.enterAnimation = AnimationUtils.loadAnimation(activity, animationId)
-        }
-
-        fun exitAnimation(animation: Animation) = apply { this.exitAnimation = animation }
-
-        fun exitAnimation(@AnimRes animationId: Int) = apply {
-            this.exitAnimation = AnimationUtils.loadAnimation(activity, animationId)
-        }
+        fun exitAnimation(animation: FlashAnim) = apply { this.exitAnimation = animation }
 
         fun enableSwipeToDismiss() = apply {
             this.enableSwipeToDismiss = true
@@ -322,7 +313,7 @@ class Flashbar private constructor(private var builder: Builder) {
         }
 
         fun build(): Flashbar {
-            configureAnimation()
+            configureDefaultAnim()
 
             val flashbar = Flashbar(this)
             flashbar.construct()
@@ -331,18 +322,18 @@ class Flashbar private constructor(private var builder: Builder) {
 
         fun show() = build().show()
 
-        private fun configureAnimation() {
+        private fun configureDefaultAnim() {
             if (enterAnimation == null) {
                 enterAnimation = when (position) {
-                    TOP -> AnimationUtils.loadAnimation(activity, R.anim.enter_from_top)
-                    BOTTOM -> AnimationUtils.loadAnimation(activity, R.anim.enter_from_bottom)
+                    TOP -> FlashAnimFactory.from(activity).of(ENTER_FROM_TOP)
+                    BOTTOM -> FlashAnimFactory.from(activity).of(ENTER_FROM_BOTTOM)
                 }
             }
 
             if (exitAnimation == null) {
                 exitAnimation = when (position) {
-                    TOP -> AnimationUtils.loadAnimation(activity, R.anim.exit_from_top)
-                    BOTTOM -> AnimationUtils.loadAnimation(activity, R.anim.exit_from_bottom)
+                    TOP -> FlashAnimFactory.from(activity).of(EXIT_FROM_TOP)
+                    BOTTOM -> FlashAnimFactory.from(activity).of(EXIT_FROM_BOTTOM)
                 }
             }
         }

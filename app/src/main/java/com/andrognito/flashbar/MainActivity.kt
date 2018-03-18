@@ -17,9 +17,11 @@ class MainActivity : AppCompatActivity() {
         show.setOnClickListener {
             if (flashbar == null) {
                 flashbar = Flashbar.Builder(activity)
-                        .position(Flashbar.FlashbarPosition.BOTTOM)
+                        .position(Flashbar.FlashbarPosition.TOP)
                         .backgroundColorRes(R.color.colorPrimary)
                         .title("Hello!")
+                        .enterAnimation(FlashAnimFactory.from(activity).of(FlashAnimFactory.AnimType.ENTER_FROM_TOP_ALPHA))
+                        .exitAnimation(FlashAnimFactory.from(activity).of(FlashAnimFactory.AnimType.EXIT_FROM_TOP_ALPHA))
                         .actionText("Close")
                         .modalOverlayColorRes(R.color.modal)
                         .enableSwipeToDismiss()

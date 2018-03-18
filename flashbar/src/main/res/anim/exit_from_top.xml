@@ -3,7 +3,6 @@
     android:fillAfter="true">
 
     <translate
-        android:duration="@integer/default_animation_duration"
         android:fromYDelta="0%"
         android:toYDelta="-100%" />
 </set>
