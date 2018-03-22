@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.support.annotation.*
 import android.support.v4.content.ContextCompat
 import android.text.Spanned
-import com.andrognito.flashbar.FlashAnimFactory.AnimType.*
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
 
@@ -57,8 +56,8 @@ class Flashbar private constructor(private var builder: Builder) {
             setModalOverlayBlockable(builder.modalOverlayBlockable)
             setVibrationTargets(builder.vibrationTargets)
 
-            setEnterAnimation(builder.enterAnimation!!.build())
-            setExitAnimation(builder.exitAnimation!!.build())
+            setEnterAnimation(builder.enterAnimation!!)
+            setExitAnimation(builder.exitAnimation!!)
             enableSwipeToDismiss(builder.enableSwipeToDismiss)
         }
     }
@@ -325,15 +324,15 @@ class Flashbar private constructor(private var builder: Builder) {
         private fun configureDefaultAnim() {
             if (enterAnimation == null) {
                 enterAnimation = when (position) {
-                    TOP -> FlashAnimFactory.from(activity).of(ENTER_FROM_TOP)
-                    BOTTOM -> FlashAnimFactory.from(activity).of(ENTER_FROM_BOTTOM)
+                    TOP -> FlashAnim.with(activity).enter(FlashAnim.Position.TOP).build()
+                    BOTTOM -> FlashAnim.with(activity).enter(FlashAnim.Position.BOTTOM).build()
                 }
             }
 
             if (exitAnimation == null) {
                 exitAnimation = when (position) {
-                    TOP -> FlashAnimFactory.from(activity).of(EXIT_FROM_TOP)
-                    BOTTOM -> FlashAnimFactory.from(activity).of(EXIT_FROM_BOTTOM)
+                    TOP -> FlashAnim.with(activity).exit(FlashAnim.Position.TOP).build()
+                    BOTTOM -> FlashAnim.with(activity).exit(FlashAnim.Position.BOTTOM).build()
                 }
             }
         }

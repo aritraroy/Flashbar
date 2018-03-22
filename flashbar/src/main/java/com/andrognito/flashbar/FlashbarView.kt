@@ -53,7 +53,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
             shadowStrength: Int?) {
         orientation = VERTICAL
 
-        // If the bar appears from the bottom, then the shadow needs to added to the top of it.
+        // If the bar appears with the bottom, then the shadow needs to added to the top of it.
         // Thus, before the inflation of the bar
         if (castShadow && position == BOTTOM) {
             castShadow(ShadowView.ShadowType.TOP, shadowStrength ?: DEFAULT_ELEVATION)
@@ -61,7 +61,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
 
         inflate(context, R.layout.flash_bar_view, this)
 
-        // If the bar appears from the top, then the shadow needs to added to the bottom of it.
+        // If the bar appears with the top, then the shadow needs to added to the bottom of it.
         // Thus, after the inflation of the bar
         if (castShadow && position == TOP) {
             castShadow(ShadowView.ShadowType.BOTTOM, shadowStrength ?: DEFAULT_ELEVATION)

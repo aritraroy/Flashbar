@@ -11,7 +11,25 @@ import com.andrognito.flashbar.FlashAnimFactory.AnimType.*
 class FlashAnimFactory {
 
     companion object {
-        fun from(context: Context): FlashAnimRetriever = FlashAnimRetriever(context)
+        fun with(context: Context): FlashAnimRetriever = FlashAnimRetriever(context)
+    }
+
+    class FlashAnimRetriever(private val context: Context) {
+        fun of(type: AnimType): FlashAnim1 {
+            return when (type) {
+                ENTER_FROM_TOP -> FlashAnim1(context).anim(R.anim.enter_top)
+                ENTER_FROM_TOP_ALPHA -> FlashAnim1(context).anim(R.anim.enter_from_top_alpha)
+
+                ENTER_FROM_BOTTOM -> FlashAnim1(context).anim(R.anim.enter_bottom)
+                ENTER_FROM_BOTTOM_ALPHA -> FlashAnim1(context).anim(R.anim.enter_bottom)
+
+                EXIT_FROM_TOP -> FlashAnim1(context).anim(R.anim.exit_top)
+                EXIT_FROM_TOP_ALPHA -> FlashAnim1(context).anim(R.anim.exit_from_top_alpha)
+
+                EXIT_FROM_BOTTOM -> FlashAnim1(context).anim(R.anim.exit_bottom)
+                EXIT_FROM_BOTTOM_ALPHA -> FlashAnim1(context).anim(R.anim.exit_bottom)
+            }
+        }
     }
 
     enum class AnimType {
@@ -19,31 +37,17 @@ class FlashAnimFactory {
         ENTER_FROM_TOP_ALPHA,
 
         ENTER_FROM_BOTTOM,
+        ENTER_FROM_BOTTOM_ALPHA,
 
         EXIT_FROM_TOP,
         EXIT_FROM_TOP_ALPHA,
 
-        EXIT_FROM_BOTTOM
-    }
-
-    class FlashAnimRetriever(private val context: Context) {
-        fun of(type: AnimType): FlashAnim {
-            return when (type) {
-                ENTER_FROM_TOP -> FlashAnim(context).anim(R.anim.enter_from_top)
-                ENTER_FROM_TOP_ALPHA -> FlashAnim(context).anim(R.anim.enter_from_top_alpha)
-
-                ENTER_FROM_BOTTOM -> FlashAnim(context).anim(R.anim.enter_from_bottom)
-
-                EXIT_FROM_TOP -> FlashAnim(context).anim(R.anim.exit_from_top)
-                EXIT_FROM_TOP_ALPHA -> FlashAnim(context).anim(R.anim.exit_from_top_alpha)
-
-                EXIT_FROM_BOTTOM -> FlashAnim(context).anim(R.anim.exit_from_bottom)
-            }
-        }
+        EXIT_FROM_BOTTOM,
+        EXIT_FROM_BOTTOM_ALPHA
     }
 }
 
-class FlashAnim(private var context: Context) {
+class FlashAnim1(private var context: Context) {
 
     private lateinit var anim: Animation
 
@@ -70,6 +74,8 @@ class FlashAnim(private var context: Context) {
     }
 
     fun build(): Animation {
+
+
         if (duration != null) {
             anim.duration = duration!!
         } else {

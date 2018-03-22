@@ -188,12 +188,12 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         this.modalOverlayBlockable = blockable
     }
 
-    internal fun setEnterAnimation(animation: Animation) {
-        this.enterAnimation = animation
+    internal fun setEnterAnimation(anim: FlashAnim) {
+        this.enterAnimation = anim.getAnimation()
     }
 
-    internal fun setExitAnimation(animation: Animation) {
-        this.exitAnimation = animation
+    internal fun setExitAnimation(anim: FlashAnim) {
+        this.exitAnimation = anim.getAnimation()
     }
 
     internal fun enableSwipeToDismiss(enable: Boolean) {
@@ -226,7 +226,7 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
                 isBarDismissing = false
                 isBarShown = false
 
-                if (vibrationTargets != null && vibrationTargets!!.contains(DISMISS)) {
+                if (vibrationTargets.contains(DISMISS)) {
                     performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
                 }
 
