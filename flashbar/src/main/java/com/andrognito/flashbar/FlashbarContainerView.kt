@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Rect
 import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
+import android.view.MotionEvent.ACTION_DOWN
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -15,7 +16,7 @@ import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent
 import com.andrognito.flashbar.Flashbar.FlashbarDismissEvent.*
 import com.andrognito.flashbar.Flashbar.Vibration.DISMISS
 import com.andrognito.flashbar.Flashbar.Vibration.SHOW
-import com.andrognito.flashbar.util.NavigationBarPosition
+import com.andrognito.flashbar.util.NavigationBarPosition.*
 import com.andrognito.flashbar.util.getNavigationBarPosition
 import com.andrognito.flashbar.util.getNavigationBarSizeInPx
 import com.andrognito.flashbar.util.getRootView
@@ -50,7 +51,7 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         val action = event.action
         when (action) {
-            MotionEvent.ACTION_DOWN -> {
+            ACTION_DOWN -> {
                 if (barDismissOnTapOutside) {
                     val rect = Rect()
                     flashbarView.getHitRect(rect)
@@ -113,9 +114,9 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         val navigationBarSize = activity.getNavigationBarSizeInPx()
 
         when (navigationBarPosition) {
-            NavigationBarPosition.LEFT -> flashbarContainerViewLp.leftMargin = navigationBarSize
-            NavigationBarPosition.RIGHT -> flashbarContainerViewLp.rightMargin = navigationBarSize
-            NavigationBarPosition.BOTTOM -> flashbarContainerViewLp.bottomMargin = navigationBarSize
+            LEFT -> flashbarContainerViewLp.leftMargin = navigationBarSize
+            RIGHT -> flashbarContainerViewLp.rightMargin = navigationBarSize
+            BOTTOM -> flashbarContainerViewLp.bottomMargin = navigationBarSize
         }
 
         layoutParams = flashbarContainerViewLp
