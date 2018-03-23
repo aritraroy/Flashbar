@@ -1,6 +1,7 @@
 package com.andrognito.flashbar
 
 import android.content.Context
+import android.support.annotation.AnimRes
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
@@ -18,7 +19,7 @@ class FlashAnim {
         fun with(context: Context): FlashAnimBuilder = FlashAnimBuilder(context)
     }
 
-    class FlashAnimBuilder(context: Context) {
+    class FlashAnimBuilder(private val context: Context) {
         private val DEFAULT_DURATION = context.resources
                 .getInteger(R.integer.default_animation_duration).toLong()
 
@@ -40,16 +41,20 @@ class FlashAnim {
 
         internal var interpolator: Interpolator? = null
 
-        fun enter(position: Position) = apply {
+        fun enterFrom(position: Position) = apply {
             this.enterPosition = position
         }
 
-        fun exit(position: Position) = apply {
+        fun exitFrom(position: Position) = apply {
             this.exitPosition = position
         }
 
-        fun animation(animation: Animation) = apply {
+        fun customAnimation(animation: Animation) = apply {
             this.selectedPositionAnimation = animation
+        }
+
+        fun customAnimation(@AnimRes id: Int) = apply {
+            this.selectedPositionAnimation = AnimationUtils.loadAnimation(context, id)
         }
 
         fun alpha(alpha: Boolean) = apply { this.alpha = alpha }

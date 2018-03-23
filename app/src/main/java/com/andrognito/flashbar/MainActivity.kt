@@ -22,13 +22,13 @@ class MainActivity : AppCompatActivity() {
                         .title("Hello!")
                         .enterAnimation(FlashAnim
                                 .with(activity)
-                                .enter(FlashAnim.Position.TOP)
+                                .enterFrom(FlashAnim.Position.TOP)
                                 .overshoot()
                                 .duration(400)
                                 .build())
                         .exitAnimation(FlashAnim
                                 .with(activity)
-                                .exit(FlashAnim.Position.TOP)
+                                .exitFrom(FlashAnim.Position.TOP)
                                 .duration(400)
                                 .overshoot()
                                 .build())

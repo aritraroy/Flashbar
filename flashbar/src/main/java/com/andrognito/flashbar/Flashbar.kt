@@ -324,15 +324,15 @@ class Flashbar private constructor(private var builder: Builder) {
         private fun configureDefaultAnim() {
             if (enterAnimation == null) {
                 enterAnimation = when (position) {
-                    TOP -> FlashAnim.with(activity).enter(FlashAnim.Position.TOP).build()
-                    BOTTOM -> FlashAnim.with(activity).enter(FlashAnim.Position.BOTTOM).build()
+                    TOP -> FlashAnim.with(activity).enterFrom(FlashAnim.Position.TOP).build()
+                    BOTTOM -> FlashAnim.with(activity).enterFrom(FlashAnim.Position.BOTTOM).build()
                 }
             }
 
             if (exitAnimation == null) {
                 exitAnimation = when (position) {
-                    TOP -> FlashAnim.with(activity).exit(FlashAnim.Position.TOP).build()
-                    BOTTOM -> FlashAnim.with(activity).exit(FlashAnim.Position.BOTTOM).build()
+                    TOP -> FlashAnim.with(activity).exitFrom(FlashAnim.Position.TOP).build()
+                    BOTTOM -> FlashAnim.with(activity).exitFrom(FlashAnim.Position.BOTTOM).build()
                 }
             }
         }

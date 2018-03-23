@@ -13,6 +13,7 @@ import android.support.annotation.ColorInt
 import android.text.Spanned
 import android.text.TextUtils
 import android.util.TypedValue
+import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
@@ -27,6 +28,7 @@ import com.andrognito.flashbar.view.ShadowView
 import com.andrognito.flashbar.view.SwipeDismissTouchListener
 import com.andrognito.flashbar.view.SwipeDismissTouchListener.DismissCallbacks
 
+
 private const val DEFAULT_ELEVATION = 4
 
 /**
@@ -39,19 +41,25 @@ private const val DEFAULT_ELEVATION = 4
  */
 internal class FlashbarView(context: Context) : LinearLayout(context) {
 
+    private val TOP_COMPENSATION_MARGIN = resources.getDimension(R.dimen.fb_top_compensation_margin).toInt()
+    private val BOTTOM_COMPENSATION_MARGIN = resources.getDimension(R.dimen.fb_bottom_compensation_margin).toInt()
+
     private lateinit var flashbarRootView: LinearLayout
     private lateinit var parentFlashbarContainerView: FlashbarContainerView
 
+    private lateinit var position: FlashbarPosition
     private lateinit var title: TextView
     private lateinit var message: TextView
     private lateinit var icon: ImageView
     private lateinit var button: Button
+    private lateinit var enterAnim: FlashAnim
 
     internal fun init(
             position: FlashbarPosition,
             castShadow: Boolean,
             shadowStrength: Int?) {
-        orientation = VERTICAL
+        this.position = position
+        this.orientation = VERTICAL
 
         // If the bar appears with the bottom, then the shadow needs to added to the top of it.
         // Thus, before the inflation of the bar
@@ -77,25 +85,42 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
 
     }
 
+    private var isMarginCompensationApplied: Boolean = false
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+
+        if (!isMarginCompensationApplied) {
+            isMarginCompensationApplied = true
+
+            val params = layoutParams as ViewGroup.MarginLayoutParams
+            when (position) {
+                TOP -> params.topMargin = -TOP_COMPENSATION_MARGIN
+                BOTTOM -> params.bottomMargin = -BOTTOM_COMPENSATION_MARGIN
+            }
+            requestLayout()
+        }
+    }
+
     internal fun adjustWitPositionAndOrientation(activity: Activity,
                                                  flashbarPosition: FlashbarPosition) {
         val flashbarViewLp = RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
         val statusBarHeight = activity.getStatusBarHeightInPx()
 
+        val flashbarViewContent = findViewById<LinearLayout>(R.id.fb_content)
+        val flashbarViewContentLp = flashbarViewContent.layoutParams as LinearLayout.LayoutParams
+
         when (flashbarPosition) {
             TOP -> {
-                val flashbarViewContent = findViewById<LinearLayout>(R.id.fb_content)
-                val flashbarViewContentLp = flashbarViewContent.layoutParams as LinearLayout.LayoutParams
-
-                flashbarViewContentLp.topMargin = statusBarHeight
-                flashbarViewContent.layoutParams = flashbarViewContentLp
+                flashbarViewContentLp.topMargin = statusBarHeight.plus(TOP_COMPENSATION_MARGIN)
                 flashbarViewLp.addRule(ALIGN_PARENT_TOP)
             }
             BOTTOM -> {
+                flashbarViewContentLp.bottomMargin = BOTTOM_COMPENSATION_MARGIN.times(1.5f).toInt()
                 flashbarViewLp.addRule(ALIGN_PARENT_BOTTOM)
             }
         }
-
+        flashbarViewContent.layoutParams = flashbarViewContentLp
         layoutParams = flashbarViewLp
     }
 
@@ -293,6 +318,10 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         if (enable) {
             flashbarRootView.setOnTouchListener(SwipeDismissTouchListener(this, callbacks))
         }
+    }
+
+    internal fun setEnterAnimation(anim: FlashAnim) {
+        this.enterAnim = anim
     }
 
     private fun castShadow(shadowType: ShadowView.ShadowType, strength: Int) {

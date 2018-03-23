@@ -7,4 +7,6 @@
     <dimen name="fb_icon_size">28dp</dimen>
     <dimen name="fb_margin_right_icon">20dp</dimen>
     <dimen name="fb_button_text_size">16sp</dimen>
+    <dimen name="fb_top_compensation_margin">16dp</dimen>
+    <dimen name="fb_bottom_compensation_margin">30dp</dimen>
 </resources>
