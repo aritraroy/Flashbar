@@ -2,6 +2,7 @@ package com.andrognito.flashbar
 
 import android.content.Context
 import android.support.annotation.AnimRes
+import android.support.annotation.InterpolatorRes
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
@@ -20,7 +21,7 @@ class FlashAnim {
     }
 
     class FlashAnimBuilder(private val context: Context) {
-        private val DEFAULT_DURATION = context.resources
+        private val DEFAULT_ANIM_DURATION = context.resources
                 .getInteger(R.integer.default_animation_duration).toLong()
 
         private val ANIM_ENTER_TOP = AnimationUtils.loadAnimation(context, R.anim.anim_enter_top)
@@ -30,10 +31,14 @@ class FlashAnim {
         private val ANIM_ALPHA_ENTER = AnimationUtils.loadAnimation(context, R.anim.anim_alpha_enter)
         private val ANIM_ALPHA_EXIT = AnimationUtils.loadAnimation(context, R.anim.anim_alpha_exit)
 
-        private val INTERPOLATOR_OVERSHOOT = AnimationUtils.loadInterpolator(context, R.anim.interpolator_overshoot)
+        private val INTERPOLATOR_ACCELERATE = AnimationUtils.loadInterpolator(context, android.R.anim.accelerate_interpolator)
+        private val INTERPOLATOR_DECELERATE = AnimationUtils.loadInterpolator(context, android.R.anim.decelerate_interpolator)
+        private val INTERPOLATOR_ACCELERATE_DECELERATE = AnimationUtils.loadInterpolator(context, android.R.anim.accelerate_decelerate_interpolator)
+        private val INTERPOLATOR_BOUNCE = AnimationUtils.loadInterpolator(context, android.R.anim.bounce_interpolator)
+        private val INTERPOLATOR_OVERSHOOT = AnimationUtils.loadInterpolator(context, android.R.anim.overshoot_interpolator)
 
-        private lateinit var selectedPositionAnimation: Animation
-        private lateinit var selectedAlphaAnimation: Animation
+        private lateinit var positionAnim: Animation
+        private lateinit var alphaAnim: Animation
         private var enterPosition: Position? = null
         private var exitPosition: Position? = null
         private var duration: Long? = null
@@ -50,21 +55,41 @@ class FlashAnim {
         }
 
         fun customAnimation(animation: Animation) = apply {
-            this.selectedPositionAnimation = animation
+            this.positionAnim = animation
         }
 
         fun customAnimation(@AnimRes id: Int) = apply {
-            this.selectedPositionAnimation = AnimationUtils.loadAnimation(context, id)
+            this.positionAnim = AnimationUtils.loadAnimation(context, id)
         }
 
         fun alpha(alpha: Boolean) = apply { this.alpha = alpha }
+
+        fun accelerate() = apply {
+            this.interpolator = INTERPOLATOR_ACCELERATE
+        }
+
+        fun decelerate() = apply {
+            this.interpolator = INTERPOLATOR_DECELERATE
+        }
+
+        fun accelerateDecelerate() = apply {
+            this.interpolator = INTERPOLATOR_ACCELERATE_DECELERATE
+        }
+
+        fun bounce() = apply {
+            this.interpolator = INTERPOLATOR_BOUNCE
+        }
+
+        fun overshoot() = apply {
+            this.interpolator = INTERPOLATOR_OVERSHOOT
+        }
 
         fun interpolator(interpolator: Interpolator) = apply {
             this.interpolator = interpolator
         }
 
-        fun overshoot() = apply {
-            this.interpolator = INTERPOLATOR_OVERSHOOT
+        fun interpolator(@InterpolatorRes id: Int) = apply {
+            this.interpolator = AnimationUtils.loadInterpolator(context, id)
         }
 
         fun duration(duration: Long) = apply {
@@ -79,49 +104,36 @@ class FlashAnim {
             val animationSet = AnimationSet(false)
             animationSet.fillAfter = true
 
-            if (enterPosition != null) {
-                when (enterPosition) {
-                    TOP -> {
-                        if (!::selectedPositionAnimation.isInitialized) {
-                            selectedPositionAnimation = ANIM_ENTER_TOP
-                        }
+            if (!::positionAnim.isInitialized) {
+                if (enterPosition != null) {
+                    when (enterPosition) {
+                        TOP -> positionAnim = ANIM_ENTER_TOP
+                        BOTTOM -> positionAnim = ANIM_ENTER_BOTTOM
                     }
-                    BOTTOM -> {
-                        if (!::selectedPositionAnimation.isInitialized) {
-                            selectedPositionAnimation = ANIM_ENTER_BOTTOM
-                        }
-                    }
+
+                    if (alpha) alphaAnim = ANIM_ALPHA_ENTER
                 }
 
-                if (alpha) selectedAlphaAnimation = ANIM_ALPHA_ENTER
-            }
+                if (exitPosition != null) {
+                    when (exitPosition) {
+                        TOP -> positionAnim = ANIM_EXIT_TOP
+                        BOTTOM -> positionAnim = ANIM_EXIT_BOTTOM
+                    }
 
-            if (exitPosition != null) {
-                when (exitPosition) {
-                    TOP -> {
-                        if (!::selectedPositionAnimation.isInitialized) {
-                            selectedPositionAnimation = ANIM_EXIT_TOP
-                        }
-                    }
-                    BOTTOM -> {
-                        if (!::selectedPositionAnimation.isInitialized) {
-                            selectedPositionAnimation = ANIM_EXIT_BOTTOM
-                        }
-                    }
+                    if (alpha) alphaAnim = ANIM_ALPHA_EXIT
+
                 }
-
-                if (alpha) selectedAlphaAnimation = ANIM_ALPHA_EXIT
             }
 
-            animationSet.addAnimation(selectedPositionAnimation)
-            if (::selectedAlphaAnimation.isInitialized) {
-                animationSet.addAnimation(selectedAlphaAnimation)
+            animationSet.addAnimation(positionAnim)
+            if (::alphaAnim.isInitialized) {
+                animationSet.addAnimation(alphaAnim)
             }
 
-            animationSet.duration = if (duration != null) duration!! else DEFAULT_DURATION
+            animationSet.duration = if (duration != null) duration!! else DEFAULT_ANIM_DURATION
 
             if (interpolator != null) {
-                selectedPositionAnimation.interpolator = interpolator
+                positionAnim.interpolator = interpolator
             }
 
             flashAnim.animationSet = animationSet

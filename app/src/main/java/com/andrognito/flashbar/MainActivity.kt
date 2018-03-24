@@ -23,14 +23,14 @@ class MainActivity : AppCompatActivity() {
                         .enterAnimation(FlashAnim
                                 .with(activity)
                                 .enterFrom(FlashAnim.Position.TOP)
-                                .overshoot()
-                                .duration(400)
+                                .bounce()
+                                .duration(350)
                                 .build())
                         .exitAnimation(FlashAnim
                                 .with(activity)
                                 .exitFrom(FlashAnim.Position.TOP)
-                                .duration(400)
-                                .overshoot()
+                                .bounce()
+                                .duration(350)
                                 .build())
                         .actionText("Close")
                         .modalOverlayColorRes(R.color.modal)
