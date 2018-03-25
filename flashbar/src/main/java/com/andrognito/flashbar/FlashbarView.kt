@@ -54,6 +54,8 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     private lateinit var button: Button
     private lateinit var enterAnim: FlashAnim
 
+    private var isMarginCompensationApplied: Boolean = false
+
     internal fun init(
             position: FlashbarPosition,
             castShadow: Boolean,
@@ -84,8 +86,6 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         }
 
     }
-
-    private var isMarginCompensationApplied: Boolean = false
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -312,6 +312,15 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         } else {
             this.icon.setColorFilter(colorFilter, filterMode)
         }
+    }
+
+    internal fun startIconAnimation(anim: FlashAnim?) {
+        if (anim == null) return
+        icon.startAnimation(anim.animation)
+    }
+
+    internal fun stopIconAnimation() {
+        icon.clearAnimation()
     }
 
     internal fun enableSwipeToDismiss(enable: Boolean, callbacks: DismissCallbacks) {

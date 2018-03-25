@@ -40,6 +40,7 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
     private var onBarShowListener: Flashbar.OnBarShowListener? = null
     private var onBarDismissListener: Flashbar.OnBarDismissListener? = null
     private var modalOverlayColor: Int? = null
+    private var iconAnimation: FlashAnim? = null
 
     private var duration = DURATION_INDEFINITE
     private var isBarShowing = false
@@ -76,6 +77,8 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
     override fun onDismiss(view: View) {
         (parent as? ViewGroup)?.removeView(this@FlashbarContainerView)
         isBarShown = false
+
+        flashbarView.stopIconAnimation()
 
         if (vibrationTargets.contains(DISMISS)) {
             performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
@@ -141,6 +144,8 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
                 isBarShowing = false
                 isBarShown = true
 
+                flashbarView.startIconAnimation(iconAnimation)
+
                 if (vibrationTargets.contains(SHOW)) {
                     performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
                 }
@@ -190,12 +195,12 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
     }
 
     internal fun setEnterAnimation(anim: FlashAnim) {
-        this.enterAnimation = anim.getAnimation()
+        this.enterAnimation = anim.animation
         this.flashbarView.setEnterAnimation(anim)
     }
 
     internal fun setExitAnimation(anim: FlashAnim) {
-        this.exitAnimation = anim.getAnimation()
+        this.exitAnimation = anim.animation
     }
 
     internal fun enableSwipeToDismiss(enable: Boolean) {
@@ -204,6 +209,10 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
 
     internal fun setVibrationTargets(targets: List<Flashbar.Vibration>) {
         this.vibrationTargets = targets
+    }
+
+    internal fun setIconAnimation(animation: FlashAnim?) {
+        this.iconAnimation = animation
     }
 
     private fun handleDismiss() {

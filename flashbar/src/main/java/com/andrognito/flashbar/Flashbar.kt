@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.support.annotation.*
 import android.support.v4.content.ContextCompat
 import android.text.Spanned
+import com.andrognito.flashbar.FlashAnim.Position
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
 
@@ -55,6 +56,7 @@ class Flashbar private constructor(private var builder: Builder) {
             setModalOverlayColor(builder.modalOverlayColor)
             setModalOverlayBlockable(builder.modalOverlayBlockable)
             setVibrationTargets(builder.vibrationTargets)
+            setIconAnimation(builder.iconAnimation)
 
             setEnterAnimation(builder.enterAnimation!!)
             setExitAnimation(builder.exitAnimation!!)
@@ -105,8 +107,8 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var position: FlashbarPosition = TOP
         internal var backgroundColor: Int? = null
         internal var backgroundDrawable: Drawable? = null
-        internal var onBarTapListener: OnBarTapListener? = null
         internal var duration: Long = DURATION_INDEFINITE
+        internal var onBarTapListener: OnBarTapListener? = null
         internal var onBarShownListener: OnBarShowListener? = null
         internal var onBarDismissListener: OnBarDismissListener? = null
         internal var barDismissOnTapOutside: Boolean = false
@@ -147,6 +149,7 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var iconBitmap: Bitmap? = null
         internal var iconColorFilter: Int? = null
         internal var iconColorFilterMode: PorterDuff.Mode? = null
+        internal var iconAnimation: FlashAnim? = null
 
         internal var enterAnimation: FlashAnim? = null
         internal var exitAnimation: FlashAnim? = null
@@ -311,6 +314,8 @@ class Flashbar private constructor(private var builder: Builder) {
             this.iconColorFilterMode = mode
         }
 
+        fun iconAnimation(animation: FlashAnim) = apply { this.iconAnimation = animation }
+
         fun build(): Flashbar {
             configureDefaultAnim()
 
@@ -324,15 +329,15 @@ class Flashbar private constructor(private var builder: Builder) {
         private fun configureDefaultAnim() {
             if (enterAnimation == null) {
                 enterAnimation = when (position) {
-                    TOP -> FlashAnim.with(activity).enterFrom(FlashAnim.Position.TOP).build()
-                    BOTTOM -> FlashAnim.with(activity).enterFrom(FlashAnim.Position.BOTTOM).build()
+                    TOP -> FlashAnim.with(activity).animateBar().enterFrom(Position.TOP).build()
+                    BOTTOM -> FlashAnim.with(activity).animateBar().enterFrom(Position.BOTTOM).build()
                 }
             }
 
             if (exitAnimation == null) {
                 exitAnimation = when (position) {
-                    TOP -> FlashAnim.with(activity).exitFrom(FlashAnim.Position.TOP).build()
-                    BOTTOM -> FlashAnim.with(activity).exitFrom(FlashAnim.Position.BOTTOM).build()
+                    TOP -> FlashAnim.with(activity).animateBar().exitFrom(Position.TOP).build()
+                    BOTTOM -> FlashAnim.with(activity).animateBar().exitFrom(Position.BOTTOM).build()
                 }
             }
         }
