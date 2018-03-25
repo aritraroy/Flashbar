@@ -343,6 +343,12 @@ class Flashbar private constructor(private var builder: Builder) {
         }
     }
 
+    companion object {
+        const val DURATION_SHORT = 1000L
+        const val DURATION_LONG = 2500L
+        const val DURATION_INDEFINITE = -1L
+    }
+
     enum class FlashbarPosition {
         TOP,
         BOTTOM
@@ -358,12 +364,6 @@ class Flashbar private constructor(private var builder: Builder) {
     enum class Vibration {
         SHOW,
         DISMISS
-    }
-
-    companion object {
-        const val DURATION_SHORT = 1000L
-        const val DURATION_LONG = 2500L
-        const val DURATION_INDEFINITE = -1L
     }
 
     interface OnActionTapListener {

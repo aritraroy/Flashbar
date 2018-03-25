@@ -57,7 +57,6 @@ internal fun Activity?.getRootView(): ViewGroup? {
     return window.decorView as ViewGroup
 }
 
-
 internal fun Context.convertDpToPx(dp: Int): Int {
     return Math.round(dp * (resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 }

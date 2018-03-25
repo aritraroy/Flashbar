@@ -28,7 +28,6 @@ import com.andrognito.flashbar.view.ShadowView
 import com.andrognito.flashbar.view.SwipeDismissTouchListener
 import com.andrognito.flashbar.view.SwipeDismissTouchListener.DismissCallbacks
 
-
 private const val DEFAULT_ELEVATION = 4
 
 /**

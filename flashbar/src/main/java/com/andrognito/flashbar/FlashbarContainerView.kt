@@ -22,7 +22,6 @@ import com.andrognito.flashbar.util.getNavigationBarSizeInPx
 import com.andrognito.flashbar.util.getRootView
 import com.andrognito.flashbar.view.SwipeDismissTouchListener.DismissCallbacks
 
-
 /**
  * Container view matching the height and width of the parent to hold a FlashbarView.
  * It will occupy the entire screens size but will be completely transparent. The
@@ -30,8 +29,8 @@ import com.andrognito.flashbar.view.SwipeDismissTouchListener.DismissCallbacks
  */
 internal class FlashbarContainerView(context: Context) : RelativeLayout(context), DismissCallbacks {
 
-    private lateinit var flashbarView: FlashbarView
     internal lateinit var parentFlashbar: Flashbar
+    private lateinit var flashbarView: FlashbarView
 
     private lateinit var enterAnimation: Animation
     private lateinit var exitAnimation: Animation
