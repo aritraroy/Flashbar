@@ -1,4 +1,4 @@
-package com.andrognito.flashbar;
+package com.andrognito.flashbardemo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

@@ -1,8 +1,10 @@
-package com.andrognito.flashbar
+package com.andrognito.flashbardemo
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import com.andrognito.flashbar.FlashAnim
+import com.andrognito.flashbar.Flashbar
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
