@@ -13,6 +13,7 @@ import android.support.annotation.ColorInt
 import android.text.Spanned
 import android.text.TextUtils
 import android.util.TypedValue
+import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -22,11 +23,14 @@ import android.widget.RelativeLayout.ALIGN_PARENT_TOP
 import com.andrognito.flashbar.Flashbar.FlashbarPosition
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
+import com.andrognito.flashbar.Flashbar.ProgressPosition.LEFT
+import com.andrognito.flashbar.Flashbar.ProgressPosition.RIGHT
 import com.andrognito.flashbar.util.convertDpToPx
 import com.andrognito.flashbar.util.getStatusBarHeightInPx
 import com.andrognito.flashbar.view.ShadowView
 import com.andrognito.flashbar.view.SwipeDismissTouchListener
 import com.andrognito.flashbar.view.SwipeDismissTouchListener.DismissCallbacks
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 
 private const val DEFAULT_ELEVATION = 4
 
@@ -52,6 +56,8 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     private lateinit var messageView: TextView
     private lateinit var iconView: ImageView
     private lateinit var buttonView: Button
+    private lateinit var leftProgressView: MaterialProgressBar
+    private lateinit var rightProgressView: MaterialProgressBar
 
     private var isMarginCompensationApplied: Boolean = false
 
@@ -77,11 +83,14 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         }
 
         flashbarRootView = findViewById(R.id.fb_root)
+
         with(flashbarRootView) {
             titleView = findViewById(R.id.fb_title)
             messageView = findViewById(R.id.fb_message)
             iconView = findViewById(R.id.fb_icon)
             buttonView = findViewById(R.id.fb_action)
+            leftProgressView = findViewById(R.id.fb_progress_left)
+            rightProgressView = findViewById(R.id.fb_progress_right)
         }
 
     }
@@ -111,7 +120,8 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
 
         when (flashbarPosition) {
             TOP -> {
-                flashbarViewContentLp.topMargin = statusBarHeight.plus(TOP_COMPENSATION_MARGIN)
+                flashbarViewContentLp.topMargin = statusBarHeight
+                        .plus(TOP_COMPENSATION_MARGIN.times(1.5f).toInt())
                 flashbarViewLp.addRule(ALIGN_PARENT_TOP)
             }
             BOTTOM -> {
@@ -325,6 +335,20 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     internal fun enableSwipeToDismiss(enable: Boolean, callbacks: DismissCallbacks) {
         if (enable) {
             flashbarRootView.setOnTouchListener(SwipeDismissTouchListener(this, callbacks))
+        }
+    }
+
+    internal fun setProgressPosition(position: Flashbar.ProgressPosition?) {
+        if (position == null) return
+        when (position) {
+            LEFT -> {
+                leftProgressView.visibility = View.VISIBLE
+                rightProgressView.visibility = View.GONE
+            }
+            RIGHT -> {
+                leftProgressView.visibility = View.GONE
+                rightProgressView.visibility = View.VISIBLE
+            }
         }
     }
 

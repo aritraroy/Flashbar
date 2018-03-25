@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fb_root"
     android:layout_width="match_parent"
@@ -16,6 +17,18 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fb_content_padding_all"
         android:gravity="center_vertical">
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/fb_progress_left"
+            style="@style/Widget.MaterialProgressBar.ProgressBar"
+            android:layout_width="@dimen/fb_progress_size"
+            android:layout_height="@dimen/fb_progress_size"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/fb_margin_right_icon"
+            android:layout_marginRight="@dimen/fb_margin_right_icon"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:mpb_indeterminateTint="@color/white" />
 
         <ImageView
             android:id="@+id/fb_icon"
@@ -66,6 +79,16 @@
             android:visibility="gone"
             tools:text="CLICK"
             tools:visibility="visible" />
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/fb_progress_right"
+            style="@style/Widget.MaterialProgressBar.ProgressBar"
+            android:layout_width="@dimen/fb_progress_size"
+            android:layout_height="@dimen/fb_progress_size"
+            android:layout_gravity="center_vertical"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:mpb_indeterminateTint="@color/white" />
 
     </LinearLayout>
 

@@ -130,7 +130,10 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         }
 
         val activityRootView = activity.getRootView()
-        activityRootView?.addView(this)
+
+        if (this.parent == null) {
+            activityRootView?.addView(this)
+        }
 
         enterAnimation.setAnimationListener(object : Animation.AnimationListener {
 

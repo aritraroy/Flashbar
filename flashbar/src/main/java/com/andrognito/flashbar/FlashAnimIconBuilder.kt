@@ -151,6 +151,7 @@ class FlashAnimBarBuilder(context: Context) : BaseFlashAnimBuilder(context) {
         val animationSet = AnimationSet(false)
         animationSet.fillAfter = true
         animationSet.duration = duration
+
         animationSet.interpolator = interpolator
 
         // Only if custom animation is not applied

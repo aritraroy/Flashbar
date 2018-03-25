@@ -99,6 +99,8 @@ class Flashbar private constructor(private var builder: Builder) {
             setIconDrawable(builder.iconDrawable)
             setIconBitmap(builder.iconBitmap)
             setIconColorFilter(builder.iconColorFilter, builder.iconColorFilterMode)
+
+            setProgressPosition(builder.progressPosition)
         }
     }
 
@@ -118,6 +120,7 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var shadowStrength: Int? = null
         internal var enableSwipeToDismiss: Boolean = false
         internal var vibrationTargets: List<Vibration> = emptyList()
+        internal var progressPosition: ProgressPosition? = null
 
         internal var title: String? = null
         internal var titleSpanned: Spanned? = null
@@ -266,10 +269,14 @@ class Flashbar private constructor(private var builder: Builder) {
             this.titleAppearance = appearance
         }
 
-        fun actionText(text: String) = apply { this.actionText = text }
+        fun actionText(text: String) = apply {
+            require(progressPosition != ProgressPosition.RIGHT,
+                    { "Cannot show action button if right progress is set" })
+            this.actionText = text
+        }
 
         fun actionText(@StringRes actionTextId: Int) = apply {
-            this.actionText = activity.getString(actionTextId)
+            actionText(activity.getString(actionTextId))
         }
 
         fun actionText(actionText: Spanned) = apply { this.actionTextSpanned = actionText }
@@ -294,7 +301,11 @@ class Flashbar private constructor(private var builder: Builder) {
             this.onActionTapListener = onActionTapListener
         }
 
-        fun showIcon(showIcon: Boolean) = apply { this.showIcon = showIcon }
+        fun showIcon(showIcon: Boolean) = apply {
+            require(progressPosition != ProgressPosition.LEFT,
+                    { "Cannot show icon if left progress is set" })
+            this.showIcon = showIcon
+        }
 
         fun icon(icon: Drawable) = apply { this.iconDrawable = icon }
 
@@ -315,6 +326,18 @@ class Flashbar private constructor(private var builder: Builder) {
         }
 
         fun iconAnimation(animation: FlashAnim) = apply { this.iconAnimation = animation }
+
+        fun showProgress(position: ProgressPosition) = apply {
+            this.progressPosition = position
+
+            if (progressPosition == ProgressPosition.LEFT && showIcon) {
+                throw IllegalArgumentException("Cannot show progress at left if icon is already set")
+            }
+
+            if (progressPosition == ProgressPosition.RIGHT && actionText != null) {
+                throw IllegalArgumentException("Cannot show progress at right if action button is already set")
+            }
+        }
 
         fun build(): Flashbar {
             configureDefaultAnim()
@@ -349,10 +372,7 @@ class Flashbar private constructor(private var builder: Builder) {
         const val DURATION_INDEFINITE = -1L
     }
 
-    enum class FlashbarPosition {
-        TOP,
-        BOTTOM
-    }
+    enum class FlashbarPosition { TOP, BOTTOM }
 
     enum class FlashbarDismissEvent {
         TIMEOUT,
@@ -361,10 +381,9 @@ class Flashbar private constructor(private var builder: Builder) {
         SWIPE
     }
 
-    enum class Vibration {
-        SHOW,
-        DISMISS
-    }
+    enum class Vibration { SHOW, DISMISS }
+
+    enum class ProgressPosition { LEFT, RIGHT }
 
     interface OnActionTapListener {
         fun onActionTapped(bar: Flashbar)
