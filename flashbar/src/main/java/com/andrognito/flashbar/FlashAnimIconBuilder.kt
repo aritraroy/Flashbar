@@ -15,6 +15,7 @@ import com.andrognito.flashbar.FlashAnim.Type.ENTER
 import com.andrognito.flashbar.FlashAnim.Type.EXIT
 
 abstract class BaseFlashAnimBuilder(private val context: Context) {
+
     private val DEFAULT_ANIM_DURATION = context.resources
             .getInteger(R.integer.default_animation_duration).toLong()
 
@@ -84,6 +85,8 @@ abstract class BaseFlashAnimBuilder(private val context: Context) {
     fun alphaOut() = apply { this.alpha = OUT }
 
     fun duration(millis: Long) = apply {
+        require(duration >= 0,
+                { "Duration must not be negative" })
         this.duration = millis
     }
 
@@ -100,9 +103,9 @@ class FlashAnimIconBuilder(context: Context) : BaseFlashAnimBuilder(context) {
         val flashAnim = FlashAnim()
         val animationSet = AnimationSet(false)
         animationSet.fillAfter = true
-        animationSet.addAnimation(animation)
         animationSet.duration = duration
         animationSet.interpolator = interpolator
+        animationSet.addAnimation(animation)
 
         if (alpha != null) {
             when (alpha) {

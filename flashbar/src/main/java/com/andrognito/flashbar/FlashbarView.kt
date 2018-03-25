@@ -32,7 +32,7 @@ import com.andrognito.flashbar.view.SwipeDismissTouchListener.DismissCallbacks
 private const val DEFAULT_ELEVATION = 4
 
 /**
- * The actual Flashbar view representation that can consist of the message, button, icon, etc.
+ * The actual Flashbar view representation that can consist of the title, message, button, icon, etc.
  * Its size is adaptive and depends solely on the amount of content present in it. It always matches
  * the width of the screen.
  *
@@ -48,11 +48,11 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     private lateinit var parentFlashbarContainerView: FlashbarContainerView
 
     private lateinit var position: FlashbarPosition
-    private lateinit var title: TextView
-    private lateinit var message: TextView
-    private lateinit var icon: ImageView
-    private lateinit var button: Button
-    private lateinit var enterAnim: FlashAnim
+
+    private lateinit var titleView: TextView
+    private lateinit var messageView: TextView
+    private lateinit var iconView: ImageView
+    private lateinit var buttonView: Button
 
     private var isMarginCompensationApplied: Boolean = false
 
@@ -79,10 +79,10 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
 
         flashbarRootView = findViewById(R.id.fb_root)
         with(flashbarRootView) {
-            title = findViewById(R.id.fb_title)
-            message = findViewById(R.id.fb_message)
-            icon = findViewById(R.id.fb_icon)
-            button = findViewById(R.id.fb_action)
+            titleView = findViewById(R.id.fb_title)
+            messageView = findViewById(R.id.fb_message)
+            iconView = findViewById(R.id.fb_icon)
+            buttonView = findViewById(R.id.fb_action)
         }
 
     }
@@ -154,183 +154,179 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     internal fun setTitle(title: String?) {
         if (TextUtils.isEmpty(title)) return
 
-        this.title.text = title
-        this.title.visibility = VISIBLE
+        this.titleView.text = title
+        this.titleView.visibility = VISIBLE
     }
 
     internal fun setTitleSpanned(title: Spanned?) {
         if (title == null) return
 
-        this.title.text = title
-        this.title.visibility = VISIBLE
+        this.titleView.text = title
+        this.titleView.visibility = VISIBLE
     }
 
     internal fun setTitleTypeface(typeface: Typeface?) {
         if (typeface == null) return
-        title.typeface = typeface
+        titleView.typeface = typeface
     }
 
     internal fun setTitleSizeInPx(size: Float?) {
         if (size == null) return
-        title.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+        titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
     }
 
     internal fun setTitleSizeInSp(size: Float?) {
         if (size == null) return
-        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+        titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
     }
 
     internal fun setTitleColor(color: Int?) {
         if (color == null) return
-        title.setTextColor(color)
+        titleView.setTextColor(color)
     }
 
     internal fun setTitleAppearance(titleAppearance: Int?) {
         if (titleAppearance == null) return
 
         if (SDK_INT >= M) {
-            this.title.setTextAppearance(titleAppearance)
+            this.titleView.setTextAppearance(titleAppearance)
         } else {
-            this.title.setTextAppearance(title.context, titleAppearance)
+            this.titleView.setTextAppearance(titleView.context, titleAppearance)
         }
     }
 
     internal fun setMessage(message: String?) {
         if (TextUtils.isEmpty(message)) return
 
-        this.message.text = message
-        this.message.visibility = VISIBLE
+        this.messageView.text = message
+        this.messageView.visibility = VISIBLE
     }
 
     internal fun setMessageSpanned(message: Spanned?) {
         if (message == null) return
 
-        this.message.text = message
-        this.message.visibility = VISIBLE
+        this.messageView.text = message
+        this.messageView.visibility = VISIBLE
     }
 
     internal fun setMessageTypeface(typeface: Typeface?) {
         if (typeface == null) return
-        this.message.typeface = typeface
+        this.messageView.typeface = typeface
     }
 
     internal fun setMessageSizeInPx(size: Float?) {
         if (size == null) return
-        this.message.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+        this.messageView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
     }
 
     internal fun setMessageSizeInSp(size: Float?) {
         if (size == null) return
-        this.message.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+        this.messageView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
     }
 
     internal fun setMessageColor(color: Int?) {
         if (color == null) return
-        this.message.setTextColor(color)
+        this.messageView.setTextColor(color)
     }
 
     internal fun setMessageAppearance(messageAppearance: Int?) {
         if (messageAppearance == null) return
 
         if (SDK_INT >= M) {
-            this.message.setTextAppearance(messageAppearance)
+            this.messageView.setTextAppearance(messageAppearance)
         } else {
-            this.message.setTextAppearance(message.context, messageAppearance)
+            this.messageView.setTextAppearance(messageView.context, messageAppearance)
         }
     }
 
     internal fun setActionText(text: String?) {
         if (TextUtils.isEmpty(text)) return
 
-        this.button.text = text
-        this.button.visibility = VISIBLE
+        this.buttonView.text = text
+        this.buttonView.visibility = VISIBLE
     }
 
     internal fun setActionTextSpanned(text: Spanned?) {
         if (text == null) return
 
-        this.button.text = text
-        this.button.visibility = VISIBLE
+        this.buttonView.text = text
+        this.buttonView.visibility = VISIBLE
     }
 
     internal fun setActionTextTypeface(typeface: Typeface?) {
         if (typeface == null) return
-        this.button.typeface = typeface
+        this.buttonView.typeface = typeface
     }
 
     internal fun setActionTextSizeInPx(size: Float?) {
         if (size == null) return
-        this.button.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+        this.buttonView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
     }
 
     internal fun setActionTextSizeInSp(size: Float?) {
         if (size == null) return
-        this.button.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+        this.buttonView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
     }
 
     internal fun setActionTextColor(color: Int?) {
         if (color == null) return
-        this.button.setTextColor(color)
+        this.buttonView.setTextColor(color)
     }
 
     internal fun setActionTextAppearance(messageAppearance: Int?) {
         if (messageAppearance == null) return
 
         if (SDK_INT >= M) {
-            this.button.setTextAppearance(messageAppearance)
+            this.buttonView.setTextAppearance(messageAppearance)
         } else {
-            this.button.setTextAppearance(button.context, messageAppearance)
+            this.buttonView.setTextAppearance(buttonView.context, messageAppearance)
         }
     }
 
     internal fun setActionTapListener(listener: Flashbar.OnActionTapListener?) {
         if (listener == null) return
 
-        this.button.setOnClickListener {
+        this.buttonView.setOnClickListener {
             listener.onActionTapped(parentFlashbarContainerView.parentFlashbar)
         }
     }
 
     internal fun showIcon(showIcon: Boolean) {
-        this.icon.visibility = if (showIcon) VISIBLE else GONE
+        this.iconView.visibility = if (showIcon) VISIBLE else GONE
     }
 
     internal fun setIconDrawable(icon: Drawable?) {
         if (icon == null) return
-        this.icon.setImageDrawable(icon)
+        this.iconView.setImageDrawable(icon)
     }
 
     internal fun setIconBitmap(bitmap: Bitmap?) {
         if (bitmap == null) return
-        this.icon.setImageBitmap(bitmap)
+        this.iconView.setImageBitmap(bitmap)
     }
 
     internal fun setIconColorFilter(colorFilter: Int?, filterMode: PorterDuff.Mode?) {
         if (colorFilter == null) return
         if (filterMode == null) {
-            this.icon.setColorFilter(colorFilter)
+            this.iconView.setColorFilter(colorFilter)
         } else {
-            this.icon.setColorFilter(colorFilter, filterMode)
+            this.iconView.setColorFilter(colorFilter, filterMode)
         }
     }
 
     internal fun startIconAnimation(anim: FlashAnim?) {
         if (anim == null) return
-        icon.startAnimation(anim.animation)
+        iconView.startAnimation(anim.animation)
     }
 
     internal fun stopIconAnimation() {
-        icon.clearAnimation()
+        iconView.clearAnimation()
     }
 
     internal fun enableSwipeToDismiss(enable: Boolean, callbacks: DismissCallbacks) {
         if (enable) {
             flashbarRootView.setOnTouchListener(SwipeDismissTouchListener(this, callbacks))
         }
-    }
-
-    internal fun setEnterAnimation(anim: FlashAnim) {
-        this.enterAnim = anim
     }
 
     private fun castShadow(shadowType: ShadowView.ShadowType, strength: Int) {

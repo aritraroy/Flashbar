@@ -196,7 +196,6 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
 
     internal fun setEnterAnimation(anim: FlashAnim) {
         this.enterAnimation = anim.animation
-        this.flashbarView.setEnterAnimation(anim)
     }
 
     internal fun setExitAnimation(anim: FlashAnim) {

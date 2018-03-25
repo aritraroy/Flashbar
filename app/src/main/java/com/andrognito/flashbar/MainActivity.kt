@@ -17,21 +17,19 @@ class MainActivity : AppCompatActivity() {
         show.setOnClickListener {
             if (flashbar == null) {
                 flashbar = Flashbar.Builder(activity)
-                        .position(Flashbar.FlashbarPosition.BOTTOM)
+                        .position(Flashbar.FlashbarPosition.TOP)
                         .backgroundColorRes(R.color.colorPrimary)
                         .title("Hello!")
                         .enterAnimation(FlashAnim
                                 .with(activity)
                                 .animateBar()
-                                .enterFrom(FlashAnim.Position.BOTTOM)
-                                .overshoot()
+                                .enterFrom(FlashAnim.Position.TOP)
                                 .duration(250)
                                 .build())
                         .exitAnimation(FlashAnim
                                 .with(activity)
                                 .animateBar()
-                                .exitFrom(FlashAnim.Position.BOTTOM)
-                                .overshoot()
+                                .exitFrom(FlashAnim.Position.TOP)
                                 .duration(250)
                                 .build())
                         .actionText("Close")
