@@ -101,6 +101,7 @@ class Flashbar private constructor(private var builder: Builder) {
             setIconColorFilter(builder.iconColorFilter, builder.iconColorFilterMode)
 
             setProgressPosition(builder.progressPosition)
+            setProgressTint(builder.progressTint, builder.progressTintMode, builder.progressPosition)
         }
     }
 
@@ -153,6 +154,8 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var iconColorFilter: Int? = null
         internal var iconColorFilterMode: PorterDuff.Mode? = null
         internal var iconAnimation: FlashAnim? = null
+        internal var progressTint: Int? = null
+        internal var progressTintMode: PorterDuff.Mode? = null
 
         internal var enterAnimation: FlashAnim? = null
         internal var exitAnimation: FlashAnim? = null
@@ -337,6 +340,16 @@ class Flashbar private constructor(private var builder: Builder) {
             if (progressPosition == ProgressPosition.RIGHT && actionText != null) {
                 throw IllegalArgumentException("Cannot show progress at right if action button is already set")
             }
+        }
+
+        fun progressTint(@ColorInt color: Int, mode: PorterDuff.Mode? = null) = apply {
+            this.progressTint = color
+            this.progressTintMode = mode
+        }
+
+        fun progressTintRes(@ColorRes colorId: Int, mode: PorterDuff.Mode? = null) = apply {
+            this.progressTint = ContextCompat.getColor(activity, colorId)
+            this.progressTintMode = mode
         }
 
         fun build(): Flashbar {

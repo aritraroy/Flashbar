@@ -125,7 +125,8 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
                 flashbarViewLp.addRule(ALIGN_PARENT_TOP)
             }
             BOTTOM -> {
-                flashbarViewContentLp.bottomMargin = BOTTOM_COMPENSATION_MARGIN.times(1.5f).toInt()
+                flashbarViewContentLp.bottomMargin = BOTTOM_COMPENSATION_MARGIN
+                        .times(1.5f).toInt()
                 flashbarViewLp.addRule(ALIGN_PARENT_BOTTOM)
             }
         }
@@ -349,6 +350,23 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
                 leftProgressView.visibility = View.GONE
                 rightProgressView.visibility = View.VISIBLE
             }
+        }
+    }
+
+    internal fun setProgressTint(progressTint: Int?,
+                                 progressTintMode: PorterDuff.Mode?,
+                                 position: Flashbar.ProgressPosition?) {
+        if (position == null || progressTint == null) return
+
+        val progressBar = when (position) {
+            LEFT -> leftProgressView
+            RIGHT -> rightProgressView
+        }
+
+        if (progressTintMode == null) {
+            progressBar.indeterminateDrawable.setColorFilter(progressTint, PorterDuff.Mode.SRC_IN)
+        } else {
+            progressBar.indeterminateDrawable.setColorFilter(progressTint, progressTintMode)
         }
     }
 

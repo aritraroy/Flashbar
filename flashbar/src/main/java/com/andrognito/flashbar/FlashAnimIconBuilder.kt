@@ -101,7 +101,7 @@ class FlashAnimIconBuilder(context: Context) : BaseFlashAnimBuilder(context) {
 
     override fun build(): FlashAnim {
         val flashAnim = FlashAnim()
-        val animationSet = AnimationSet(false)
+        val animationSet = AnimationSet(true)
         animationSet.fillAfter = true
         animationSet.duration = duration
         animationSet.interpolator = interpolator
@@ -148,10 +148,9 @@ class FlashAnimBarBuilder(context: Context) : BaseFlashAnimBuilder(context) {
                 { "You must specify the animation position" })
 
         val flashAnim = FlashAnim()
-        val animationSet = AnimationSet(false)
+        val animationSet = AnimationSet(true)
         animationSet.fillAfter = true
         animationSet.duration = duration
-
         animationSet.interpolator = interpolator
 
         // Only if custom animation is not applied

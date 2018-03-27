@@ -11,11 +11,11 @@ class FlashAnim {
         fun with(context: Context) = FlashAnimBuilderRetriever(context)
     }
 
-    enum class Type { ENTER, EXIT, }
+    enum class Type { ENTER, EXIT }
 
-    enum class Position { TOP, BOTTOM, }
+    enum class Position { TOP, BOTTOM }
 
-    enum class Alpha { IN, OUT, }
+    enum class Alpha { IN, OUT }
 }
 
 class FlashAnimBuilderRetriever(private val context: Context) {
