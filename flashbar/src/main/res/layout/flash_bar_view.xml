@@ -8,14 +8,14 @@
     android:background="@color/warm_grey"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?attr/selectableItemBackground"
+    android:padding="@dimen/fb_content_padding_all"
+    android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/fb_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fb_content_padding_all"
         android:gravity="center_vertical">
 
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
@@ -72,7 +72,7 @@
 
         <Button
             android:id="@+id/fb_action"
-            style="?attr/borderlessButtonStyle"
+            style="?attr/android:borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/FbButtonStyle"

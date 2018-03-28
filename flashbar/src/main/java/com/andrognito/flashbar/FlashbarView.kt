@@ -20,6 +20,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM
 import android.widget.RelativeLayout.ALIGN_PARENT_TOP
+import com.andrognito.flashbar.FlashAnim.Companion.with
 import com.andrognito.flashbar.Flashbar.FlashbarPosition
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
@@ -120,13 +121,11 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
 
         when (flashbarPosition) {
             TOP -> {
-                flashbarViewContentLp.topMargin = statusBarHeight
-                        .plus(TOP_COMPENSATION_MARGIN.times(1.5f).toInt())
+                flashbarViewContentLp.topMargin = statusBarHeight.plus(TOP_COMPENSATION_MARGIN / 2)
                 flashbarViewLp.addRule(ALIGN_PARENT_TOP)
             }
             BOTTOM -> {
                 flashbarViewContentLp.bottomMargin = BOTTOM_COMPENSATION_MARGIN
-                        .times(1.5f).toInt()
                 flashbarViewLp.addRule(ALIGN_PARENT_BOTTOM)
             }
         }
