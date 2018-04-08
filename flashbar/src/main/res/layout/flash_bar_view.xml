@@ -8,9 +8,9 @@
     android:background="@color/warm_grey"
     android:clickable="true"
     android:focusable="true"
-    android:padding="@dimen/fb_content_padding_all"
     android:foreground="?android:attr/selectableItemBackground"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/fb_content_padding_all">
 
     <LinearLayout
         android:id="@+id/fb_content"
@@ -72,10 +72,10 @@
 
         <Button
             android:id="@+id/fb_action"
-            style="?attr/android:borderlessButtonStyle"
+            style="@style/FbButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/FbButtonStyle"
+            android:textAppearance="@style/FbButtonTextStyle"
             android:visibility="gone"
             tools:text="CLICK"
             tools:visibility="visible" />

@@ -12,9 +12,15 @@
         <item name="android:textSize">@dimen/fb_message_text_size</item>
     </style>
 
-    <style name="FbButtonStyle" parent="TextAppearance.AppCompat">
+    <style name="FbButtonTextStyle" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/fb_button_text_size</item>
     </style>
+
+    <style name="FbButtonStyle" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+    </style>
+
 </resources>

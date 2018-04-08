@@ -44,9 +44,9 @@ class MainActivity : AppCompatActivity() {
                                 .pulse()
                                 .duration(400)
                                 .build())
-                        //.actionText("CLOSE")
+                        .actionText("DOWNLOAD")
                         //.modalOverlayColorRes(R.color.modal)
-                        .showProgress(Flashbar.ProgressPosition.RIGHT)
+                        //.showProgress(Flashbar.ProgressPosition.RIGHT)
                         .progressTintRes(R.color.colorAccent)
                         .tapOutsideListener(object: Flashbar.OnTapOutsideListener {
                             override fun onTap(bar: Flashbar) {
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                             }
                         })
                         .showIcon(true)
-                        //.enableSwipeToDismiss()
+                        .enableSwipeToDismiss()
                         //.vibrateOn(Flashbar.Vibration.DISMISS)
                         //.dismissOnTapOutside()
                         .actionTapListener(object : Flashbar.OnActionTapListener {
