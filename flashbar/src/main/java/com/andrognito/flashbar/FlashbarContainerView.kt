@@ -3,7 +3,7 @@ package com.andrognito.flashbar
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
-import android.view.HapticFeedbackConstants
+import android.view.HapticFeedbackConstants.VIRTUAL_KEY
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_DOWN
 import android.view.View
@@ -38,6 +38,7 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
 
     private var onBarShowListener: Flashbar.OnBarShowListener? = null
     private var onBarDismissListener: Flashbar.OnBarDismissListener? = null
+    private var onTapOutsideListener: Flashbar.OnTapOutsideListener? = null
     private var modalOverlayColor: Int? = null
     private var iconAnimation: FlashAnim? = null
 
@@ -49,15 +50,16 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
     private var modalOverlayBlockable: Boolean = false
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
-        val action = event.action
-        when (action) {
+        when (event.action) {
             ACTION_DOWN -> {
-                if (barDismissOnTapOutside) {
-                    val rect = Rect()
-                    flashbarView.getHitRect(rect)
+                val rect = Rect()
+                flashbarView.getHitRect(rect)
 
-                    // Checks if the tap was outside the bar
-                    if (!rect.contains(event.x.toInt(), event.y.toInt())) {
+                // Checks if the tap was outside the bar
+                if (!rect.contains(event.x.toInt(), event.y.toInt())) {
+                    onTapOutsideListener?.onTap(parentFlashbar)
+
+                    if (barDismissOnTapOutside) {
                         dismissInternal(TAP_OUTSIDE)
                     }
                 }
@@ -80,7 +82,7 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
         flashbarView.stopIconAnimation()
 
         if (vibrationTargets.contains(DISMISS)) {
-            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            performHapticFeedback(VIRTUAL_KEY)
         }
 
         onBarDismissListener?.onDismissed(parentFlashbar, SWIPE)
@@ -125,9 +127,7 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
     }
 
     internal fun show(activity: Activity) {
-        if (isBarShowing || isBarShown) {
-            return
-        }
+        if (isBarShowing || isBarShown) return
 
         val activityRootView = activity.getRootView()
 
@@ -149,7 +149,7 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
                 flashbarView.startIconAnimation(iconAnimation)
 
                 if (vibrationTargets.contains(SHOW)) {
-                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                    performHapticFeedback(VIRTUAL_KEY)
                 }
 
                 onBarShowListener?.onShown(parentFlashbar)
@@ -186,6 +186,10 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
 
     internal fun setBarDismissOnTapOutside(dismiss: Boolean) {
         this.barDismissOnTapOutside = dismiss
+    }
+
+    internal fun setOnTapOutsideListener(listener: Flashbar.OnTapOutsideListener?) {
+        this.onTapOutsideListener = listener
     }
 
     internal fun setModalOverlayColor(color: Int?) {
@@ -239,7 +243,7 @@ internal class FlashbarContainerView(context: Context) : RelativeLayout(context)
                 isBarShown = false
 
                 if (vibrationTargets.contains(DISMISS)) {
-                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                    performHapticFeedback(VIRTUAL_KEY)
                 }
 
                 onBarDismissListener?.onDismissed(parentFlashbar, event)

@@ -11,13 +11,6 @@ import android.view.Surface.*
 import com.andrognito.flashbar.util.NavigationBarPosition.*
 import java.lang.reflect.InvocationTargetException
 
-internal enum class NavigationBarPosition {
-    BOTTOM,
-    RIGHT,
-    LEFT,
-    TOP
-}
-
 internal fun Activity.getStatusBarHeightInPx(): Int {
     val rectangle = Rect()
 
@@ -90,4 +83,11 @@ private fun Activity.getAppUsableScreenSize(): Point {
     val size = Point()
     defaultDisplay.getSize(size)
     return size
+}
+
+internal enum class NavigationBarPosition {
+    BOTTOM,
+    RIGHT,
+    LEFT,
+    TOP
 }

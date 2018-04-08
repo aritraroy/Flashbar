@@ -20,7 +20,6 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM
 import android.widget.RelativeLayout.ALIGN_PARENT_TOP
-import com.andrognito.flashbar.FlashAnim.Companion.with
 import com.andrognito.flashbar.Flashbar.FlashbarPosition
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
@@ -62,6 +61,21 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
 
     private var isMarginCompensationApplied: Boolean = false
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+
+        if (!isMarginCompensationApplied) {
+            isMarginCompensationApplied = true
+
+            val params = layoutParams as ViewGroup.MarginLayoutParams
+            when (position) {
+                TOP -> params.topMargin = -TOP_COMPENSATION_MARGIN
+                BOTTOM -> params.bottomMargin = -BOTTOM_COMPENSATION_MARGIN
+            }
+            requestLayout()
+        }
+    }
+
     internal fun init(
             position: FlashbarPosition,
             castShadow: Boolean,
@@ -94,21 +108,6 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
             rightProgressView = findViewById(R.id.fb_progress_right)
         }
 
-    }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-
-        if (!isMarginCompensationApplied) {
-            isMarginCompensationApplied = true
-
-            val params = layoutParams as ViewGroup.MarginLayoutParams
-            when (position) {
-                TOP -> params.topMargin = -TOP_COMPENSATION_MARGIN
-                BOTTOM -> params.bottomMargin = -BOTTOM_COMPENSATION_MARGIN
-            }
-            requestLayout()
-        }
     }
 
     internal fun adjustWitPositionAndOrientation(activity: Activity,

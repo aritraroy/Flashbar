@@ -44,13 +44,19 @@ class MainActivity : AppCompatActivity() {
                                 .pulse()
                                 .duration(400)
                                 .build())
-                        //.actionText("Close")
-                        .modalOverlayColorRes(R.color.modal)
-                        .showProgress(Flashbar.ProgressPosition.LEFT)
+                        //.actionText("CLOSE")
+                        //.modalOverlayColorRes(R.color.modal)
+                        .showProgress(Flashbar.ProgressPosition.RIGHT)
                         .progressTintRes(R.color.colorAccent)
-                        .enableSwipeToDismiss()
-                        .vibrateOn(Flashbar.Vibration.SHOW, Flashbar.Vibration.DISMISS)
-                        .dismissOnTapOutside()
+                        .tapOutsideListener(object: Flashbar.OnTapOutsideListener {
+                            override fun onTap(bar: Flashbar) {
+                                Log.d("Flashbar", "Tapped outside")
+                            }
+                        })
+                        .showIcon(true)
+                        //.enableSwipeToDismiss()
+                        //.vibrateOn(Flashbar.Vibration.DISMISS)
+                        //.dismissOnTapOutside()
                         .actionTapListener(object : Flashbar.OnActionTapListener {
                             override fun onActionTapped(bar: Flashbar) {
                                 Log.d("Flashbar", "onActionTapped")
