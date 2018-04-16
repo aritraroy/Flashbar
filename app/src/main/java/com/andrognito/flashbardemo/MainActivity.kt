@@ -19,14 +19,14 @@ class MainActivity : AppCompatActivity() {
         show.setOnClickListener {
             if (flashbar == null) {
                 flashbar = Flashbar.Builder(activity)
-                        .position(Flashbar.FlashbarPosition.TOP)
+                        .position(Flashbar.FlashbarPosition.BOTTOM)
                         .backgroundColorRes(R.color.colorPrimaryDark)
                         .title("Hello!")
                         .message("Loading, please wait...")
                         .enterAnimation(FlashAnim
                                 .with(activity)
                                 .animateBar()
-                                .enterFrom(FlashAnim.Position.TOP)
+                                .enterFrom(FlashAnim.Position.BOTTOM)
                                 .alpha()
                                 .overshoot()
                                 .duration(450)
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                         .exitAnimation(FlashAnim
                                 .with(activity)
                                 .animateBar()
-                                .exitFrom(FlashAnim.Position.TOP)
+                                .exitFrom(FlashAnim.Position.BOTTOM)
                                 .alpha()
                                 .overshoot()
                                 .duration(450)
