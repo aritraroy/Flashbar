@@ -11,16 +11,16 @@ import com.andrognito.flashbar.R
 import com.andrognito.flashbar.view.ShadowView.ShadowType.BOTTOM
 import com.andrognito.flashbar.view.ShadowView.ShadowType.TOP
 
-class ShadowView @JvmOverloads constructor(
+internal class ShadowView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    fun applyShadow(type: ShadowType) {
+    internal fun applyShadow(type: ShadowType) {
         when (type) {
-            TOP -> setShadow(R.drawable.top_shadow)
-            BOTTOM -> setShadow(R.drawable.bottom_shadow)
+            TOP -> setShadow(R.drawable.shadow_top)
+            BOTTOM -> setShadow(R.drawable.shadow_bottom)
         }
     }
 

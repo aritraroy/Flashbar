@@ -17,19 +17,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM
 import android.widget.RelativeLayout.ALIGN_PARENT_TOP
+import android.widget.TextView
 import com.andrognito.flashbar.Flashbar.FlashbarPosition
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
 import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
 import com.andrognito.flashbar.Flashbar.ProgressPosition.LEFT
 import com.andrognito.flashbar.Flashbar.ProgressPosition.RIGHT
+import com.andrognito.flashbar.SwipeDismissTouchListener.DismissCallbacks
 import com.andrognito.flashbar.util.convertDpToPx
 import com.andrognito.flashbar.util.getStatusBarHeightInPx
+import com.andrognito.flashbar.view.FbButton
 import com.andrognito.flashbar.view.ShadowView
-import com.andrognito.flashbar.view.SwipeDismissTouchListener
-import com.andrognito.flashbar.view.SwipeDismissTouchListener.DismissCallbacks
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 
 private const val DEFAULT_ELEVATION = 4
@@ -55,7 +58,9 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     private lateinit var titleView: TextView
     private lateinit var messageView: TextView
     private lateinit var iconView: ImageView
-    private lateinit var buttonView: Button
+    private lateinit var primaryActionButtonView: FbButton
+    private lateinit var positiveActionButtonView: FbButton
+    private lateinit var negativeActionButtonView: FbButton
     private lateinit var leftProgressView: MaterialProgressBar
     private lateinit var rightProgressView: MaterialProgressBar
 
@@ -103,7 +108,9 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
             titleView = findViewById(R.id.fb_title)
             messageView = findViewById(R.id.fb_message)
             iconView = findViewById(R.id.fb_icon)
-            buttonView = findViewById(R.id.fb_action)
+            primaryActionButtonView = findViewById(R.id.fb_primary_action)
+            positiveActionButtonView = findViewById(R.id.fb_positive_action)
+            negativeActionButtonView = findViewById(R.id.fb_negative_action)
             leftProgressView = findViewById(R.id.fb_progress_left)
             rightProgressView = findViewById(R.id.fb_progress_right)
         }
@@ -247,54 +254,158 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         }
     }
 
-    internal fun setActionText(text: String?) {
+    internal fun setPrimaryActionText(text: String?) {
         if (TextUtils.isEmpty(text)) return
 
-        this.buttonView.text = text
-        this.buttonView.visibility = VISIBLE
+        this.primaryActionButtonView.text = text
+        this.primaryActionButtonView.visibility = VISIBLE
     }
 
-    internal fun setActionTextSpanned(text: Spanned?) {
+    internal fun setPrimaryActionTextSpanned(text: Spanned?) {
         if (text == null) return
 
-        this.buttonView.text = text
-        this.buttonView.visibility = VISIBLE
+        this.primaryActionButtonView.text = text
+        this.primaryActionButtonView.visibility = VISIBLE
     }
 
-    internal fun setActionTextTypeface(typeface: Typeface?) {
+    internal fun setPrimaryActionTextTypeface(typeface: Typeface?) {
         if (typeface == null) return
-        this.buttonView.typeface = typeface
+        this.primaryActionButtonView.typeface = typeface
     }
 
-    internal fun setActionTextSizeInPx(size: Float?) {
+    internal fun setPrimaryActionTextSizeInPx(size: Float?) {
         if (size == null) return
-        this.buttonView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+        this.primaryActionButtonView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
     }
 
-    internal fun setActionTextSizeInSp(size: Float?) {
+    internal fun setPrimaryActionTextSizeInSp(size: Float?) {
         if (size == null) return
-        this.buttonView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+        this.primaryActionButtonView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
     }
 
-    internal fun setActionTextColor(color: Int?) {
+    internal fun setPrimaryActionTextColor(color: Int?) {
         if (color == null) return
-        this.buttonView.setTextColor(color)
+        this.primaryActionButtonView.setTextColor(color)
     }
 
-    internal fun setActionTextAppearance(messageAppearance: Int?) {
+    internal fun setPrimaryActionTextAppearance(messageAppearance: Int?) {
         if (messageAppearance == null) return
 
         if (SDK_INT >= M) {
-            this.buttonView.setTextAppearance(messageAppearance)
+            this.primaryActionButtonView.setTextAppearance(messageAppearance)
         } else {
-            this.buttonView.setTextAppearance(buttonView.context, messageAppearance)
+            this.primaryActionButtonView.setTextAppearance(primaryActionButtonView.context, messageAppearance)
         }
     }
 
-    internal fun setActionTapListener(listener: Flashbar.OnActionTapListener?) {
+    internal fun setPrimaryActionTapListener(listener: Flashbar.OnActionTapListener?) {
         if (listener == null) return
 
-        this.buttonView.setOnClickListener {
+        this.primaryActionButtonView.setOnClickListener {
+            listener.onActionTapped(parentFlashbarContainerView.parentFlashbar)
+        }
+    }
+
+    internal fun setPositiveActionText(text: String?) {
+        if (TextUtils.isEmpty(text)) return
+
+        this.positiveActionButtonView.text = text
+        this.positiveActionButtonView.visibility = VISIBLE
+    }
+
+    internal fun setPositiveActionTextSpanned(text: Spanned?) {
+        if (text == null) return
+
+        this.positiveActionButtonView.text = text
+        this.positiveActionButtonView.visibility = VISIBLE
+    }
+
+    internal fun setPositiveActionTextTypeface(typeface: Typeface?) {
+        if (typeface == null) return
+        this.positiveActionButtonView.typeface = typeface
+    }
+
+    internal fun setPositiveActionTextSizeInPx(size: Float?) {
+        if (size == null) return
+        this.positiveActionButtonView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+    }
+
+    internal fun setPositiveActionTextSizeInSp(size: Float?) {
+        if (size == null) return
+        this.positiveActionButtonView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+    }
+
+    internal fun setPositiveActionTextColor(color: Int?) {
+        if (color == null) return
+        this.positiveActionButtonView.setTextColor(color)
+    }
+
+    internal fun setPositiveActionTextAppearance(messageAppearance: Int?) {
+        if (messageAppearance == null) return
+
+        if (SDK_INT >= M) {
+            this.positiveActionButtonView.setTextAppearance(messageAppearance)
+        } else {
+            this.positiveActionButtonView.setTextAppearance(primaryActionButtonView.context, messageAppearance)
+        }
+    }
+
+    internal fun setPositiveActionTapListener(listener: Flashbar.OnActionTapListener?) {
+        if (listener == null) return
+
+        this.positiveActionButtonView.setOnClickListener {
+            listener.onActionTapped(parentFlashbarContainerView.parentFlashbar)
+        }
+    }
+
+    internal fun setNegativeActionText(text: String?) {
+        if (TextUtils.isEmpty(text)) return
+
+        this.negativeActionButtonView.text = text
+        this.negativeActionButtonView.visibility = VISIBLE
+    }
+
+    internal fun setNegativeActionTextSpanned(text: Spanned?) {
+        if (text == null) return
+
+        this.negativeActionButtonView.text = text
+        this.negativeActionButtonView.visibility = VISIBLE
+    }
+
+    internal fun setNegativeActionTextTypeface(typeface: Typeface?) {
+        if (typeface == null) return
+        this.negativeActionButtonView.typeface = typeface
+    }
+
+    internal fun setNegativeActionTextSizeInPx(size: Float?) {
+        if (size == null) return
+        this.negativeActionButtonView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+    }
+
+    internal fun setNegativeActionTextSizeInSp(size: Float?) {
+        if (size == null) return
+        this.negativeActionButtonView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+    }
+
+    internal fun setNegativeActionTextColor(color: Int?) {
+        if (color == null) return
+        this.negativeActionButtonView.setTextColor(color)
+    }
+
+    internal fun setNegativeActionTextAppearance(messageAppearance: Int?) {
+        if (messageAppearance == null) return
+
+        if (SDK_INT >= M) {
+            this.negativeActionButtonView.setTextAppearance(messageAppearance)
+        } else {
+            this.negativeActionButtonView.setTextAppearance(primaryActionButtonView.context, messageAppearance)
+        }
+    }
+
+    internal fun setNegativeActionTapListener(listener: Flashbar.OnActionTapListener?) {
+        if (listener == null) return
+
+        this.negativeActionButtonView.setOnClickListener {
             listener.onActionTapped(parentFlashbarContainerView.parentFlashbar)
         }
     }

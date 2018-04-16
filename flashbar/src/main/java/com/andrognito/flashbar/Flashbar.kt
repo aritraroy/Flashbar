@@ -101,14 +101,32 @@ class Flashbar private constructor(private var builder: Builder) {
             setMessageColor(builder.messageColor)
             setMessageAppearance(builder.messageAppearance)
 
-            setActionText(builder.actionText)
-            setActionTextSpanned(builder.actionTextSpanned)
-            setActionTextTypeface(builder.actionTextTypeface)
-            setActionTextSizeInPx(builder.actionTextSizeInPx)
-            setActionTextSizeInSp(builder.actionTextSizeInSp)
-            setActionTextColor(builder.actionTextColor)
-            setActionTextAppearance(builder.actionTextAppearance)
-            setActionTapListener(builder.onActionTapListener)
+            setPrimaryActionText(builder.primaryActionText)
+            setPrimaryActionTextSpanned(builder.primaryActionTextSpanned)
+            setPrimaryActionTextTypeface(builder.primaryActionTextTypeface)
+            setPrimaryActionTextSizeInPx(builder.primaryActionTextSizeInPx)
+            setPrimaryActionTextSizeInSp(builder.primaryActionTextSizeInSp)
+            setPrimaryActionTextColor(builder.primaryActionTextColor)
+            setPrimaryActionTextAppearance(builder.primaryActionTextAppearance)
+            setPrimaryActionTapListener(builder.onPrimaryActionTapListener)
+
+            setPositiveActionText(builder.positiveActionText)
+            setPositiveActionTextSpanned(builder.positiveActionTextSpanned)
+            setPositiveActionTextTypeface(builder.positiveActionTextTypeface)
+            setPositiveActionTextSizeInPx(builder.positiveActionTextSizeInPx)
+            setPositiveActionTextSizeInSp(builder.positiveActionTextSizeInSp)
+            setPositiveActionTextColor(builder.positiveActionTextColor)
+            setPositiveActionTextAppearance(builder.positiveActionTextAppearance)
+            setPositiveActionTapListener(builder.onPositiveActionTapListener)
+
+            setNegativeActionText(builder.negativeActionText)
+            setNegativeActionTextSpanned(builder.negativeActionTextSpanned)
+            setNegativeActionTextTypeface(builder.negativeActionTextTypeface)
+            setNegativeActionTextSizeInPx(builder.negativeActionTextSizeInPx)
+            setNegativeActionTextSizeInSp(builder.negativeActionTextSizeInSp)
+            setNegativeActionTextColor(builder.negativeActionTextColor)
+            setNegativeActionTextAppearance(builder.negativeActionTextAppearance)
+            setNegativeActionTapListener(builder.onNegativeActionTapListener)
 
             showIcon(builder.showIcon)
             setIconDrawable(builder.iconDrawable)
@@ -155,14 +173,32 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var messageColor: Int? = null
         internal var messageAppearance: Int? = null
 
-        internal var actionText: String? = null
-        internal var actionTextSpanned: Spanned? = null
-        internal var actionTextTypeface: Typeface? = null
-        internal var actionTextSizeInPx: Float? = null
-        internal var actionTextSizeInSp: Float? = null
-        internal var actionTextColor: Int? = null
-        internal var actionTextAppearance: Int? = null
-        internal var onActionTapListener: OnActionTapListener? = null
+        internal var primaryActionText: String? = null
+        internal var primaryActionTextSpanned: Spanned? = null
+        internal var primaryActionTextTypeface: Typeface? = null
+        internal var primaryActionTextSizeInPx: Float? = null
+        internal var primaryActionTextSizeInSp: Float? = null
+        internal var primaryActionTextColor: Int? = null
+        internal var primaryActionTextAppearance: Int? = null
+        internal var onPrimaryActionTapListener: OnActionTapListener? = null
+
+        internal var positiveActionText: String? = null
+        internal var positiveActionTextSpanned: Spanned? = null
+        internal var positiveActionTextTypeface: Typeface? = null
+        internal var positiveActionTextSizeInPx: Float? = null
+        internal var positiveActionTextSizeInSp: Float? = null
+        internal var positiveActionTextColor: Int? = null
+        internal var positiveActionTextAppearance: Int? = null
+        internal var onPositiveActionTapListener: OnActionTapListener? = null
+
+        internal var negativeActionText: String? = null
+        internal var negativeActionTextSpanned: Spanned? = null
+        internal var negativeActionTextTypeface: Typeface? = null
+        internal var negativeActionTextSizeInPx: Float? = null
+        internal var negativeActionTextSizeInSp: Float? = null
+        internal var negativeActionTextColor: Int? = null
+        internal var negativeActionTextAppearance: Int? = null
+        internal var onNegativeActionTapListener: OnActionTapListener? = null
 
         internal var showIcon: Boolean = false
         internal var iconDrawable: Drawable? = null
@@ -411,65 +447,185 @@ class Flashbar private constructor(private var builder: Builder) {
         }
 
         /**
-         * Specifies the action text string
+         * Specifies the primary action text string
          */
-        fun actionText(text: String) = apply {
+        fun primaryActionText(text: String) = apply {
             require(progressPosition != ProgressPosition.RIGHT,
                     { "Cannot show action button if right progress is set" })
-            this.actionText = text
+            this.primaryActionText = text
         }
 
         /**
-         * Specifies the action text string resource
+         * Specifies the primary action text string resource
          */
-        fun actionText(@StringRes actionTextId: Int) = apply {
-            actionText(activity.getString(actionTextId))
+        fun primaryActionText(@StringRes actionTextId: Int) = apply {
+            primaryActionText(activity.getString(actionTextId))
         }
 
         /**
-         * Specifies the action text string span
+         * Specifies the primary action text string span
          */
-        fun actionText(actionText: Spanned) = apply { this.actionTextSpanned = actionText }
+        fun primaryActionText(actionText: Spanned) = apply { this.primaryActionTextSpanned = actionText }
 
         /**
-         * Specifies the action text typeface
+         * Specifies the primary action text typeface
          */
-        fun actionTextTypeface(typeface: Typeface) = apply { this.actionTextTypeface = typeface }
+        fun primaryActionTextTypeface(typeface: Typeface) = apply { this.primaryActionTextTypeface = typeface }
 
         /**
-         * Specifies the action text size (in pixels)
+         * Specifies the primary action text size (in pixels)
          */
-        fun actionTextSizeInPx(size: Float) = apply { this.actionTextSizeInPx = size }
+        fun primaryActionTextSizeInPx(size: Float) = apply { this.primaryActionTextSizeInPx = size }
 
         /**
-         * Specifies the action text size (in sp)
+         * Specifies the primary action text size (in sp)
          */
-        fun actionTextSizeInSp(size: Float) = apply { this.actionTextSizeInSp = size }
+        fun primaryActionTextSizeInSp(size: Float) = apply { this.primaryActionTextSizeInSp = size }
 
         /**
-         * Specifies the action text color
+         * Specifies the primary action text color
          */
-        fun actionTextColor(color: Int) = apply { this.actionTextColor = color }
+        fun primaryActionTextColor(color: Int) = apply { this.primaryActionTextColor = color }
 
         /**
-         * Specifies the action text color resource
+         * Specifies the primary action text color resource
          */
-        fun actionTextColorRes(colorId: Int) = apply {
-            this.actionTextColor = ContextCompat.getColor(activity, colorId)
+        fun primaryActionTextColorRes(colorId: Int) = apply {
+            this.primaryActionTextColor = ContextCompat.getColor(activity, colorId)
         }
 
         /**
-         * Specifies the action text appearance
+         * Specifies the primary action text appearance
          */
-        fun actionTextAppearance(@StyleRes appearance: Int) = apply {
-            this.actionTextAppearance = appearance
+        fun primaryActionTextAppearance(@StyleRes appearance: Int) = apply {
+            this.primaryActionTextAppearance = appearance
         }
 
         /**
-         * Sets listener to receive tap events on the action
+         * Sets listener to receive tap events on the primary action
          */
-        fun actionTapListener(onActionTapListener: OnActionTapListener) = apply {
-            this.onActionTapListener = onActionTapListener
+        fun primaryActionTapListener(onActionTapListener: OnActionTapListener) = apply {
+            this.onPrimaryActionTapListener = onActionTapListener
+        }
+
+        /**
+         * Specifies the positive action text string
+         */
+        fun positiveActionText(text: String) = apply {
+            this.positiveActionText = text
+        }
+
+        /**
+         * Specifies the positive action text string resource
+         */
+        fun positiveActionText(@StringRes actionTextId: Int) = apply {
+            positiveActionText(activity.getString(actionTextId))
+        }
+
+        /**
+         * Specifies the positive action text string span
+         */
+        fun positiveActionText(actionText: Spanned) = apply { this.positiveActionTextSpanned = actionText }
+
+        /**
+         * Specifies the positive action text typeface
+         */
+        fun positiveActionTextTypeface(typeface: Typeface) = apply { this.positiveActionTextTypeface = typeface }
+
+        /**
+         * Specifies the positive action text size (in pixels)
+         */
+        fun positiveActionTextSizeInPx(size: Float) = apply { this.positiveActionTextSizeInPx = size }
+
+        /**
+         * Specifies the positive action text size (in sp)
+         */
+        fun positiveActionTextSizeInSp(size: Float) = apply { this.positiveActionTextSizeInSp = size }
+
+        /**
+         * Specifies the positive action text color
+         */
+        fun positiveActionTextColor(color: Int) = apply { this.positiveActionTextColor = color }
+
+        /**
+         * Specifies the positive action text color resource
+         */
+        fun positiveActionTextColorRes(colorId: Int) = apply {
+            this.positiveActionTextColor = ContextCompat.getColor(activity, colorId)
+        }
+
+        /**
+         * Specifies the positive action text appearance
+         */
+        fun positiveActionTextAppearance(@StyleRes appearance: Int) = apply {
+            this.positiveActionTextAppearance = appearance
+        }
+
+        /**
+         * Sets listener to receive tap events on the positive action
+         */
+        fun positiveActionTapListener(onActionTapListener: OnActionTapListener) = apply {
+            this.onPositiveActionTapListener = onActionTapListener
+        }
+
+        /**
+         * Specifies the negative action text string
+         */
+        fun negativeActionText(text: String) = apply {
+            this.negativeActionText = text
+        }
+
+        /**
+         * Specifies the negative action text string resource
+         */
+        fun negativeActionText(@StringRes actionTextId: Int) = apply {
+            negativeActionText(activity.getString(actionTextId))
+        }
+
+        /**
+         * Specifies the negative action text string span
+         */
+        fun negativeActionText(actionText: Spanned) = apply { this.negativeActionTextSpanned = actionText }
+
+        /**
+         * Specifies the negative action text typeface
+         */
+        fun negativeActionTextTypeface(typeface: Typeface) = apply { this.negativeActionTextTypeface = typeface }
+
+        /**
+         * Specifies the negative action text size (in pixels)
+         */
+        fun negativeActionTextSizeInPx(size: Float) = apply { this.negativeActionTextSizeInPx = size }
+
+        /**
+         * Specifies the negative action text size (in sp)
+         */
+        fun negativeActionTextSizeInSp(size: Float) = apply { this.negativeActionTextSizeInSp = size }
+
+        /**
+         * Specifies the negative action text color
+         */
+        fun negativeActionTextColor(color: Int) = apply { this.negativeActionTextColor = color }
+
+        /**
+         * Specifies the negative action text color resource
+         */
+        fun negativeActionTextColorRes(colorId: Int) = apply {
+            this.negativeActionTextColor = ContextCompat.getColor(activity, colorId)
+        }
+
+        /**
+         * Specifies the negative action text appearance
+         */
+        fun negativeActionTextAppearance(@StyleRes appearance: Int) = apply {
+            this.negativeActionTextAppearance = appearance
+        }
+
+        /**
+         * Sets listener to receive tap events on the negative action
+         */
+        fun negativeActionTapListener(onActionTapListener: OnActionTapListener) = apply {
+            this.onNegativeActionTapListener = onActionTapListener
         }
 
         /**
@@ -529,7 +685,7 @@ class Flashbar private constructor(private var builder: Builder) {
                 throw IllegalArgumentException("Cannot show progress at left if icon is already set")
             }
 
-            if (progressPosition == ProgressPosition.RIGHT && actionText != null) {
+            if (progressPosition == ProgressPosition.RIGHT && primaryActionText != null) {
                 throw IllegalArgumentException("Cannot show progress at right if action button is already set")
             }
         }

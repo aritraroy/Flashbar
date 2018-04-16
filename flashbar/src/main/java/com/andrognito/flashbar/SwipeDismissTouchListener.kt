@@ -1,4 +1,4 @@
-package com.andrognito.flashbar.view
+package com.andrognito.flashbar
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter

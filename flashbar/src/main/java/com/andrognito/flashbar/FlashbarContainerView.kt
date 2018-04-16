@@ -20,7 +20,7 @@ import com.andrognito.flashbar.util.NavigationBarPosition.*
 import com.andrognito.flashbar.util.getNavigationBarPosition
 import com.andrognito.flashbar.util.getNavigationBarSizeInPx
 import com.andrognito.flashbar.util.getRootView
-import com.andrognito.flashbar.view.SwipeDismissTouchListener.DismissCallbacks
+import com.andrognito.flashbar.SwipeDismissTouchListener.DismissCallbacks
 
 /**
  * Container view matching the height and width of the parent to hold a FlashbarView.

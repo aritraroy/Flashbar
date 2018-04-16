@@ -18,9 +18,14 @@
         <item name="android:textSize">@dimen/fb_button_text_size</item>
     </style>
 
-    <style name="FbButtonStyle" parent="Widget.AppCompat.Button.Borderless.Colored">
-        <item name="android:minWidth">0dp</item>
-        <item name="android:minHeight">0dp</item>
+    <style name="FbButtonStyle">
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:background">@drawable/fb_button_background_selector</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
     </style>
 
 </resources>

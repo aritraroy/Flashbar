@@ -44,20 +44,32 @@ class MainActivity : AppCompatActivity() {
                                 .pulse()
                                 .duration(400)
                                 .build())
-                        .actionText("DOWNLOAD")
+                        //.primaryActionText("DOWNLOAD")
                         //.modalOverlayColorRes(R.color.modal)
                         //.showProgress(Flashbar.ProgressPosition.RIGHT)
                         .progressTintRes(R.color.colorAccent)
-                        .tapOutsideListener(object: Flashbar.OnTapOutsideListener {
+                        .tapOutsideListener(object : Flashbar.OnTapOutsideListener {
                             override fun onTap(bar: Flashbar) {
                                 Log.d("Flashbar", "Tapped outside")
                             }
                         })
                         .showIcon(true)
                         .enableSwipeToDismiss()
+                        .positiveActionText("OKAY")
+                        .positiveActionTapListener(object : Flashbar.OnActionTapListener {
+                            override fun onActionTapped(bar: Flashbar) {
+                                Log.d("Flashbar", "Positive action tapped")
+                            }
+                        })
+                        .negativeActionText("CANCEL")
+                        .negativeActionTapListener(object : Flashbar.OnActionTapListener {
+                            override fun onActionTapped(bar: Flashbar) {
+                                Log.d("Flashbar", "Negative action tapped")
+                            }
+                        })
                         //.vibrateOn(Flashbar.Vibration.DISMISS)
                         //.dismissOnTapOutside()
-                        .actionTapListener(object : Flashbar.OnActionTapListener {
+                        .primaryActionTapListener(object : Flashbar.OnActionTapListener {
                             override fun onActionTapped(bar: Flashbar) {
                                 Log.d("Flashbar", "onActionTapped")
                                 bar.dismiss()
