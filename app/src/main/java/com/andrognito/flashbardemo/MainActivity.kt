@@ -18,32 +18,12 @@ class MainActivity : AppCompatActivity() {
 
         show.setOnClickListener {
             if (flashbar == null) {
+
                 flashbar = Flashbar.Builder(activity)
-                        .position(Flashbar.FlashbarPosition.BOTTOM)
+                        .position(Flashbar.Position.TOP)
                         .backgroundColorRes(R.color.colorPrimaryDark)
                         .title("Hello!")
                         .message("Loading, please wait...")
-                        .enterAnimation(FlashAnim
-                                .with(activity)
-                                .animateBar()
-                                .enterFrom(FlashAnim.Position.BOTTOM)
-                                .alpha()
-                                .overshoot()
-                                .duration(450)
-                                .build())
-                        .exitAnimation(FlashAnim
-                                .with(activity)
-                                .animateBar()
-                                .exitFrom(FlashAnim.Position.BOTTOM)
-                                .alpha()
-                                .overshoot()
-                                .duration(450)
-                                .build())
-                        .iconAnimation(FlashAnim.with(activity)
-                                .animateIcon()
-                                .pulse()
-                                .duration(400)
-                                .build())
                         //.primaryActionText("DOWNLOAD")
                         //.modalOverlayColorRes(R.color.modal)
                         //.showProgress(Flashbar.ProgressPosition.RIGHT)
@@ -53,6 +33,10 @@ class MainActivity : AppCompatActivity() {
                                 Log.d("Flashbar", "Tapped outside")
                             }
                         })
+                        .enterAnimation(FlashAnim.with(this)
+                                .duration(450)
+                                .overshoot())
+                        .dismissOnTapOutside()
                         .showIcon(true)
                         .enableSwipeToDismiss()
                         .positiveActionText("OKAY")
@@ -85,6 +69,10 @@ class MainActivity : AppCompatActivity() {
                                 Log.d("Flashbar", "onShowing")
                             }
 
+                            override fun onShowProgress(bar: Flashbar, progress: Float) {
+                                Log.d("Flashbar", "onShowProgress: Progress: $progress")
+                            }
+
                             override fun onShown(bar: Flashbar) {
                                 Log.d("Flashbar", "onShown")
                             }
@@ -94,7 +82,11 @@ class MainActivity : AppCompatActivity() {
                                 Log.d("Flashbar", "onDismissing: Swipe $isSwiping")
                             }
 
-                            override fun onDismissed(bar: Flashbar, event: Flashbar.FlashbarDismissEvent) {
+                            override fun onDismissProgress(bar: Flashbar, progress: Float) {
+                                Log.d("Flashbar", "onDismissProgress: Progress $progress")
+                            }
+
+                            override fun onDismissed(bar: Flashbar, event: Flashbar.DismissEvent) {
                                 Log.d("Flashbar", "onDismissed: $event")
                             }
                         })

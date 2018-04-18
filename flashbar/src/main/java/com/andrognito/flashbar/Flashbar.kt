@@ -1,5 +1,6 @@
 package com.andrognito.flashbar
 
+import android.animation.Animator
 import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
@@ -8,9 +9,8 @@ import android.graphics.drawable.Drawable
 import android.support.annotation.*
 import android.support.v4.content.ContextCompat
 import android.text.Spanned
-import com.andrognito.flashbar.FlashAnim.Position
-import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
-import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
+import com.andrognito.flashbar.Flashbar.Position.BOTTOM
+import com.andrognito.flashbar.Flashbar.Position.TOP
 
 class Flashbar private constructor(private var builder: Builder) {
 
@@ -45,7 +45,7 @@ class Flashbar private constructor(private var builder: Builder) {
 
     private fun construct() {
         flashbarContainerView = FlashbarContainerView(builder.activity)
-        flashbarContainerView.adjustPositionAndOrientation(builder.activity)
+        flashbarContainerView.adjustOrientation(builder.activity)
         flashbarContainerView.addParent(this)
 
         flashbarView = FlashbarView(builder.activity)
@@ -71,10 +71,10 @@ class Flashbar private constructor(private var builder: Builder) {
             setModalOverlayColor(builder.modalOverlayColor)
             setModalOverlayBlockable(builder.modalOverlayBlockable)
             setVibrationTargets(builder.vibrationTargets)
-            setIconAnimation(builder.iconAnimation)
+            setIconAnimator(builder.iconAnimator)
 
-            setEnterAnimation(builder.enterAnimation!!)
-            setExitAnimation(builder.exitAnimation!!)
+            setEnterAnim(builder.enterAnimBuilder!!)
+            setExitAnim(builder.exitAnimBuilder!!)
             enableSwipeToDismiss(builder.enableSwipeToDismiss)
         }
     }
@@ -140,7 +140,7 @@ class Flashbar private constructor(private var builder: Builder) {
 
     class Builder(internal var activity: Activity) {
 
-        internal var position: FlashbarPosition = TOP
+        internal var position: Position = TOP
         internal var backgroundColor: Int? = null
         internal var backgroundDrawable: Drawable? = null
         internal var duration: Long = DURATION_INDEFINITE
@@ -205,18 +205,18 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var iconBitmap: Bitmap? = null
         internal var iconColorFilter: Int? = null
         internal var iconColorFilterMode: PorterDuff.Mode? = null
-        internal var iconAnimation: FlashAnim? = null
+        internal var iconAnimator: Animator? = null
         internal var progressTint: Int? = null
         internal var progressTintMode: PorterDuff.Mode? = null
 
-        internal var enterAnimation: FlashAnim? = null
-        internal var exitAnimation: FlashAnim? = null
+        internal var enterAnimBuilder: FlashAnimBuilder? = null
+        internal var exitAnimBuilder: FlashAnimBuilder? = null
 
         /**
          * Specifies the position from where the flashbar will be shown (top/bottom)
          * Default position is TOP
          */
-        fun position(position: FlashbarPosition) = apply { this.position = position }
+        fun position(position: Position) = apply { this.position = position }
 
         /**
          * Specifies the background drawable of the flashbar
@@ -325,12 +325,16 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Specifies the enter animation of the flashbar
          */
-        fun enterAnimation(anim: FlashAnim) = apply { this.enterAnimation = anim }
+        fun enterAnimation(builder: FlashAnimBuilder) = apply {
+            this.enterAnimBuilder = builder
+        }
 
         /**
          * Specifies the exit animation of the flashbar
          */
-        fun exitAnimation(anim: FlashAnim) = apply { this.exitAnimation = anim }
+        fun exitAnimation(builder: FlashAnimBuilder) = apply {
+            this.enterAnimBuilder = builder
+        }
 
         /**
          * Enables swipe-to-dismiss for the flashbar
@@ -671,9 +675,9 @@ class Flashbar private constructor(private var builder: Builder) {
         }
 
         /**
-         * Specifies the icon animation
+         * Specifies the icon animator
          */
-        fun iconAnimation(animation: FlashAnim) = apply { this.iconAnimation = animation }
+        fun iconAnimator(animator: Animator) = apply { this.iconAnimator = animator }
 
         /**
          * Specifies the position in which the indeterminate progress is shown (left/right)
@@ -710,8 +714,7 @@ class Flashbar private constructor(private var builder: Builder) {
          * Builds a flashbar instance
          */
         fun build(): Flashbar {
-            configureDefaultAnim()
-
+            configureAnimation()
             val flashbar = Flashbar(this)
             flashbar.construct()
             return flashbar
@@ -722,18 +725,28 @@ class Flashbar private constructor(private var builder: Builder) {
          */
         fun show() = build().show()
 
-        private fun configureDefaultAnim() {
-            if (enterAnimation == null) {
-                enterAnimation = when (position) {
-                    TOP -> FlashAnim.with(activity).animateBar().enterFrom(Position.TOP).build()
-                    BOTTOM -> FlashAnim.with(activity).animateBar().enterFrom(Position.BOTTOM).build()
+        private fun configureAnimation() {
+            enterAnimBuilder = if (enterAnimBuilder == null) {
+                when (position) {
+                    TOP -> FlashAnim.with(activity).enter().fromTop()
+                    BOTTOM -> FlashAnim.with(activity).enter().fromBottom()
+                }
+            } else {
+                when (position) {
+                    TOP -> enterAnimBuilder!!.enter().fromTop()
+                    BOTTOM -> enterAnimBuilder!!.enter().fromBottom()
                 }
             }
 
-            if (exitAnimation == null) {
-                exitAnimation = when (position) {
-                    TOP -> FlashAnim.with(activity).animateBar().exitFrom(Position.TOP).build()
-                    BOTTOM -> FlashAnim.with(activity).animateBar().exitFrom(Position.BOTTOM).build()
+            exitAnimBuilder = if (exitAnimBuilder == null) {
+                when (position) {
+                    TOP -> FlashAnim.with(activity).exit().fromTop()
+                    BOTTOM -> FlashAnim.with(activity).exit().fromBottom()
+                }
+            } else {
+                when (position) {
+                    TOP -> enterAnimBuilder!!.exit().fromTop()
+                    BOTTOM -> enterAnimBuilder!!.exit().fromBottom()
                 }
             }
         }
@@ -745,9 +758,9 @@ class Flashbar private constructor(private var builder: Builder) {
         const val DURATION_INDEFINITE = -1L
     }
 
-    enum class FlashbarPosition { TOP, BOTTOM }
+    enum class Position { TOP, BOTTOM }
 
-    enum class FlashbarDismissEvent {
+    enum class DismissEvent {
         TIMEOUT,
         MANUAL,
         TAP_OUTSIDE,
@@ -764,7 +777,8 @@ class Flashbar private constructor(private var builder: Builder) {
 
     interface OnBarDismissListener {
         fun onDismissing(bar: Flashbar, isSwiping: Boolean)
-        fun onDismissed(bar: Flashbar, event: FlashbarDismissEvent)
+        fun onDismissProgress(bar: Flashbar, progress: Float)
+        fun onDismissed(bar: Flashbar, event: DismissEvent)
     }
 
     interface OnTapOutsideListener {
@@ -773,6 +787,7 @@ class Flashbar private constructor(private var builder: Builder) {
 
     interface OnBarShowListener {
         fun onShowing(bar: Flashbar)
+        fun onShowProgress(bar: Flashbar, progress: Float)
         fun onShown(bar: Flashbar)
     }
 

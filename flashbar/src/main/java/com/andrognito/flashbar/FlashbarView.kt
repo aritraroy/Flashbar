@@ -1,5 +1,6 @@
 package com.andrognito.flashbar
 
+import android.animation.Animator
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
@@ -20,9 +21,9 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM
 import android.widget.RelativeLayout.ALIGN_PARENT_TOP
-import com.andrognito.flashbar.Flashbar.FlashbarPosition
-import com.andrognito.flashbar.Flashbar.FlashbarPosition.BOTTOM
-import com.andrognito.flashbar.Flashbar.FlashbarPosition.TOP
+import com.andrognito.flashbar.Flashbar.Position
+import com.andrognito.flashbar.Flashbar.Position.BOTTOM
+import com.andrognito.flashbar.Flashbar.Position.TOP
 import com.andrognito.flashbar.Flashbar.ProgressPosition.LEFT
 import com.andrognito.flashbar.Flashbar.ProgressPosition.RIGHT
 import com.andrognito.flashbar.SwipeDismissTouchListener.DismissCallbacks
@@ -47,7 +48,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     private val BOTTOM_COMPENSATION_MARGIN = resources.getDimension(R.dimen.fb_bottom_compensation_margin).toInt()
 
     private lateinit var parentFlashbarContainer: FlashbarContainerView
-    private lateinit var position: FlashbarPosition
+    private lateinit var position: Position
 
     private var isMarginCompensationApplied: Boolean = false
 
@@ -67,7 +68,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     }
 
     internal fun init(
-            position: FlashbarPosition,
+            position: Position,
             castShadow: Boolean,
             shadowStrength: Int?) {
         this.position = position
@@ -89,13 +90,13 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     }
 
     internal fun adjustWitPositionAndOrientation(activity: Activity,
-                                                 flashbarPosition: FlashbarPosition) {
+                                                 position: Position) {
         val flashbarViewLp = RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
         val statusBarHeight = activity.getStatusBarHeightInPx()
 
         val flashbarViewContentLp = fbContent.layoutParams as LinearLayout.LayoutParams
 
-        when (flashbarPosition) {
+        when (position) {
             TOP -> {
                 flashbarViewContentLp.topMargin = statusBarHeight.plus(TOP_COMPENSATION_MARGIN / 2)
                 flashbarViewLp.addRule(ALIGN_PARENT_TOP)
@@ -403,9 +404,10 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         }
     }
 
-    internal fun startIconAnimation(anim: FlashAnim?) {
-        if (anim == null) return
-        fbIcon.startAnimation(anim.animation)
+    internal fun startIconAnimation(animator: Animator?) {
+        if (animator == null) return
+        animator.setTarget(fbIcon)
+        animator.start()
     }
 
     internal fun stopIconAnimation() {

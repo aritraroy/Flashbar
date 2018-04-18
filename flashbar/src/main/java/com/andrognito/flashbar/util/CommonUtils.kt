@@ -85,6 +85,21 @@ private fun Activity.getAppUsableScreenSize(): Point {
     return size
 }
 
+inline fun <T : View> T.afterMeasured(crossinline f: T.() -> Unit) {
+    viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            if (measuredWidth > 0 && measuredHeight > 0) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    viewTreeObserver.removeOnGlobalLayoutListener(this)
+                } else {
+                    viewTreeObserver.removeGlobalOnLayoutListener(this)
+                }
+                f()
+            }
+        }
+    })
+}
+
 internal enum class NavigationBarPosition {
     BOTTOM,
     RIGHT,
