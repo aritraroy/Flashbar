@@ -332,7 +332,7 @@ class Flashbar private constructor(private var builder: Builder) {
          * Specifies the exit animation of the flashbar
          */
         fun exitAnimation(builder: FlashAnimBuilder) = apply {
-            this.enterAnimBuilder = builder
+            this.exitAnimBuilder = builder
         }
 
         /**
@@ -744,8 +744,8 @@ class Flashbar private constructor(private var builder: Builder) {
                 }
             } else {
                 when (gravity) {
-                    TOP -> enterAnimBuilder!!.exit().fromTop()
-                    BOTTOM -> enterAnimBuilder!!.exit().fromBottom()
+                    TOP -> exitAnimBuilder!!.exit().fromTop()
+                    BOTTOM -> exitAnimBuilder!!.exit().fromBottom()
                 }
             }
         }

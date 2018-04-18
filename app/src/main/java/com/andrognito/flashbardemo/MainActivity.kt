@@ -18,9 +18,8 @@ class MainActivity : AppCompatActivity() {
 
         show.setOnClickListener {
             if (flashbar == null) {
-
                 flashbar = Flashbar.Builder(activity)
-                        .gravity(Flashbar.Gravity.BOTTOM)
+                        .gravity(Flashbar.Gravity.TOP)
                         .backgroundColorRes(R.color.colorPrimaryDark)
                         .title("Hello!")
                         .message("Loading, please wait...")
@@ -35,8 +34,15 @@ class MainActivity : AppCompatActivity() {
                         })
                         .enterAnimation(FlashAnim.with(this)
                                 .duration(450)
+                                .slideFromLeft()
+                                .alpha()
                                 .overshoot())
-                        .dismissOnTapOutside()
+                        .exitAnimation(FlashAnim.with(this)
+                                .duration(450)
+                                .slideFromLeft()
+                                .alpha()
+                                .overshoot())
+                        //.dismissOnTapOutside()
                         .showIcon(true)
                         .enableSwipeToDismiss()
                         .positiveActionText("OKAY")
@@ -88,6 +94,7 @@ class MainActivity : AppCompatActivity() {
 
                             override fun onDismissed(bar: Flashbar, event: Flashbar.DismissEvent) {
                                 Log.d("Flashbar", "onDismissed: $event")
+                                flashbar = null
                             }
                         })
                         //.showIcon(true)
@@ -98,7 +105,6 @@ class MainActivity : AppCompatActivity() {
 
         dismiss.setOnClickListener {
             flashbar?.dismiss()
-            flashbar = null
         }
     }
 }
