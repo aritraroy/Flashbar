@@ -7,8 +7,8 @@ import android.support.annotation.InterpolatorRes
 import android.view.animation.*
 import com.andrognito.flashbar.FlashAnimBuilder.Type.ENTER
 import com.andrognito.flashbar.FlashAnimBuilder.Type.EXIT
-import com.andrognito.flashbar.Flashbar.Position.BOTTOM
-import com.andrognito.flashbar.Flashbar.Position.TOP
+import com.andrognito.flashbar.Flashbar.Gravity.BOTTOM
+import com.andrognito.flashbar.Flashbar.Gravity.TOP
 
 class FlashAnimBuilder(private val context: Context) {
 
@@ -19,7 +19,7 @@ class FlashAnimBuilder(private val context: Context) {
 
     private var duration = DEFAULT_DURATION
     private var type: Type? = null
-    private var position: Flashbar.Position? = null
+    private var gravity: Flashbar.Gravity? = null
     private var interpolator: Interpolator? = null
     private var alpha: Boolean = false
 
@@ -69,11 +69,11 @@ class FlashAnimBuilder(private val context: Context) {
     }
 
     internal fun fromTop() = apply {
-        this.position = TOP
+        this.gravity = TOP
     }
 
     internal fun fromBottom() = apply {
-        this.position = BOTTOM
+        this.gravity = BOTTOM
     }
 
     internal fun buildWith(view: FlashbarView): FlashAnim {
@@ -84,11 +84,11 @@ class FlashAnimBuilder(private val context: Context) {
         translationAnim.target = view
 
         when (type!!) {
-            ENTER -> when (position!!) {
+            ENTER -> when (gravity!!) {
                 TOP -> translationAnim.setFloatValues(-view.height.toFloat(), 0f)
                 BOTTOM -> translationAnim.setFloatValues(view.height.toFloat(), 0f)
             }
-            EXIT -> when (position!!) {
+            EXIT -> when (gravity!!) {
                 TOP -> translationAnim.setFloatValues(0f, -view.height.toFloat())
                 BOTTOM -> translationAnim.setFloatValues(0f, view.height.toFloat())
             }

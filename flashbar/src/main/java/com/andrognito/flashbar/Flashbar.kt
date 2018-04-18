@@ -9,8 +9,8 @@ import android.graphics.drawable.Drawable
 import android.support.annotation.*
 import android.support.v4.content.ContextCompat
 import android.text.Spanned
-import com.andrognito.flashbar.Flashbar.Position.BOTTOM
-import com.andrognito.flashbar.Flashbar.Position.TOP
+import com.andrognito.flashbar.Flashbar.Gravity.BOTTOM
+import com.andrognito.flashbar.Flashbar.Gravity.TOP
 
 class Flashbar private constructor(private var builder: Builder) {
 
@@ -49,8 +49,8 @@ class Flashbar private constructor(private var builder: Builder) {
         flashbarContainerView.addParent(this)
 
         flashbarView = FlashbarView(builder.activity)
-        flashbarView.init(builder.position, builder.castShadow, builder.shadowStrength)
-        flashbarView.adjustWitPositionAndOrientation(builder.activity, builder.position)
+        flashbarView.init(builder.gravity, builder.castShadow, builder.shadowStrength)
+        flashbarView.adjustWitPositionAndOrientation(builder.activity, builder.gravity)
         flashbarView.addParent(flashbarContainerView)
 
         flashbarContainerView.attach(flashbarView)
@@ -139,8 +139,7 @@ class Flashbar private constructor(private var builder: Builder) {
     }
 
     class Builder(internal var activity: Activity) {
-
-        internal var position: Position = TOP
+        internal var gravity: Gravity = TOP
         internal var backgroundColor: Int? = null
         internal var backgroundDrawable: Drawable? = null
         internal var duration: Long = DURATION_INDEFINITE
@@ -213,10 +212,10 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var exitAnimBuilder: FlashAnimBuilder? = null
 
         /**
-         * Specifies the position from where the flashbar will be shown (top/bottom)
-         * Default position is TOP
+         * Specifies the gravity from where the flashbar will be shown (top/bottom)
+         * Default gravity is TOP
          */
-        fun position(position: Position) = apply { this.position = position }
+        fun gravity(gravity: Gravity) = apply { this.gravity = gravity }
 
         /**
          * Specifies the background drawable of the flashbar
@@ -680,7 +679,7 @@ class Flashbar private constructor(private var builder: Builder) {
         fun iconAnimator(animator: Animator) = apply { this.iconAnimator = animator }
 
         /**
-         * Specifies the position in which the indeterminate progress is shown (left/right)
+         * Specifies the gravity in which the indeterminate progress is shown (left/right)
          */
         fun showProgress(position: ProgressPosition) = apply {
             this.progressPosition = position
@@ -727,24 +726,24 @@ class Flashbar private constructor(private var builder: Builder) {
 
         private fun configureAnimation() {
             enterAnimBuilder = if (enterAnimBuilder == null) {
-                when (position) {
+                when (gravity) {
                     TOP -> FlashAnim.with(activity).enter().fromTop()
                     BOTTOM -> FlashAnim.with(activity).enter().fromBottom()
                 }
             } else {
-                when (position) {
+                when (gravity) {
                     TOP -> enterAnimBuilder!!.enter().fromTop()
                     BOTTOM -> enterAnimBuilder!!.enter().fromBottom()
                 }
             }
 
             exitAnimBuilder = if (exitAnimBuilder == null) {
-                when (position) {
+                when (gravity) {
                     TOP -> FlashAnim.with(activity).exit().fromTop()
                     BOTTOM -> FlashAnim.with(activity).exit().fromBottom()
                 }
             } else {
-                when (position) {
+                when (gravity) {
                     TOP -> enterAnimBuilder!!.exit().fromTop()
                     BOTTOM -> enterAnimBuilder!!.exit().fromBottom()
                 }
@@ -758,7 +757,7 @@ class Flashbar private constructor(private var builder: Builder) {
         const val DURATION_INDEFINITE = -1L
     }
 
-    enum class Position { TOP, BOTTOM }
+    enum class Gravity { TOP, BOTTOM }
 
     enum class DismissEvent {
         TIMEOUT,

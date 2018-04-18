@@ -21,9 +21,9 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM
 import android.widget.RelativeLayout.ALIGN_PARENT_TOP
-import com.andrognito.flashbar.Flashbar.Position
-import com.andrognito.flashbar.Flashbar.Position.BOTTOM
-import com.andrognito.flashbar.Flashbar.Position.TOP
+import com.andrognito.flashbar.Flashbar.Gravity
+import com.andrognito.flashbar.Flashbar.Gravity.BOTTOM
+import com.andrognito.flashbar.Flashbar.Gravity.TOP
 import com.andrognito.flashbar.Flashbar.ProgressPosition.LEFT
 import com.andrognito.flashbar.Flashbar.ProgressPosition.RIGHT
 import com.andrognito.flashbar.SwipeDismissTouchListener.DismissCallbacks
@@ -48,7 +48,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     private val BOTTOM_COMPENSATION_MARGIN = resources.getDimension(R.dimen.fb_bottom_compensation_margin).toInt()
 
     private lateinit var parentFlashbarContainer: FlashbarContainerView
-    private lateinit var position: Position
+    private lateinit var gravity: Gravity
 
     private var isMarginCompensationApplied: Boolean = false
 
@@ -59,7 +59,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
             isMarginCompensationApplied = true
 
             val params = layoutParams as ViewGroup.MarginLayoutParams
-            when (position) {
+            when (gravity) {
                 TOP -> params.topMargin = -TOP_COMPENSATION_MARGIN
                 BOTTOM -> params.bottomMargin = -BOTTOM_COMPENSATION_MARGIN
             }
@@ -68,15 +68,15 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     }
 
     internal fun init(
-            position: Position,
+            gravity: Gravity,
             castShadow: Boolean,
             shadowStrength: Int?) {
-        this.position = position
+        this.gravity = gravity
         this.orientation = VERTICAL
 
         // If the bar appears with the bottom, then the shadow needs to added to the top of it.
         // Thus, before the inflation of the bar
-        if (castShadow && position == BOTTOM) {
+        if (castShadow && gravity == BOTTOM) {
             castShadow(ShadowView.ShadowType.TOP, shadowStrength ?: DEFAULT_ELEVATION)
         }
 
@@ -84,19 +84,19 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
 
         // If the bar appears with the top, then the shadow needs to added to the bottom of it.
         // Thus, after the inflation of the bar
-        if (castShadow && position == TOP) {
+        if (castShadow && gravity == TOP) {
             castShadow(ShadowView.ShadowType.BOTTOM, shadowStrength ?: DEFAULT_ELEVATION)
         }
     }
 
     internal fun adjustWitPositionAndOrientation(activity: Activity,
-                                                 position: Position) {
+                                                 gravity: Gravity) {
         val flashbarViewLp = RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
         val statusBarHeight = activity.getStatusBarHeightInPx()
 
         val flashbarViewContentLp = fbContent.layoutParams as LinearLayout.LayoutParams
 
-        when (position) {
+        when (gravity) {
             TOP -> {
                 flashbarViewContentLp.topMargin = statusBarHeight.plus(TOP_COMPENSATION_MARGIN / 2)
                 flashbarViewLp.addRule(ALIGN_PARENT_TOP)

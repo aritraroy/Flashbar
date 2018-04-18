@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
             if (flashbar == null) {
 
                 flashbar = Flashbar.Builder(activity)
-                        .position(Flashbar.Position.TOP)
+                        .gravity(Flashbar.Gravity.BOTTOM)
                         .backgroundColorRes(R.color.colorPrimaryDark)
                         .title("Hello!")
                         .message("Loading, please wait...")
