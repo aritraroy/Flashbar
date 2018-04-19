@@ -4,4 +4,5 @@
     <color name="white">#fff</color>
     <color name="shadow_color">#94444444</color>
     <color name="translucent_black">#22000000</color>
+    <color name="modal">#80272727</color>
 </resources>

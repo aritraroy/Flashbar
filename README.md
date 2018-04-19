@@ -42,6 +42,16 @@ Flashbar.Builder(this)
         .build()
 ```
 
+You can specify the duration (in millis) for which you want the flashbar to be displayed. The default duration is infinite, i.e. it won't dismiss automatically if you do not specify any duration.
+
+```
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .duration(500)
+        .message("This is a flashbar with duration")
+        .build()
+```
+
 ## Gravity
 You can show the flashbar either at the top or at the bottom of the screen using the gravity property. By default it is shown at the bottom.
 
@@ -105,4 +115,50 @@ Flashbar.Builder(this)
         .build()
 ```
 
+## Background & Overlay
+You can change the background color of the flashbar and add a modal overlay as well.
+
+####  Background
+```
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("The background color can be changed to any color of your choice.")
+        .backgroundColorRes(R.color.colorPrimaryDark)
+        .build()
+```
+You can also change the background using drawables, like have a cool gradient effect.
+
+```
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can have gradients by setting background drawable.")
+        .backgroundDrawable(R.drawable.bg_gradient)
+        .build()
+```
+####  Overlay
+
+```
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can show a modal overlay to give a dim effect in the entire screen.")
+        .backgroundColorRes(R.color.colorPrimaryDark)
+        .showOverlay()
+        .build()
+```
+You can also customize the overlay color using `overlayColor()` and also make the overlay consume click/touch events using `overlayBlockable()`.
+
+```
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can show a modal overlay to give a dim effect in the entire screen.")
+        .backgroundColorRes(R.color.colorPrimaryDark)
+        .showOverlay()
+        .overlayColorRes(R.color.modal)
+        .overlayBlockable()
+        .build()
+```
 

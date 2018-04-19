@@ -41,7 +41,7 @@ internal class FlashbarContainerView(context: Context)
     private var onBarShowListener: Flashbar.OnBarShowListener? = null
     private var onBarDismissListener: Flashbar.OnBarDismissListener? = null
     private var onTapOutsideListener: Flashbar.OnTapOutsideListener? = null
-    private var modalOverlayColor: Int? = null
+    private var overlayColor: Int? = null
     private var iconAnimator: Animator? = null
 
     private var duration = DURATION_INDEFINITE
@@ -49,7 +49,8 @@ internal class FlashbarContainerView(context: Context)
     private var isBarShown = false
     private var isBarDismissing = false
     private var barDismissOnTapOutside: Boolean = false
-    private var modalOverlayBlockable: Boolean = false
+    private var showOverlay: Boolean = false
+    private var overlayBlockable: Boolean = false
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
@@ -97,10 +98,10 @@ internal class FlashbarContainerView(context: Context)
     internal fun construct() {
         isHapticFeedbackEnabled = true
 
-        if (modalOverlayColor != null) {
-            setBackgroundColor(modalOverlayColor!!)
+        if (showOverlay) {
+            setBackgroundColor(overlayColor!!)
 
-            if (modalOverlayBlockable) {
+            if (overlayBlockable) {
                 isClickable = true
                 isFocusable = true
             }
@@ -195,12 +196,16 @@ internal class FlashbarContainerView(context: Context)
         this.onTapOutsideListener = listener
     }
 
-    internal fun setModalOverlayColor(color: Int?) {
-        this.modalOverlayColor = color
+    internal fun setOverlay(overlay: Boolean) {
+        this.showOverlay = overlay
     }
 
-    internal fun setModalOverlayBlockable(blockable: Boolean) {
-        this.modalOverlayBlockable = blockable
+    internal fun setOverlayColor(color: Int) {
+        this.overlayColor = color
+    }
+
+    internal fun setOverlayBlockable(blockable: Boolean) {
+        this.overlayBlockable = blockable
     }
 
     internal fun setEnterAnim(builder: FlashAnimBuilder) {

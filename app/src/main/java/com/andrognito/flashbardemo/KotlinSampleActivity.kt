@@ -34,6 +34,14 @@ class KotlinSampleActivity : AppCompatActivity() {
                 .build()
     }
 
+    private fun basicDuration(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .duration(500)
+                .message("This is a flashbar with duration")
+                .build()
+    }
+
     private fun gravityTop(): Flashbar {
         return Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.TOP)
@@ -80,6 +88,46 @@ class KotlinSampleActivity : AppCompatActivity() {
                 .messageColor(ContextCompat.getColor(this, R.color.white))
                 .messageSizeInSp(16f)
                 .messageTypeface(Typeface.createFromAsset(assets, "BeautifulAndOpenHearted.ttf"))
+                .build()
+    }
+
+    private fun background(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("The background color can be changed to any color of your choice.")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .build()
+    }
+
+    private fun backgroundDrawable(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can have gradients by setting background drawable.")
+                .backgroundDrawable(R.drawable.bg_gradient)
+                .build()
+    }
+
+    private fun overlay(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show a modal overlay to give a dim effect in the entire screen.")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .showOverlay()
+                .build()
+    }
+
+    private fun overlayAdvanced(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show a modal overlay to give a dim effect in the entire screen.")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .showOverlay()
+                .overlayColorRes(R.color.modal)
+                .overlayBlockable()
                 .build()
     }
 }

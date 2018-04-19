@@ -26,7 +26,7 @@ public class JavaSampleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flashbar == null) {
-                    flashbar = messageAdvanced();
+                    flashbar = overlayAdvanced();
                 }
                 flashbar.show();
             }
@@ -47,6 +47,14 @@ public class JavaSampleActivity extends AppCompatActivity {
         return new Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.TOP)
                 .message("This is a basic flashbar")
+                .build();
+    }
+
+    private Flashbar basicDuration() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .duration(500)
+                .message("This is a flashbar with duration")
                 .build();
     }
 
@@ -98,6 +106,46 @@ public class JavaSampleActivity extends AppCompatActivity {
                 .messageSizeInSp(16)
                 .messageTypeface(
                         Typeface.createFromAsset(getAssets(), "BeautifulAndOpenHearted.ttf"))
+                .build();
+    }
+
+    private Flashbar background() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("The background color can be changed to any color of your choice.")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .build();
+    }
+
+    private Flashbar backgroundDrawable() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("The background color can be changed to any color of your choice.")
+                .backgroundDrawable(R.drawable.bg_gradient)
+                .build();
+    }
+
+    private Flashbar overlay() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show a modal overlay to give a dim effect in the entire screen.")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .showOverlay()
+                .build();
+    }
+
+    private Flashbar overlayAdvanced() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show a modal overlay to give a dim effect in the entire screen.")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .showOverlay()
+                .overlayColorRes(R.color.modal)
+                .overlayBlockable()
                 .build();
     }
 }

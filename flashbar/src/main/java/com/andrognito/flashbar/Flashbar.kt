@@ -68,8 +68,9 @@ class Flashbar private constructor(private var builder: Builder) {
             setBarDismissListener(builder.onBarDismissListener)
             setBarDismissOnTapOutside(builder.barDismissOnTapOutside)
             setOnTapOutsideListener(builder.onTapOutsideListener)
-            setModalOverlayColor(builder.modalOverlayColor)
-            setModalOverlayBlockable(builder.modalOverlayBlockable)
+            setOverlay(builder.overlay)
+            setOverlayColor(builder.overlayColor)
+            setOverlayBlockable(builder.overlayBlockable)
             setVibrationTargets(builder.vibrationTargets)
             setIconAnimator(builder.iconAnimator)
 
@@ -148,13 +149,13 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var onBarDismissListener: OnBarDismissListener? = null
         internal var barDismissOnTapOutside: Boolean = false
         internal var onTapOutsideListener: OnTapOutsideListener? = null
-        internal var modalOverlayColor: Int? = null
-        internal var modalOverlayBlockable: Boolean = false
+        internal var overlay: Boolean = false
+        internal var overlayColor: Int = ContextCompat.getColor(activity, R.color.modal)
+        internal var overlayBlockable: Boolean = false
         internal var castShadow: Boolean = true
         internal var shadowStrength: Int? = null
         internal var enableSwipeToDismiss: Boolean = false
         internal var vibrationTargets: List<Vibration> = emptyList()
-        internal var progressPosition: ProgressPosition? = null
 
         internal var title: String? = null
         internal var titleSpanned: Spanned? = null
@@ -205,6 +206,8 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var iconColorFilter: Int? = null
         internal var iconColorFilterMode: PorterDuff.Mode? = null
         internal var iconAnimator: Animator? = null
+
+        internal var progressPosition: ProgressPosition? = null
         internal var progressTint: Int? = null
         internal var progressTintMode: PorterDuff.Mode? = null
 
@@ -286,24 +289,28 @@ class Flashbar private constructor(private var builder: Builder) {
         }
 
         /**
-         * Specifies modal overlay color
-         * Modal overlay is automatically shown if color is set
+         * Specifies if modal overlay should be shown
          */
-        fun modalOverlayColor(@ColorInt color: Int) = apply { this.modalOverlayColor = color }
+        fun showOverlay() = apply { this.overlay = true }
+
+        /**
+         * Specifies modal overlay color
+         */
+        fun overlayColor(@ColorInt color: Int) = apply { this.overlayColor = color }
 
         /**
          * Specifies modal overlay color resource
          * Modal overlay is automatically shown if color is set
          */
-        fun modalOverlayColorRes(@ColorRes colorId: Int) = apply {
-            this.modalOverlayColor = ContextCompat.getColor(activity, colorId)
+        fun overlayColorRes(@ColorRes colorId: Int) = apply {
+            this.overlayColor = ContextCompat.getColor(activity, colorId)
         }
 
         /**
          * Specifies if modal overlay is blockable and should comsume touch events
          */
-        fun modalOverlayBlockable(blockable: Boolean) = apply {
-            this.modalOverlayBlockable = blockable
+        fun overlayBlockable() = apply {
+            this.overlayBlockable = true
         }
 
         /**
