@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="com.andrognito.flashbardemo.MainActivity">
+    tools:context="com.andrognito.flashbardemo.KotlinSampleActivity">
 
     <Button
         android:id="@+id/show"

@@ -139,7 +139,7 @@ class Flashbar private constructor(private var builder: Builder) {
     }
 
     class Builder(internal var activity: Activity) {
-        internal var gravity: Gravity = TOP
+        internal var gravity: Gravity = BOTTOM
         internal var backgroundColor: Int? = null
         internal var backgroundDrawable: Drawable? = null
         internal var duration: Long = DURATION_INDEFINITE
@@ -382,12 +382,12 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Specifies the title color
          */
-        fun titleColor(color: Int) = apply { this.titleColor = color }
+        fun titleColor(@ColorInt color: Int) = apply { this.titleColor = color }
 
         /**
          * Specifies the title color resource
          */
-        fun titleColorRes(colorId: Int) = apply {
+        fun titleColorRes(@ColorRes colorId: Int) = apply {
             this.titleColor = ContextCompat.getColor(activity, colorId)
         }
 
@@ -433,12 +433,12 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Specifies the message color
          */
-        fun messageColor(color: Int) = apply { this.messageColor = color }
+        fun messageColor(@ColorInt color: Int) = apply { this.messageColor = color }
 
         /**
          * Specifies the message color resource
          */
-        fun messageColorRes(colorId: Int) = apply {
+        fun messageColorRes(@ColorRes colorId: Int) = apply {
             this.messageColor = ContextCompat.getColor(activity, colorId)
         }
 
@@ -446,7 +446,7 @@ class Flashbar private constructor(private var builder: Builder) {
          * Specifies the message appearance
          */
         fun messageAppearance(@StyleRes appearance: Int) = apply {
-            this.titleAppearance = appearance
+            this.messageAppearance = appearance
         }
 
         /**
@@ -488,12 +488,12 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Specifies the primary action text color
          */
-        fun primaryActionTextColor(color: Int) = apply { this.primaryActionTextColor = color }
+        fun primaryActionTextColor(@ColorInt color: Int) = apply { this.primaryActionTextColor = color }
 
         /**
          * Specifies the primary action text color resource
          */
-        fun primaryActionTextColorRes(colorId: Int) = apply {
+        fun primaryActionTextColorRes(@ColorRes colorId: Int) = apply {
             this.primaryActionTextColor = ContextCompat.getColor(activity, colorId)
         }
 
@@ -548,12 +548,12 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Specifies the positive action text color
          */
-        fun positiveActionTextColor(color: Int) = apply { this.positiveActionTextColor = color }
+        fun positiveActionTextColor(@ColorInt color: Int) = apply { this.positiveActionTextColor = color }
 
         /**
          * Specifies the positive action text color resource
          */
-        fun positiveActionTextColorRes(colorId: Int) = apply {
+        fun positiveActionTextColorRes(@ColorRes colorId: Int) = apply {
             this.positiveActionTextColor = ContextCompat.getColor(activity, colorId)
         }
 
@@ -608,12 +608,12 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Specifies the negative action text color
          */
-        fun negativeActionTextColor(color: Int) = apply { this.negativeActionTextColor = color }
+        fun negativeActionTextColor(@ColorInt color: Int) = apply { this.negativeActionTextColor = color }
 
         /**
          * Specifies the negative action text color resource
          */
-        fun negativeActionTextColorRes(colorId: Int) = apply {
+        fun negativeActionTextColorRes(@ColorRes colorId: Int) = apply {
             this.negativeActionTextColor = ContextCompat.getColor(activity, colorId)
         }
 
