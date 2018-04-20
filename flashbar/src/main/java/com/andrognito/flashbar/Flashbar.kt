@@ -687,7 +687,7 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Specifies the icon builder
          */
-        fun iconAnimator(builder: FlashAnimIconBuilder) = apply { this.iconAnimBuilder = builder }
+        fun iconAnimation(builder: FlashAnimIconBuilder) = apply { this.iconAnimBuilder = builder }
 
         /**
          * Specifies the gravity in which the indeterminate progress is shown (left/right)

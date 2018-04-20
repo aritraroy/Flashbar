@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import com.andrognito.flashbar.Flashbar
+import com.andrognito.flashbar.anim.FlashAnim
 import kotlinx.android.synthetic.main.activity_main.*
 
 class KotlinSampleActivity : AppCompatActivity() {
@@ -228,6 +229,61 @@ class KotlinSampleActivity : AppCompatActivity() {
                 .backgroundColorRes(R.color.colorPrimaryDark)
                 .showProgress(Flashbar.ProgressPosition.RIGHT)
                 .progressTintRes(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP)
+                .build()
+    }
+
+    private fun enterExitAnimation(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can change the enter/exit animation of the flashbar")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .enterAnimation(FlashAnim.with(this)
+                        .animateBar()
+                        .duration(750)
+                        .alpha()
+                        .overshoot())
+                .exitAnimation(FlashAnim.with(this)
+                        .animateBar()
+                        .duration(400)
+                        .accelerateDecelerate())
+                .build()
+    }
+
+    private fun enterExitAnimationSlide(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can change the enter/exit animation of the flashbar")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .enterAnimation(FlashAnim.with(this)
+                        .animateBar()
+                        .duration(400)
+                        .slideFromLeft()
+                        .overshoot())
+                .exitAnimation(FlashAnim.with(this)
+                        .animateBar()
+                        .duration(250)
+                        .slideFromLeft()
+                        .accelerate())
+                .build()
+    }
+
+    private fun iconAnimation(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show a default icon on the left side of the with view.")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .showIcon()
+                .icon(R.drawable.ic_drop)
+                .iconColorFilterRes(R.color.colorAccent)
+                .iconAnimation(FlashAnim.with(this)
+                        .animateIcon()
+                        .pulse()
+                        .alpha()
+                        .duration(750)
+                        .accelerate())
                 .build()
     }
 }

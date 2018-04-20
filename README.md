@@ -267,7 +267,7 @@ You might also want to show indeterminate progress bars to indicate that you are
 
 If the progress bar is shown in the left side, then you cannot show the icon with it. If the progress bar is shown in the right side, then you cannot show the action button along with it.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
         .title("Hello World!")
@@ -278,7 +278,7 @@ Flashbar.Builder(this)
 
 You can also change the color of the progress and also apply custom filter modes.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
         .title("Hello World!")
@@ -290,3 +290,70 @@ Flashbar.Builder(this)
 ```
 
 ## Animations
+
+You can customize the enter/exit animation of the flashbar. You can also add custom animations to the icon. The library provides a fluent API styled animation framework to customize these animations.
+
+### Enter/Exit
+You can start animating the bar using `FlashAnim.with(this).animateBar()`. You can change the duration of the animation using `duration()`, apply custom interpolators using `interpolator()` or choosing from a set of interpolators available, add alpha transition using `alpha()`.
+
+```kotlin
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can change the enter/exit animation of the flashbar")
+        .backgroundColorRes(R.color.colorPrimaryDark)
+        .enterAnimation(FlashAnim.with(this)
+                .animateBar()
+                .duration(750)
+                .alpha()
+                .overshoot())
+        .exitAnimation(FlashAnim.with(this)
+                .animateBar()
+                .duration(400)
+                .accelerateDecelerate())
+        .build()
+```
+
+You can also make the flashbar enter/exit from the left/right side of the screen.
+
+```kotlin
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can change the enter/exit animation of the flashbar")
+        .backgroundColorRes(R.color.colorPrimaryDark)
+        .enterAnimation(FlashAnim.with(this)
+                .animateBar()
+                .duration(400)
+                .slideFromLeft()
+                .overshoot())
+        .exitAnimation(FlashAnim.with(this)
+                .animateBar()
+                .duration(250)
+                .slideFromLeft()
+                .accelerate())
+        .build()
+```
+
+### Icon
+You can start animating the icon using `FlashAnim.with(this).animateIcon()`. You can change the duration of the animation using `duration()`, apply custom interpolators using `interpolator()` or choosing from a set of interpolators available, add pulsating effect using `pulse()` and alpha transition using `alpha()` too.
+
+```kotlin
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can show a default icon on the left side of the with view.")
+        .backgroundColorRes(R.color.colorPrimaryDark)
+        .showIcon()
+        .icon(R.drawable.ic_drop)
+        .iconColorFilterRes(R.color.colorAccent)
+        .iconAnimation(FlashAnim.with(this)
+                .animateIcon()
+                .pulse()
+                .alpha()
+                .duration(750)
+                .accelerate())
+        .build()
+```
+
+## Listeners

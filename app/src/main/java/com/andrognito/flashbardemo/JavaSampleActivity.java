@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.andrognito.flashbar.Flashbar;
+import com.andrognito.flashbar.anim.FlashAnim;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +30,7 @@ public class JavaSampleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flashbar == null) {
-                    flashbar = progressAdvanced();
+                    flashbar = iconAnimation();
                 }
                 flashbar.show();
             }
@@ -240,7 +241,9 @@ public class JavaSampleActivity extends AppCompatActivity {
         return new Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.TOP)
                 .title("Hello World!")
-                .message("You can show the progress bar on either the left or right side of the view")
+                .message(
+                        "You can show the progress bar on either the left or right side of the "
+                                + "view")
                 .showProgress(Flashbar.ProgressPosition.LEFT)
                 .build();
     }
@@ -249,10 +252,67 @@ public class JavaSampleActivity extends AppCompatActivity {
         return new Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.TOP)
                 .title("Hello World!")
-                .message("You can show the progress bar on either the left or right side of the view")
+                .message(
+                        "You can show the progress bar on either the left or right side of the "
+                                + "view")
                 .backgroundColorRes(R.color.colorPrimaryDark)
                 .showProgress(Flashbar.ProgressPosition.RIGHT)
                 .progressTintRes(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP)
+                .build();
+    }
+
+    private Flashbar enterExitAnimation() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can change the enter/exit animation of the flashbar")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .enterAnimation(FlashAnim.with(this)
+                        .animateBar()
+                        .duration(750)
+                        .alpha()
+                        .overshoot())
+                .exitAnimation(FlashAnim.with(this)
+                        .animateBar()
+                        .duration(400)
+                        .accelerateDecelerate())
+                .build();
+    }
+
+    private Flashbar enterExitAnimationSlide() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can change the enter/exit animation of the flashbar")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .enterAnimation(FlashAnim.with(this)
+                        .animateBar()
+                        .duration(400)
+                        .slideFromLeft()
+                        .overshoot())
+                .exitAnimation(FlashAnim.with(this)
+                        .animateBar()
+                        .duration(250)
+                        .slideFromLeft()
+                        .accelerate())
+                .build();
+    }
+
+    private Flashbar iconAnimation() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show a default icon on the left side of the with view.")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .showIcon()
+                .icon(R.drawable.ic_drop)
+                .iconColorFilterRes(R.color.colorAccent)
+                .iconAnimation(FlashAnim.with(this)
+                        .animateIcon()
+                        .pulse()
+                        .alpha()
+                        .duration(750)
+                        .accelerate())
                 .build();
     }
 }
