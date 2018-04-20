@@ -1,5 +1,6 @@
 package com.andrognito.flashbardemo
 
+import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -186,6 +187,47 @@ class KotlinSampleActivity : AppCompatActivity() {
                 })
                 .positiveActionTextColorRes(R.color.colorAccent)
                 .negativeActionTextColorRes(R.color.colorAccent)
+                .build()
+    }
+
+    private fun iconBasic(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show a default icon on the left side of the with view.")
+                .showIcon()
+                .build()
+    }
+
+    private fun iconAdvanced(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show a default icon on the left side of the with view.")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .showIcon()
+                .icon(R.drawable.ic_drop)
+                .iconColorFilterRes(R.color.colorAccent)
+                .build()
+    }
+
+    private fun progressBasic(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show the progress bar on either the left or right side of the view")
+                .showProgress(Flashbar.ProgressPosition.LEFT)
+                .build()
+    }
+
+    private fun progressAdvanced(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show the progress bar on either the left or right side of the view")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .showProgress(Flashbar.ProgressPosition.RIGHT)
+                .progressTintRes(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP)
                 .build()
     }
 }

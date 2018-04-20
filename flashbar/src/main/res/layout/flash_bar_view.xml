@@ -29,8 +29,8 @@
                 android:layout_width="@dimen/fb_progress_size"
                 android:layout_height="@dimen/fb_progress_size"
                 android:layout_gravity="center_vertical"
-                android:layout_marginEnd="@dimen/fb_margin_right_icon"
-                android:layout_marginRight="@dimen/fb_margin_right_icon"
+                android:layout_marginEnd="@dimen/fb_margin_progress"
+                android:layout_marginRight="@dimen/fb_margin_progress"
                 android:indeterminate="true"
                 android:visibility="gone"
                 app:mpb_indeterminateTint="@color/white" />
@@ -68,6 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/fb_title_message_margin"
+                    android:justificationMode="inter_word"
                     android:textAppearance="@style/FbMessageStyle"
                     android:visibility="gone"
                     tools:text="A quick brown fox jumps of the lazy dog."
@@ -91,6 +92,8 @@
                 android:layout_width="@dimen/fb_progress_size"
                 android:layout_height="@dimen/fb_progress_size"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/fb_margin_progress"
+                android:layout_marginStart="@dimen/fb_margin_progress"
                 android:indeterminate="true"
                 android:visibility="gone"
                 app:mpb_indeterminateTint="@color/white" />

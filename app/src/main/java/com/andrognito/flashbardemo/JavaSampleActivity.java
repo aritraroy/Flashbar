@@ -1,5 +1,6 @@
 package com.andrognito.flashbardemo;
 
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.andrognito.flashbar.Flashbar;
-import com.andrognito.flashbar.anim.FlashAnim;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +29,7 @@ public class JavaSampleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flashbar == null) {
-                    flashbar = iconAdvanced();
+                    flashbar = progressAdvanced();
                 }
                 flashbar.show();
             }
@@ -219,8 +219,7 @@ public class JavaSampleActivity extends AppCompatActivity {
         return new Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.TOP)
                 .title("Hello World!")
-                .message("You can show a default icon on the left side of the withView")
-                .backgroundColorRes(R.color.colorPrimaryDark)
+                .message("You can show a default icon on the left side of the with view.")
                 .showIcon()
                 .build();
     }
@@ -229,13 +228,31 @@ public class JavaSampleActivity extends AppCompatActivity {
         return new Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.TOP)
                 .title("Hello World!")
-                .message("You can show a default icon on the left side of the withView")
+                .message("You can show a default icon on the left side of the with view.")
                 .backgroundColorRes(R.color.colorPrimaryDark)
                 .showIcon()
-                .enterAnimation(FlashAnim.with(this).animateBar().overshoot().alpha().duration(750))
                 .icon(R.drawable.ic_drop)
                 .iconColorFilterRes(R.color.colorAccent)
-                .iconAnimator(FlashAnim.with(this).animateIcon().alpha().pulse(1.0f).duration(750))
+                .build();
+    }
+
+    private Flashbar progressBasic() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show the progress bar on either the left or right side of the view")
+                .showProgress(Flashbar.ProgressPosition.LEFT)
+                .build();
+    }
+
+    private Flashbar progressAdvanced() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show the progress bar on either the left or right side of the view")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .showProgress(Flashbar.ProgressPosition.RIGHT)
+                .progressTintRes(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP)
                 .build();
     }
 }

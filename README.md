@@ -237,3 +237,56 @@ You can show icon (left) and progress bar (left or right) in the flashbar. You c
 
 ### Icon
 You can show an icon in the left side of the view using `showIcon()` which will show a default icon.
+
+```kotlin
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can show a default icon on the left side of the withView")
+        .showIcon()
+        .build()
+```
+
+You can also use your custom icon (drawable or bitmap) and apply color filters (change modes too) on it easily.
+
+```kotlin
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can show a default icon on the left side of the withView")
+        .backgroundColorRes(R.color.colorPrimaryDark)
+        .showIcon()
+        .icon(R.drawable.ic_drop)
+        .iconColorFilterRes(R.color.colorAccent)
+        .build()
+
+```
+
+### Progress
+You might also want to show indeterminate progress bars to indicate that you are fetching some data or downloading a file. The progress bars can be shown at either the left or the right side of the view.
+
+If the progress bar is shown in the left side, then you cannot show the icon with it. If the progress bar is shown in the right side, then you cannot show the action button along with it.
+
+```
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can show the progress bar on either the left or right side of the view")
+        .showProgress(Flashbar.ProgressPosition.LEFT)
+        .build()
+```
+
+You can also change the color of the progress and also apply custom filter modes.
+
+```
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can show the progress bar on either the left or right side of the view")
+        .backgroundColorRes(R.color.colorPrimaryDark)
+        .showProgress(Flashbar.ProgressPosition.RIGHT)
+        .progressTintRes(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP)
+        .build()
+```
+
+## Animations
