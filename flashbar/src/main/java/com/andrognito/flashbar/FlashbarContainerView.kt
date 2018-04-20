@@ -142,7 +142,7 @@ internal class FlashbarContainerView(context: Context)
 
         activityRootView.afterMeasured {
             val enterAnim = enterAnimBuilder.withView(flashbarView).build()
-            enterAnim.start(object : FlashAnim.AnimationListener {
+            enterAnim.start(object : FlashAnim.InternalAnimListener {
                 override fun onStart() {
                     isBarShowing = true
                     onBarShowListener?.onShowing(parentFlashbar)
@@ -242,7 +242,7 @@ internal class FlashbarContainerView(context: Context)
         }
 
         val exitAnim = exitAnimBuilder.withView(flashbarView).build()
-        exitAnim.start(object : FlashAnim.AnimationListener {
+        exitAnim.start(object : FlashAnim.InternalAnimListener {
             override fun onStart() {
                 isBarDismissing = true
                 onBarDismissListener?.onDismissing(parentFlashbar, false)

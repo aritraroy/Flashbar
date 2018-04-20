@@ -11,9 +11,14 @@ import android.support.annotation.InterpolatorRes
 import android.view.View
 import android.view.animation.Interpolator
 
-class FlashAnimIconBuilder(private val context: Context) : BaseFlashAnimBuilder(context) {
+class FlashAnimIconBuilder(context: Context) : BaseFlashAnimBuilder(context) {
+
+    private val DEFAULT_PULSE_START = 1.0f
+    private val DEFAULT_PULSE_END = 0.6f
 
     private var pulse: Boolean = false
+    private var pulseStart = 0f
+    private var pulseEnd = 0f
 
     override fun withView(view: View) = apply { super.withView(view) }
 
@@ -35,8 +40,11 @@ class FlashAnimIconBuilder(private val context: Context) : BaseFlashAnimBuilder(
 
     override fun alpha() = apply { super.alpha() }
 
-    fun pulse() = apply {
+    @JvmOverloads
+    fun pulse(start: Float = DEFAULT_PULSE_START, end: Float = DEFAULT_PULSE_END) = apply {
         this.pulse = true
+        this.pulseStart = start
+        this.pulseEnd = end
     }
 
     internal fun build(): FlashAnim {
@@ -47,8 +55,8 @@ class FlashAnimIconBuilder(private val context: Context) : BaseFlashAnimBuilder(
 
         if (pulse) {
             val scaleAnim = ObjectAnimator.ofPropertyValuesHolder(view,
-                    PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.6f),
-                    PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.6f))
+                    PropertyValuesHolder.ofFloat("scaleX", pulseStart, pulseEnd),
+                    PropertyValuesHolder.ofFloat("scaleY", pulseStart, pulseEnd))
 
             scaleAnim.repeatCount = INFINITE
             scaleAnim.repeatMode = REVERSE
@@ -69,6 +77,7 @@ class FlashAnimIconBuilder(private val context: Context) : BaseFlashAnimBuilder(
 
         compositeAnim.duration = duration
         compositeAnim.interpolator = interpolator
+
         return FlashAnim(compositeAnim)
     }
 }

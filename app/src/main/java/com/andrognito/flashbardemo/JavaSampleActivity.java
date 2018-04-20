@@ -235,7 +235,7 @@ public class JavaSampleActivity extends AppCompatActivity {
                 .enterAnimation(FlashAnim.with(this).animateBar().overshoot().alpha().duration(750))
                 .icon(R.drawable.ic_drop)
                 .iconColorFilterRes(R.color.colorAccent)
-                .iconAnimator(FlashAnim.with(this).animateIcon().alpha().pulse().duration(750))
+                .iconAnimator(FlashAnim.with(this).animateIcon().alpha().pulse(1.0f).duration(750))
                 .build();
     }
 }

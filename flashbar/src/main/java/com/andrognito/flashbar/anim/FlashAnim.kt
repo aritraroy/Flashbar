@@ -12,24 +12,23 @@ class FlashAnim(private val compositeAnim: AnimatorSet) {
         fun with(context: Context) = FlashAnimRetriever(context)
     }
 
-    internal fun start(listener: AnimationListener? = null) {
+    internal fun start(listener: InternalAnimListener? = null) {
         if (listener != null) {
             val primaryAnim = compositeAnim.childAnimations[0] as ObjectAnimator
 
             primaryAnim.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationRepeat(animation: Animator?) {
-                }
+                override fun onAnimationRepeat(animator: Animator) {}
 
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationEnd(animator: Animator) {
                     listener.onStop()
+
                     primaryAnim.removeAllListeners()
                     primaryAnim.removeAllUpdateListeners()
                 }
 
-                override fun onAnimationCancel(animation: Animator?) {
-                }
+                override fun onAnimationCancel(animator: Animator) {}
 
-                override fun onAnimationStart(animation: Animator?) {
+                override fun onAnimationStart(animator: Animator) {
                     listener.onStart()
                 }
             })
@@ -42,7 +41,7 @@ class FlashAnim(private val compositeAnim: AnimatorSet) {
         compositeAnim.start()
     }
 
-    interface AnimationListener {
+    internal interface InternalAnimListener {
         fun onStart()
         fun onUpdate(progress: Float)
         fun onStop()

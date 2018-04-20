@@ -17,7 +17,7 @@ import com.andrognito.flashbar.anim.FlashAnimBarBuilder.Direction.RIGHT
 import com.andrognito.flashbar.anim.FlashAnimBarBuilder.Type.ENTER
 import com.andrognito.flashbar.anim.FlashAnimBarBuilder.Type.EXIT
 
-class FlashAnimBarBuilder(private val context: Context) : BaseFlashAnimBuilder(context) {
+class FlashAnimBarBuilder(context: Context) : BaseFlashAnimBuilder(context) {
 
     private var type: Type? = null
     private var gravity: Flashbar.Gravity? = null
@@ -78,6 +78,8 @@ class FlashAnimBarBuilder(private val context: Context) : BaseFlashAnimBuilder(c
         val animators = linkedSetOf<Animator>()
 
         val translationAnim = ObjectAnimator()
+        // Slide from left/right animation is not specified, default top/bottom
+        // animation is applied
         if (direction == null) {
             translationAnim.propertyName = "translationY"
 

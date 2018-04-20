@@ -9,21 +9,17 @@ import com.andrognito.flashbar.R
 
 abstract class BaseFlashAnimBuilder(private val context: Context) {
 
-    protected val DEFAULT_DURATION = context.resources
+    private val DEFAULT_DURATION = context.resources
             .getInteger(R.integer.default_animation_duration).toLong()
+
     protected val DEFAULT_ALPHA_START = 0.2f
     protected val DEFAULT_ALPHA_END = 1.0f
 
+    protected var view: View? = null
     protected var duration = DEFAULT_DURATION
     protected var interpolator: Interpolator? = null
+
     protected var alpha: Boolean = false
-
-    protected var view: View? = null
-
-    @CallSuper
-    open fun withView(view: View) = apply {
-        this.view = view
-    }
 
     @CallSuper
     open fun duration(millis: Long) = apply {
@@ -59,5 +55,10 @@ abstract class BaseFlashAnimBuilder(private val context: Context) {
     @CallSuper
     open fun alpha() = apply {
         this.alpha = true
+    }
+
+    @CallSuper
+    internal open fun withView(view: View) = apply {
+        this.view = view
     }
 }
