@@ -10,5 +10,6 @@
     <dimen name="fb_top_compensation_margin">16dp</dimen>
     <dimen name="fb_bottom_compensation_margin">30dp</dimen>
     <dimen name="fb_progress_size">20dp</dimen>
-    <dimen name="fb_margin_secondary_button">12dp</dimen>
+    <dimen name="fb_margin_secondary_action">12dp</dimen>
+    <dimen name="fb_margin_secondary_action_container">12dp</dimen>
 </resources>

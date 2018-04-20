@@ -10,6 +10,8 @@ import android.widget.Button;
 
 import com.andrognito.flashbar.Flashbar;
 
+import org.jetbrains.annotations.NotNull;
+
 public class JavaSampleActivity extends AppCompatActivity {
 
     Flashbar flashbar = null;
@@ -26,7 +28,7 @@ public class JavaSampleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flashbar == null) {
-                    flashbar = overlayAdvanced();
+                    flashbar = positiveNegativeAction();
                 }
                 flashbar.show();
             }
@@ -146,6 +148,69 @@ public class JavaSampleActivity extends AppCompatActivity {
                 .showOverlay()
                 .overlayColorRes(R.color.modal)
                 .overlayBlockable()
+                .build();
+    }
+
+    private Flashbar primaryActionBasic() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can click on the primary action button.")
+                .primaryActionText("TRY")
+                .build();
+    }
+
+    private Flashbar primaryActionAdvanced() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .message("You can click on the primary action button.")
+                .primaryActionText("TRY")
+                .primaryActionTextColorRes(R.color.colorAccent)
+                .primaryActionTextSizeInSp(20)
+                .build();
+    }
+
+    private Flashbar primaryActionListener() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can click on the primary action button.")
+                .primaryActionText("TRY")
+                .primaryActionTapListener(new Flashbar.OnActionTapListener() {
+                    @Override
+                    public void onActionTapped(@NotNull Flashbar bar) {
+                        bar.dismiss();
+                    }
+                })
+                .build();
+    }
+
+    private Flashbar positiveNegativeAction() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message(
+                        "You can show either or both of the positive/negative buttons and "
+                                + "customize them similar to the primary button.")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .positiveActionText("YES")
+                .negativeActionText("NO")
+                .positiveActionTapListener(new Flashbar.OnActionTapListener() {
+                    @Override
+                    public void onActionTapped(@NotNull Flashbar bar) {
+                        bar.dismiss();
+                    }
+                })
+                .negativeActionTapListener(new Flashbar.OnActionTapListener() {
+                    @Override
+                    public void onActionTapped(@NotNull Flashbar bar) {
+                        bar.dismiss();
+                    }
+                })
+                .positiveActionTextColorRes(R.color.colorAccent)
+                .negativeActionTextColorRes(R.color.colorAccent)
                 .build();
     }
 }

@@ -280,6 +280,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     internal fun setPositiveActionText(text: String?) {
         if (TextUtils.isEmpty(text)) return
 
+        this.fbSecondaryActionContainer.visibility = VISIBLE
         this.fbPositiveAction.text = text
         this.fbPositiveAction.visibility = VISIBLE
     }
@@ -287,6 +288,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     internal fun setPositiveActionTextSpanned(text: Spanned?) {
         if (text == null) return
 
+        this.fbSecondaryActionContainer.visibility = VISIBLE
         this.fbPositiveAction.text = text
         this.fbPositiveAction.visibility = VISIBLE
     }
@@ -332,6 +334,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     internal fun setNegativeActionText(text: String?) {
         if (TextUtils.isEmpty(text)) return
 
+        this.fbSecondaryActionContainer.visibility = VISIBLE
         this.fbNegativeAction.text = text
         this.fbNegativeAction.visibility = VISIBLE
     }
@@ -339,6 +342,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     internal fun setNegativeActionTextSpanned(text: Spanned?) {
         if (text == null) return
 
+        this.fbSecondaryActionContainer.visibility = VISIBLE
         this.fbNegativeAction.text = text
         this.fbNegativeAction.visibility = VISIBLE
     }

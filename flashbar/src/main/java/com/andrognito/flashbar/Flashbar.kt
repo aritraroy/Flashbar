@@ -289,7 +289,7 @@ class Flashbar private constructor(private var builder: Builder) {
         }
 
         /**
-         * Specifies if modal overlay should be shown
+         * Shows the modal overlay
          */
         fun showOverlay() = apply { this.overlay = true }
 

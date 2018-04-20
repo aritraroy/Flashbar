@@ -98,9 +98,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/fbSecondaryActionContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="end">
+            android:layout_marginTop="@dimen/fb_margin_secondary_action_container"
+            android:gravity="end"
+            android:visibility="gone">
 
             <com.andrognito.flashbar.view.FbButton
                 android:id="@+id/fbPositiveAction"
@@ -118,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                android:layout_marginStart="@dimen/fb_margin_secondary_button"
+                android:layout_marginStart="@dimen/fb_margin_secondary_action"
                 android:textAppearance="@style/FbButtonTextStyle"
                 android:visibility="gone"
                 tools:text="CANCEL"

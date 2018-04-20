@@ -29,13 +29,13 @@ We recommend you to check the sample project to get a complete understanding of 
 
 The library offers a huge amount of customization options and leverages the `Builder` pattern for ease of use.
 
-## Basic 
+## Basics
 
 Flashbar attaches a full height, full width view (`FlashbarContainerView`) to the decor view of the `Activity` and places a full width, adjustable height view(`FlashbarView`) inside it. These classes are internal classes and are not exposed for public use.
 
 Here's a basic example of showing a flashbar.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
         .message("This is a basic flashbar")
@@ -44,7 +44,7 @@ Flashbar.Builder(this)
 
 You can specify the duration (in millis) for which you want the flashbar to be displayed. The default duration is infinite, i.e. it won't dismiss automatically if you do not specify any duration.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
         .duration(500)
@@ -55,7 +55,7 @@ Flashbar.Builder(this)
 ## Gravity
 You can show the flashbar either at the top or at the bottom of the screen using the gravity property. By default it is shown at the bottom.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
         .message("Flashbar is shown at the top")
@@ -63,7 +63,7 @@ Flashbar.Builder(this)
 ```
 Or,
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.BOTTOM)
         .message("Flashbar is shown at the bottom")
@@ -73,7 +73,7 @@ Flashbar.Builder(this)
 ## Title
 You can show an optional title in the flashbar. You can also customize the color, size, typeface and appearance of it.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.BOTTOM)
         .title("Hello World!")
@@ -82,7 +82,7 @@ Flashbar.Builder(this)
 
 You can change the color using `titleColor()`, size using `titleSizeInSp()`, `titleSizeInPx()`, typeface using `titleTypeface()` and appearance using `titleAppearance()`.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.BOTTOM)
         .title("Hello World!")
@@ -96,7 +96,7 @@ Flashbar.Builder(this)
 ## Message
 You can show an optional message in the flashbar. You can also customize the color, size and appearance of it.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.BOTTOM)
         .message("This is a short message. But your message can be of any length and the view will dynamically adjust itself.")
@@ -105,7 +105,7 @@ Flashbar.Builder(this)
 
 You can change the color using `messageColor()`, size using `messageSizeInSp()`, `messageSizeInPx()`, typeface using `messageTypeface()` and appearance using `messageAppearance()`.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
         .message("This is a short message")
@@ -119,7 +119,8 @@ Flashbar.Builder(this)
 You can change the background color of the flashbar and add a modal overlay as well.
 
 ####  Background
-```
+
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
         .title("Hello World!")
@@ -129,7 +130,7 @@ Flashbar.Builder(this)
 ```
 You can also change the background using drawables, like have a cool gradient effect.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
         .title("Hello World!")
@@ -139,7 +140,7 @@ Flashbar.Builder(this)
 ```
 ####  Overlay
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
         .title("Hello World!")
@@ -150,7 +151,7 @@ Flashbar.Builder(this)
 ```
 You can also customize the overlay color using `overlayColor()` and also make the overlay consume click/touch events using `overlayBlockable()`.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
         .title("Hello World!")
@@ -161,4 +162,75 @@ Flashbar.Builder(this)
         .overlayBlockable()
         .build()
 ```
+
+## Actions
+There are three types of action buttons available - primary (placed at the right side), positive and negative (placed at the bottom).
+
+### Primary
+You can customize the primary action button's text color, size, typeface, appearance and also listen to its tap events.
+
+The quickest way to get an action button is to put some text into it.
+```kotlin
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can click on the primary action button.")
+        .primaryActionText("TRY")
+        .build()
+```
+You can also customize its appearance the way you want to,
+
+```kotlin
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .backgroundColorRes(R.color.colorPrimaryDark)
+        .message("You can click on the primary action button.")
+        .primaryActionText("TRY")
+        .primaryActionTextColorRes(R.color.colorAccent)
+        .primaryActionTextSizeInSp(20f)
+        .build()
+```
+You can also listen to its tap/click events through the `OnActionTapListener`,
+```kotlin
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can click on the primary action button.")
+        .primaryActionText("TRY")
+        .primaryActionTapListener(object : Flashbar.OnActionTapListener {
+            override fun onActionTapped(bar: Flashbar) {
+                bar.dismiss()
+            }
+        })
+        .build()
+```
+### Positive/Negative
+You can customize the positive and negative buttons in the same way as the primary button. These buttons appear at the bottom part of the view. You can show the positive, or negative or both the buttons. You can also listen to the tap events in the same way as before.
+
+```kotlin
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can show either or both of the positive/negative buttons and customize them similar to the primary button.")
+        .backgroundColorRes(R.color.colorPrimaryDark)
+        .positiveActionText("YES")
+        .negativeActionText("NO")
+        .positiveActionTapListener(object : Flashbar.OnActionTapListener {
+            override fun onActionTapped(bar: Flashbar) {
+                bar.dismiss()
+            }
+        })
+        .negativeActionTapListener(object : Flashbar.OnActionTapListener {
+            override fun onActionTapped(bar: Flashbar) {
+                bar.dismiss()
+            }
+        })
+        .positiveActionTextColorRes(R.color.colorAccent)
+        .negativeActionTextColorRes(R.color.colorAccent)
+        .build()
+```
+
+
+
 

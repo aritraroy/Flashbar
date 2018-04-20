@@ -17,7 +17,7 @@ class KotlinSampleActivity : AppCompatActivity() {
 
         show.setOnClickListener {
             if (flashbar == null) {
-                flashbar = basic()
+                flashbar = primaryActionListener()
             }
             flashbar?.show()
         }
@@ -128,6 +128,64 @@ class KotlinSampleActivity : AppCompatActivity() {
                 .showOverlay()
                 .overlayColorRes(R.color.modal)
                 .overlayBlockable()
+                .build()
+    }
+
+    private fun primaryActionBasic(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can click on the primary action button.")
+                .primaryActionText("TRY")
+                .build()
+    }
+
+    private fun primaryActionAdvanced(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .message("You can click on the primary action button.")
+                .primaryActionText("TRY")
+                .primaryActionTextColorRes(R.color.colorAccent)
+                .primaryActionTextSizeInSp(20f)
+                .build()
+    }
+
+    private fun primaryActionListener(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can click on the primary action button.")
+                .primaryActionText("TRY")
+                .primaryActionTapListener(object : Flashbar.OnActionTapListener {
+                    override fun onActionTapped(bar: Flashbar) {
+                        bar.dismiss()
+                    }
+                })
+                .build()
+    }
+
+    private fun positiveNegativeAction(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show either or both of the positive/negative buttons and customize them similar to the primary button.")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .positiveActionText("YES")
+                .negativeActionText("NO")
+                .positiveActionTapListener(object : Flashbar.OnActionTapListener {
+                    override fun onActionTapped(bar: Flashbar) {
+                        bar.dismiss()
+                    }
+                })
+                .negativeActionTapListener(object : Flashbar.OnActionTapListener {
+                    override fun onActionTapped(bar: Flashbar) {
+                        bar.dismiss()
+                    }
+                })
+                .positiveActionTextColorRes(R.color.colorAccent)
+                .negativeActionTextColorRes(R.color.colorAccent)
                 .build()
     }
 }
