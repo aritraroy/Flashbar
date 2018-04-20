@@ -1,6 +1,5 @@
 package com.andrognito.flashbar
 
-import android.animation.Animator
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
@@ -27,6 +26,7 @@ import com.andrognito.flashbar.Flashbar.Gravity.TOP
 import com.andrognito.flashbar.Flashbar.ProgressPosition.LEFT
 import com.andrognito.flashbar.Flashbar.ProgressPosition.RIGHT
 import com.andrognito.flashbar.SwipeDismissTouchListener.DismissCallbacks
+import com.andrognito.flashbar.anim.FlashAnimIconBuilder
 import com.andrognito.flashbar.util.convertDpToPx
 import com.andrognito.flashbar.util.getStatusBarHeightInPx
 import com.andrognito.flashbar.view.ShadowView
@@ -35,7 +35,7 @@ import kotlinx.android.synthetic.main.flash_bar_view.view.*
 private const val DEFAULT_ELEVATION = 4
 
 /**
- * The actual Flashbar view representation that can consist of the title, message, button, icon, etc.
+ * The actual Flashbar withView representation that can consist of the title, message, button, icon, etc.
  * Its size is adaptive and depends solely on the amount of content present in it. It always matches
  * the width of the screen.
  *
@@ -408,10 +408,8 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         }
     }
 
-    internal fun startIconAnimation(animator: Animator?) {
-        if (animator == null) return
-        animator.setTarget(fbIcon)
-        animator.start()
+    internal fun startIconAnimation(animator: FlashAnimIconBuilder?) {
+        animator?.withView(fbIcon)?.build()?.start()
     }
 
     internal fun stopIconAnimation() {

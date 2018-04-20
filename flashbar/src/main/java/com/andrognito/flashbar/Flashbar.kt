@@ -1,6 +1,5 @@
 package com.andrognito.flashbar
 
-import android.animation.Animator
 import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
@@ -11,6 +10,9 @@ import android.support.v4.content.ContextCompat
 import android.text.Spanned
 import com.andrognito.flashbar.Flashbar.Gravity.BOTTOM
 import com.andrognito.flashbar.Flashbar.Gravity.TOP
+import com.andrognito.flashbar.anim.FlashAnim
+import com.andrognito.flashbar.anim.FlashAnimBarBuilder
+import com.andrognito.flashbar.anim.FlashAnimIconBuilder
 
 class Flashbar private constructor(private var builder: Builder) {
 
@@ -72,7 +74,7 @@ class Flashbar private constructor(private var builder: Builder) {
             setOverlayColor(builder.overlayColor)
             setOverlayBlockable(builder.overlayBlockable)
             setVibrationTargets(builder.vibrationTargets)
-            setIconAnimator(builder.iconAnimator)
+            setIconAnim(builder.iconAnimBuilder)
 
             setEnterAnim(builder.enterAnimBuilder!!)
             setExitAnim(builder.exitAnimBuilder!!)
@@ -205,14 +207,14 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var iconBitmap: Bitmap? = null
         internal var iconColorFilter: Int? = null
         internal var iconColorFilterMode: PorterDuff.Mode? = null
-        internal var iconAnimator: Animator? = null
+        internal var iconAnimBuilder: FlashAnimIconBuilder? = null
 
         internal var progressPosition: ProgressPosition? = null
         internal var progressTint: Int? = null
         internal var progressTintMode: PorterDuff.Mode? = null
 
-        internal var enterAnimBuilder: FlashAnimBuilder? = null
-        internal var exitAnimBuilder: FlashAnimBuilder? = null
+        internal var enterAnimBuilder: FlashAnimBarBuilder? = null
+        internal var exitAnimBuilder: FlashAnimBarBuilder? = null
 
         /**
          * Specifies the gravity from where the flashbar will be shown (top/bottom)
@@ -331,14 +333,14 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Specifies the enter animation of the flashbar
          */
-        fun enterAnimation(builder: FlashAnimBuilder) = apply {
+        fun enterAnimation(builder: FlashAnimBarBuilder) = apply {
             this.enterAnimBuilder = builder
         }
 
         /**
          * Specifies the exit animation of the flashbar
          */
-        fun exitAnimation(builder: FlashAnimBuilder) = apply {
+        fun exitAnimation(builder: FlashAnimBarBuilder) = apply {
             this.exitAnimBuilder = builder
         }
 
@@ -641,10 +643,10 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Specifies if the icon should be shown
          */
-        fun showIcon(showIcon: Boolean) = apply {
+        fun showIcon() = apply {
             require(progressPosition != ProgressPosition.LEFT,
                     { "Cannot show icon if left progress is set" })
-            this.showIcon = showIcon
+            this.showIcon = true
         }
 
         /**
@@ -667,6 +669,7 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Specifies the icon color filter and mode
          */
+        @JvmOverloads
         fun iconColorFilter(@ColorInt color: Int, mode: PorterDuff.Mode? = null) = apply {
             this.iconColorFilter = color
             this.iconColorFilterMode = mode
@@ -675,15 +678,16 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Specifies the icon color filter resource and mode
          */
+        @JvmOverloads
         fun iconColorFilterRes(@ColorRes colorId: Int, mode: PorterDuff.Mode? = null) = apply {
             this.iconColorFilter = ContextCompat.getColor(activity, colorId)
             this.iconColorFilterMode = mode
         }
 
         /**
-         * Specifies the icon animator
+         * Specifies the icon builder
          */
-        fun iconAnimator(animator: Animator) = apply { this.iconAnimator = animator }
+        fun iconAnimator(builder: FlashAnimIconBuilder) = apply { this.iconAnimBuilder = builder }
 
         /**
          * Specifies the gravity in which the indeterminate progress is shown (left/right)
@@ -703,6 +707,7 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Specifies the indeterminate progress tint
          */
+        @JvmOverloads
         fun progressTint(@ColorInt color: Int, mode: PorterDuff.Mode? = null) = apply {
             this.progressTint = color
             this.progressTintMode = mode
@@ -711,6 +716,7 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Specifies the indeterminate progress tint resource
          */
+        @JvmOverloads
         fun progressTintRes(@ColorRes colorId: Int, mode: PorterDuff.Mode? = null) = apply {
             this.progressTint = ContextCompat.getColor(activity, colorId)
             this.progressTintMode = mode
@@ -734,8 +740,8 @@ class Flashbar private constructor(private var builder: Builder) {
         private fun configureAnimation() {
             enterAnimBuilder = if (enterAnimBuilder == null) {
                 when (gravity) {
-                    TOP -> FlashAnim.with(activity).enter().fromTop()
-                    BOTTOM -> FlashAnim.with(activity).enter().fromBottom()
+                    TOP -> FlashAnim.with(activity).animateBar().enter().fromTop()
+                    BOTTOM -> FlashAnim.with(activity).animateBar().enter().fromBottom()
                 }
             } else {
                 when (gravity) {
@@ -746,8 +752,8 @@ class Flashbar private constructor(private var builder: Builder) {
 
             exitAnimBuilder = if (exitAnimBuilder == null) {
                 when (gravity) {
-                    TOP -> FlashAnim.with(activity).exit().fromTop()
-                    BOTTOM -> FlashAnim.with(activity).exit().fromBottom()
+                    TOP -> FlashAnim.with(activity).animateBar().exit().fromTop()
+                    BOTTOM -> FlashAnim.with(activity).animateBar().exit().fromBottom()
                 }
             } else {
                 when (gravity) {

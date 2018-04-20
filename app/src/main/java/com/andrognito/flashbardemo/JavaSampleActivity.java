@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.andrognito.flashbar.Flashbar;
+import com.andrognito.flashbar.anim.FlashAnim;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +29,7 @@ public class JavaSampleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flashbar == null) {
-                    flashbar = positiveNegativeAction();
+                    flashbar = iconAdvanced();
                 }
                 flashbar.show();
             }
@@ -96,7 +97,7 @@ public class JavaSampleActivity extends AppCompatActivity {
                 .gravity(Flashbar.Gravity.TOP)
                 .message(
                         "This is a short message. But your message can be of any length and the "
-                                + "view will dynamically adjust itself.")
+                                + "withView will dynamically adjust itself.")
                 .build();
     }
 
@@ -211,6 +212,30 @@ public class JavaSampleActivity extends AppCompatActivity {
                 })
                 .positiveActionTextColorRes(R.color.colorAccent)
                 .negativeActionTextColorRes(R.color.colorAccent)
+                .build();
+    }
+
+    private Flashbar iconBasic() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show a default icon on the left side of the withView")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .showIcon()
+                .build();
+    }
+
+    private Flashbar iconAdvanced() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can show a default icon on the left side of the withView")
+                .backgroundColorRes(R.color.colorPrimaryDark)
+                .showIcon()
+                .enterAnimation(FlashAnim.with(this).animateBar().overshoot().alpha().duration(750))
+                .icon(R.drawable.ic_drop)
+                .iconColorFilterRes(R.color.colorAccent)
+                .iconAnimator(FlashAnim.with(this).animateIcon().alpha().pulse().duration(750))
                 .build();
     }
 }

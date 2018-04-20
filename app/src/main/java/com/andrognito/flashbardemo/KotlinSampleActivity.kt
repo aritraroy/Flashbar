@@ -77,7 +77,7 @@ class KotlinSampleActivity : AppCompatActivity() {
         return Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.TOP)
                 .message(
-                        "This is a short message. But your message can be of any length and the " + "view will dynamically adjust itself.")
+                        "This is a short message. But your message can be of any length and the " + "withView will dynamically adjust itself.")
                 .build()
     }
 

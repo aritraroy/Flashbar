@@ -21,7 +21,7 @@ dependencies {
 ```
 
 ### Spread Some :heart:
-[![GitHub stars](https://img.shields.io/github/stars/aritraroy/PatternLockView.svg?style=social&label=Star)](https://github.com/aritraroy) [![GitHub followers](https://img.shields.io/github/followers/aritraroy.svg?style=social&label=Follow)](https://github.com/aritraroy)  [![Twitter Follow](https://img.shields.io/twitter/follow/aritraroy.svg?style=social)](https://twitter.com/aritraroy) 
+[![GitHub followers](https://img.shields.io/github/followers/aritraroy.svg?style=social&label=Follow)](https://github.com/aritraroy)  [![Twitter Follow](https://img.shields.io/twitter/follow/aritraroy.svg?style=social)](https://twitter.com/aritraroy) 
 
 
 # Usage
@@ -216,6 +216,8 @@ Flashbar.Builder(this)
         .backgroundColorRes(R.color.colorPrimaryDark)
         .positiveActionText("YES")
         .negativeActionText("NO")
+        .positiveActionTextColorRes(R.color.colorAccent)
+        .negativeActionTextColorRes(R.color.colorAccent)
         .positiveActionTapListener(object : Flashbar.OnActionTapListener {
             override fun onActionTapped(bar: Flashbar) {
                 bar.dismiss()
@@ -226,11 +228,12 @@ Flashbar.Builder(this)
                 bar.dismiss()
             }
         })
-        .positiveActionTextColorRes(R.color.colorAccent)
-        .negativeActionTextColorRes(R.color.colorAccent)
         .build()
 ```
 
+## Icon & Progress
 
+You can show icon (left) and progress bar (left or right) in the flashbar. You can also customize their look & feel in a lot of ways.
 
-
+### Icon
+You can show an icon in the left side of the view using `showIcon()` which will show a default icon.

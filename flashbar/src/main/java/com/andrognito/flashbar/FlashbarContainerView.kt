@@ -1,6 +1,5 @@
 package com.andrognito.flashbar
 
-import android.animation.Animator
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
@@ -16,6 +15,9 @@ import com.andrognito.flashbar.Flashbar.DismissEvent
 import com.andrognito.flashbar.Flashbar.DismissEvent.*
 import com.andrognito.flashbar.Flashbar.Vibration.DISMISS
 import com.andrognito.flashbar.SwipeDismissTouchListener.DismissCallbacks
+import com.andrognito.flashbar.anim.FlashAnim
+import com.andrognito.flashbar.anim.FlashAnimBarBuilder
+import com.andrognito.flashbar.anim.FlashAnimIconBuilder
 import com.andrognito.flashbar.util.NavigationBarPosition.*
 import com.andrognito.flashbar.util.afterMeasured
 import com.andrognito.flashbar.util.getNavigationBarPosition
@@ -23,7 +25,7 @@ import com.andrognito.flashbar.util.getNavigationBarSizeInPx
 import com.andrognito.flashbar.util.getRootView
 
 /**
- * Container view matching the height and width of the parent to hold a FlashbarView.
+ * Container withView matching the height and width of the parent to hold a FlashbarView.
  * It will occupy the entire screens size but will be completely transparent. The
  * FlashbarView inside is the only visible component in it.
  */
@@ -34,15 +36,15 @@ internal class FlashbarContainerView(context: Context)
 
     private lateinit var flashbarView: FlashbarView
 
-    private lateinit var enterAnimBuilder: FlashAnimBuilder
-    private lateinit var exitAnimBuilder: FlashAnimBuilder
+    private lateinit var enterAnimBuilder: FlashAnimBarBuilder
+    private lateinit var exitAnimBuilder: FlashAnimBarBuilder
     private lateinit var vibrationTargets: List<Flashbar.Vibration>
 
     private var onBarShowListener: Flashbar.OnBarShowListener? = null
     private var onBarDismissListener: Flashbar.OnBarDismissListener? = null
     private var onTapOutsideListener: Flashbar.OnTapOutsideListener? = null
     private var overlayColor: Int? = null
-    private var iconAnimator: Animator? = null
+    private var iconAnimBuilder: FlashAnimIconBuilder? = null
 
     private var duration = DURATION_INDEFINITE
     private var isBarShowing = false
@@ -135,11 +137,11 @@ internal class FlashbarContainerView(context: Context)
 
         val activityRootView = activity.getRootView() ?: return
 
-        // Only add the view to the parent once
+        // Only add the withView to the parent once
         if (this.parent == null) activityRootView.addView(this)
 
         activityRootView.afterMeasured {
-            val enterAnim = enterAnimBuilder.buildWith(flashbarView)
+            val enterAnim = enterAnimBuilder.withView(flashbarView).build()
             enterAnim.start(object : FlashAnim.AnimationListener {
                 override fun onStart() {
                     isBarShowing = true
@@ -154,7 +156,7 @@ internal class FlashbarContainerView(context: Context)
                     isBarShowing = false
                     isBarShown = true
 
-                    flashbarView.startIconAnimation(iconAnimator)
+                    flashbarView.startIconAnimation(iconAnimBuilder)
 
                     if (vibrationTargets.contains(Flashbar.Vibration.SHOW)) {
                         performHapticFeedback(VIRTUAL_KEY)
@@ -208,11 +210,11 @@ internal class FlashbarContainerView(context: Context)
         this.overlayBlockable = blockable
     }
 
-    internal fun setEnterAnim(builder: FlashAnimBuilder) {
+    internal fun setEnterAnim(builder: FlashAnimBarBuilder) {
         this.enterAnimBuilder = builder
     }
 
-    internal fun setExitAnim(builder: FlashAnimBuilder) {
+    internal fun setExitAnim(builder: FlashAnimBarBuilder) {
         this.exitAnimBuilder = builder
     }
 
@@ -224,8 +226,8 @@ internal class FlashbarContainerView(context: Context)
         this.vibrationTargets = targets
     }
 
-    internal fun setIconAnimator(animator: Animator?) {
-        this.iconAnimator = animator
+    internal fun setIconAnim(builder: FlashAnimIconBuilder?) {
+        this.iconAnimBuilder = builder
     }
 
     private fun handleDismiss() {
@@ -239,7 +241,7 @@ internal class FlashbarContainerView(context: Context)
             return
         }
 
-        val exitAnim = exitAnimBuilder.buildWith(flashbarView)
+        val exitAnim = exitAnimBuilder.withView(flashbarView).build()
         exitAnim.start(object : FlashAnim.AnimationListener {
             override fun onStart() {
                 isBarDismissing = true
