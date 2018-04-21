@@ -42,7 +42,7 @@ Flashbar.Builder(this)
         .build()
 ```
 
-You can specify the duration (in millis) for which you want the flashbar to be displayed. The default duration is infinite, i.e. it won't dismiss automatically if you do not specify any duration.
+  You can specify the duration (in millis) for which you want the flashbar to be displayed. The default duration is infinite, i.e. it won't dismiss automatically if you do not specify any duration. You can also use these constants, `DURATION_SHORT` or `DURATION_LONG` for convenience.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -409,7 +409,7 @@ Flashbar.Builder(this)
         })
         .build()
 ```
-### Tap
+### Taps
 You can listen to tap events inside or outside the bar.
 
 ```
@@ -427,5 +427,44 @@ Flashbar.Builder(this)
                 Log.d(TAG, "Outside tapped")
             }
         })
+        .build()
+```
+
+## Miscellaneous
+These are a set of miscellaneous features available in flashbar.
+
+### Swipe-to-dismiss
+You can enable this feature to dismiss the flashbar by swiping on it. By default it is disabled. You can also know if the bar was dismissed by a swipe from the `DismissEvent` as `SWIPE`.
+
+```
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can swipe the flasbar to dismiss it.")
+        .enableSwipeToDismiss()
+        .build() 
+```
+
+### Shadow
+You can show a synthetically generated shadow on the flashbar irrespective of its position - top or bottom. By default the shadow is always cast.
+
+```
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.BOTTOM)
+        .title("Hello World!")
+        .message("You can swipe the flashbar to dismiss it.")
+        .castShadow(true, 4)
+        .build()
+```
+
+### Vibration
+The flashbar can produce a short vibration when it is shown, dismissed or both.
+
+```
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.BOTTOM)
+        .title("Hello World!")
+        .message("You can swipe the flashbar to dismiss it.")
+        .vibrateOn(Flashbar.Vibration.SHOW, Flashbar.Vibration.DISMISS)
         .build()
 ```

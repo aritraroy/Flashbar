@@ -32,8 +32,6 @@ import com.andrognito.flashbar.util.getStatusBarHeightInPx
 import com.andrognito.flashbar.view.ShadowView
 import kotlinx.android.synthetic.main.flash_bar_view.view.*
 
-private const val DEFAULT_ELEVATION = 4
-
 /**
  * The actual Flashbar withView representation that can consist of the title, message, button, icon, etc.
  * Its size is adaptive and depends solely on the amount of content present in it. It always matches
@@ -70,22 +68,22 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     internal fun init(
             gravity: Gravity,
             castShadow: Boolean,
-            shadowStrength: Int?) {
+            shadowStrength: Int) {
         this.gravity = gravity
         this.orientation = VERTICAL
 
-        // If the bar appears with the bottom, then the shadow needs to added to the top of it.
+        // If the bar appears with the bottom, then the shadow needs to added to the top of it,
         // Thus, before the inflation of the bar
         if (castShadow && gravity == BOTTOM) {
-            castShadow(ShadowView.ShadowType.TOP, shadowStrength ?: DEFAULT_ELEVATION)
+            castShadow(ShadowView.ShadowType.TOP, shadowStrength)
         }
 
         inflate(context, R.layout.flash_bar_view, this)
 
-        // If the bar appears with the top, then the shadow needs to added to the bottom of it.
+        // If the bar appears with the top, then the shadow needs to added to the bottom of it,
         // Thus, after the inflation of the bar
         if (castShadow && gravity == TOP) {
-            castShadow(ShadowView.ShadowType.BOTTOM, shadowStrength ?: DEFAULT_ELEVATION)
+            castShadow(ShadowView.ShadowType.BOTTOM, shadowStrength)
         }
     }
 

@@ -14,6 +14,8 @@ import com.andrognito.flashbar.anim.FlashAnim
 import com.andrognito.flashbar.anim.FlashAnimBarBuilder
 import com.andrognito.flashbar.anim.FlashAnimIconBuilder
 
+private const val DEFAULT_SHADOW_STRENGTH = 4
+
 class Flashbar private constructor(private var builder: Builder) {
 
     private lateinit var flashbarContainerView: FlashbarContainerView
@@ -51,7 +53,7 @@ class Flashbar private constructor(private var builder: Builder) {
         flashbarContainerView.addParent(this)
 
         flashbarView = FlashbarView(builder.activity)
-        flashbarView.init(builder.gravity, builder.castShadow, builder.shadowStrength)
+        flashbarView.init(builder.gravity, builder.castShadow, builder.shadowStrength!!)
         flashbarView.adjustWitPositionAndOrientation(builder.activity, builder.gravity)
         flashbarView.addParent(flashbarContainerView)
 
@@ -155,7 +157,7 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var overlayColor: Int = ContextCompat.getColor(activity, R.color.modal)
         internal var overlayBlockable: Boolean = false
         internal var castShadow: Boolean = true
-        internal var shadowStrength: Int? = null
+        internal var shadowStrength: Int = DEFAULT_SHADOW_STRENGTH
         internal var enableSwipeToDismiss: Boolean = false
         internal var vibrationTargets: List<Vibration> = emptyList()
 
@@ -316,17 +318,13 @@ class Flashbar private constructor(private var builder: Builder) {
         }
 
         /**
-         * Specifies if the flashbar should cast shadow
+         * Specifies if the flashbar should cast shadow and the strength of it
          */
-        fun castShadow(shadow: Boolean) = apply {
-            this.castShadow = shadow
-        }
-
-        /**
-         * Specifies the strength of the shadow
-         */
-        fun shadowStrength(strength: Int) = apply {
+        @JvmOverloads
+        fun castShadow(shadow: Boolean = true, strength: Int = DEFAULT_SHADOW_STRENGTH) = apply {
             require(strength > 0) { "Shadow strength can not be negative" }
+
+            this.castShadow = shadow
             this.shadowStrength = strength
         }
 
@@ -355,6 +353,7 @@ class Flashbar private constructor(private var builder: Builder) {
          * Specifies whether the device should vibrate during flashbar enter/exit/both
          */
         fun vibrateOn(vararg vibrate: Vibration) = apply {
+            require(vibrate.isNotEmpty()) { "Vibration targets can not be empty" }
             this.vibrationTargets = vibrate.toList()
         }
 

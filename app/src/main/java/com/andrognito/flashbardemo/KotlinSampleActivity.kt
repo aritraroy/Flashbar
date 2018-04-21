@@ -351,4 +351,31 @@ class KotlinSampleActivity : AppCompatActivity() {
                 })
                 .build()
     }
+
+    private fun swipeToDismiss(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can swipe the flashbar to dismiss it.")
+                .enableSwipeToDismiss()
+                .build()
+    }
+
+    private fun barShadow(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.BOTTOM)
+                .title("Hello World!")
+                .message("You can swipe the flashbar to dismiss it.")
+                .castShadow(true, 4)
+                .build()
+    }
+
+    private fun vibration(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.BOTTOM)
+                .title("Hello World!")
+                .message("You can swipe the flashbar to dismiss it.")
+                .vibrateOn(Flashbar.Vibration.SHOW, Flashbar.Vibration.DISMISS)
+                .build()
+    }
 }

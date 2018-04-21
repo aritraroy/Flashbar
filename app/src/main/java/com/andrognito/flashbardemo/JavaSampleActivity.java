@@ -19,7 +19,7 @@ public class JavaSampleActivity extends AppCompatActivity {
 
     private static final String TAG = "Flashbar";
 
-    Flashbar flashbar = null;
+    private Flashbar flashbar = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class JavaSampleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flashbar == null) {
-                    flashbar = barTap();
+                    flashbar = vibration();
                 }
                 flashbar.show();
             }
@@ -386,6 +386,33 @@ public class JavaSampleActivity extends AppCompatActivity {
                         Log.d(TAG, "Outside tapped");
                     }
                 })
+                .build();
+    }
+
+    private Flashbar swipeToDismiss() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can swipe the flashbar to dismiss it.")
+                .enableSwipeToDismiss()
+                .build();
+    }
+
+    private Flashbar barShadow() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.BOTTOM)
+                .title("Hello World!")
+                .message("You can swipe the flashbar to dismiss it.")
+                .castShadow(true, 4)
+                .build();
+    }
+
+    private Flashbar vibration() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.BOTTOM)
+                .title("Hello World!")
+                .message("You can swipe the flashbar to dismiss it.")
+                .vibrateOn(Flashbar.Vibration.SHOW, Flashbar.Vibration.DISMISS)
                 .build();
     }
 }
