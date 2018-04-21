@@ -1,3 +1,4 @@
+
 # Flashbar
 A highly customizable, powerful and easy-to-use alerting library for Android
 
@@ -5,9 +6,44 @@ A highly customizable, powerful and easy-to-use alerting library for Android
 [![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
 
 
-This library allows you to show messages or alerts in your app **quickly and easily**. It can be used as an alternative of Snackbar or Toast and offers a plethora of customization options for you to play with.
+This library allows you to show messages or alerts in your app **quickly and easily**. It can be used as an alternative to Snackbar or Toast and offers a plethora of customization options for you to play with.
 
 It has been written **100% in Kotlin**.
+
+# Table of Contents
+* [Download](#download)
+* [Sample Project](#sample-project)
+* [Usage](#usage)
+    * [Basics](#basics)
+    * [Gravity](#gravity)
+    * [Title](#title)
+    * [Message](#message)
+    * [Background & Overlay](#background-overlay)
+      * [Background](#background)
+      * [Overlay](#overlay)
+    * [Actions](#actions)
+      * [Primary](#primary)
+      * [Positive/Negative](#positivenegative)
+    * [Icon & Progress](#icon-progress)
+      * [Icon](#icon)
+      * [Progress](#progress)
+    * [Animations](#animations)
+      * [Enter/Exit](#enterexit)
+      * [Icon](#icon)
+    * [Event Listeners](#event-listeners)
+      * [Show](#show)
+      * [Dismiss](#dismiss)
+      * [Taps](#taps)
+    * [Miscellaneous](#miscellaneous)
+      * [Swipe-to-dismiss](#swipe-to-dismiss)
+      * [Shadow](#shadow)
+      * [Vibration](#vibration)
+* [Roadmap](#roadmap)
+* [Contribution](#contribution)
+* [License](#license)
+
+### Spread Some :heart:
+[![GitHub followers](https://img.shields.io/github/followers/aritraroy.svg?style=social&label=Follow)](https://github.com/aritraroy)  [![Twitter Follow](https://img.shields.io/twitter/follow/aritraroy.svg?style=social)](https://twitter.com/aritraroy) 
 
 # Download
 
@@ -20,18 +56,19 @@ dependencies {
 }
 ```
 
-### Spread Some :heart:
-[![GitHub followers](https://img.shields.io/github/followers/aritraroy.svg?style=social&label=Follow)](https://github.com/aritraroy)  [![Twitter Follow](https://img.shields.io/twitter/follow/aritraroy.svg?style=social)](https://twitter.com/aritraroy) 
+# Sample Project
+We have an exhaustive sample project demonstrating almost every feature of the library in both Java & Kotlin.
 
+Checkout the Java samples [here](https://github.com/aritraroy/Flashbar/blob/develop/app/src/main/java/com/andrognito/flashbardemo/JavaSampleActivity.java) and the Kotlin samples [here](https://github.com/aritraroy/Flashbar/blob/develop/app/src/main/java/com/andrognito/flashbardemo/KotlinSampleActivity.kt).
 
 # Usage
-We recommend you to check the sample project to get a complete understanding of all the features offered by the library. You can find implementation for both Java and Kotlin.
+We recommend you to check the sample project to get a complete understanding of all the features offered by the library. You can find the implementation for both Java and Kotlin.
 
 The library offers a huge amount of customization options and leverages the `Builder` pattern for ease of use.
 
 ## Basics
 
-Flashbar attaches a full height, full width view (`FlashbarContainerView`) to the decor view of the `Activity` and places a full width, adjustable height view(`FlashbarView`) inside it. These classes are internal classes and are not exposed for public use.
+Flashbar attaches a full-height, full-width view (`FlashbarContainerView`) to the decor view of the `Activity` and places a full width, adjustable height view(`FlashbarView`) inside it. These classes are internal classes and are not exposed for public use.
 
 Here's a basic example of showing a flashbar.
 
@@ -42,7 +79,7 @@ Flashbar.Builder(this)
         .build()
 ```
 
-  You can specify the duration (in millis) for which you want the flashbar to be displayed. The default duration is infinite, i.e. it won't dismiss automatically if you do not specify any duration. You can also use these constants, `DURATION_SHORT` or `DURATION_LONG` for convenience.
+  You can specify the duration (in millis) for which you want the flashbar to be displayed. The default, the duration is infinite, i.e. it won't dismiss automatically if you do not specify any duration. You can also use these constants, `DURATION_SHORT` or `DURATION_LONG` for convenience.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -53,7 +90,7 @@ Flashbar.Builder(this)
 ```
 
 ## Gravity
-You can show the flashbar either at the top or at the bottom of the screen using the gravity property. By default it is shown at the bottom.
+You can show the flashbar either at the top or at the bottom of the screen using the gravity property. By default, it is shown at the bottom.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -236,7 +273,7 @@ Flashbar.Builder(this)
 You can show icon (left) and progress bar (left or right) in the flashbar. You can also customize their look & feel in a lot of ways.
 
 ### Icon
-You can show an icon in the left side of the view using `showIcon()` which will show a default icon.
+You can show an icon on the left side of the view using `showIcon()` which will show a default icon.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -265,7 +302,7 @@ Flashbar.Builder(this)
 ### Progress
 You might also want to show indeterminate progress bars to indicate that you are fetching some data or downloading a file. The progress bars can be shown at either the left or the right side of the view.
 
-If the progress bar is shown in the left side, then you cannot show the icon with it. If the progress bar is shown in the right side, then you cannot show the action button along with it.
+If the progress bar is shown on the left side, then you cannot show the icon with it. If the progress bar is shown on the right side, then you cannot show the action button along with it.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -362,7 +399,6 @@ You can listen to several events like when the flashbar is showing, or dismissin
 You can also listen to tap events inside or outside the bar.
 
 ### Show
-
 You can listen to events like `onShowing`, `onShowProgress` and `onShown`.
  
 ```kotlin
@@ -388,7 +424,7 @@ Flashbar.Builder(this)
 ### Dismiss
 You can listen to events like `onDismissing`, `onDismissProgress` and `onDismissed`. You can also specifically get to know the reason behind the bar dismiss action - `TIMEOUT`, `MANUAL`, `TAP_OUTSIDE` and `SWIPE`.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.BOTTOM)
         .title("Hello World!")
@@ -409,10 +445,11 @@ Flashbar.Builder(this)
         })
         .build()
 ```
+
 ### Taps
 You can listen to tap events inside or outside the bar.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
         .title("Hello World!")
@@ -436,7 +473,7 @@ These are a set of miscellaneous features available in flashbar.
 ### Swipe-to-dismiss
 You can enable this feature to dismiss the flashbar by swiping on it. By default it is disabled. You can also know if the bar was dismissed by a swipe from the `DismissEvent` as `SWIPE`.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
         .title("Hello World!")
@@ -448,7 +485,7 @@ Flashbar.Builder(this)
 ### Shadow
 You can show a synthetically generated shadow on the flashbar irrespective of its position - top or bottom. By default the shadow is always cast.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.BOTTOM)
         .title("Hello World!")
@@ -460,7 +497,7 @@ Flashbar.Builder(this)
 ### Vibration
 The flashbar can produce a short vibration when it is shown, dismissed or both.
 
-```
+```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.BOTTOM)
         .title("Hello World!")
@@ -468,3 +505,51 @@ Flashbar.Builder(this)
         .vibrateOn(Flashbar.Vibration.SHOW, Flashbar.Vibration.DISMISS)
         .build()
 ```
+
+# Roadmap
+These are some of the prioritized features in the pipeline awaiting to be implemented in the near future - 
+
+* Add coordinator layout support
+* Add flashbar manager for queue management
+* Add custom layout inflation support
+* Improve shadow rendering
+
+# Contribution
+
+I highly encourage the community to step forward and improve this library further. You can fix any reported bug, propose or implement new features, write tests, etc.
+
+Here is a quick list of things to remember -
+* Check the open issues before creating a new one
+* Help us in reducing the number of open issues by fixing any existing bugs
+* Check the roadmap to see if you can help in implementing any new feature
+* You can contribute by writing unit and integration tests for this library
+* If you have any new idea that aligns with the goal of this library, feel free to raise a feature request and discuss it
+
+# About The Author
+
+### Aritra Roy
+
+Design-focussed Engineer. Full-stack Developer. Hardcore Android Geek. UI/UX Designer. Part-time Blogger.
+
+<a href="https://play.google.com/store/apps/details?id=com.codexapps.andrognito&hl=en" target="_blank"><img src="https://github.com/aritraroy/social-icons/blob/master/play-store-icon.png?raw=true" width="60"></a> <a href="https://blog.aritraroy.in/" target="_blank"><img src="https://github.com/aritraroy/social-icons/blob/master/medium-icon.png?raw=true" width="60"></a>
+<a href="http://stackoverflow.com/users/2858654/aritra-roy" target="_blank"><img src="https://github.com/aritraroy/social-icons/blob/master/stackoverflow-icon.png?raw=true" width="60"></a>
+<a href="https://twitter.com/aritraroy" target="_blank"><img src="https://github.com/aritraroy/social-icons/blob/master/twitter-icon.png?raw=true" width="60"></a>
+<a href="http://linkedin.com/in/aritra-roy"><img src="https://github.com/aritraroy/social-icons/blob/master/linkedin-icon.png?raw=true" width="60"></a>
+
+
+# License
+
+```
+Copyright 2016 aritraroy
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
