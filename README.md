@@ -356,4 +356,76 @@ Flashbar.Builder(this)
         .build()
 ```
 
-## Listeners
+## Event Listeners
+You can listen to several events like when the flashbar is showing, or dismissing. You can also listen to progress updates when the flashbar is being shown or dismissed to perform your own animations if needed.
+
+You can also listen to tap events inside or outside the bar.
+
+### Show
+
+You can listen to events like `onShowing`, `onShowProgress` and `onShown`.
+ 
+```kotlin
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.BOTTOM)
+        .title("Hello World!")
+        .message("You can listen to events when the flashbar is shown")
+        .barShowListener(object : Flashbar.OnBarShowListener {
+            override fun onShowing(bar: Flashbar) {
+                Log.d(TAG, "Flashbar is showing")
+            }
+
+            override fun onShowProgress(bar: Flashbar, progress: Float) {
+                Log.d(TAG, "Flashbar is showing with progress: $progress")
+            }
+
+            override fun onShown(bar: Flashbar) {
+                Log.d(TAG, "Flashbar is shown")
+            }
+        })
+        .build()
+```
+### Dismiss
+You can listen to events like `onDismissing`, `onDismissProgress` and `onDismissed`. You can also specifically get to know the reason behind the bar dismiss action - `TIMEOUT`, `MANUAL`, `TAP_OUTSIDE` and `SWIPE`.
+
+```
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.BOTTOM)
+        .title("Hello World!")
+        .duration(500)
+        .message("You can listen to events when the flashbar is dismissed")
+        .barDismissListener(object : Flashbar.OnBarDismissListener {
+            override fun onDismissing(bar: Flashbar, isSwiped: Boolean) {
+                Log.d(TAG, "Flashbar is dismissing with $isSwiped")
+            }
+
+            override fun onDismissProgress(bar: Flashbar, progress: Float) {
+                Log.d(TAG, "Flashbar is dismissing with progress $progress")
+            }
+
+            override fun onDismissed(bar: Flashbar, event: Flashbar.DismissEvent) {
+                Log.d(TAG, "Flashbar is dismissed with event $event")
+            }
+        })
+        .build()
+```
+### Tap
+You can listen to tap events inside or outside the bar.
+
+```
+Flashbar.Builder(this)
+        .gravity(Flashbar.Gravity.TOP)
+        .title("Hello World!")
+        .message("You can listen to tap events inside or outside te bar.")
+        .listenBarTaps(object : Flashbar.OnTapListener {
+            override fun onTap(flashbar: Flashbar) {
+                Log.d(TAG, "Bar tapped")
+            }
+        })
+        .listenOutsideTaps(object : Flashbar.OnTapListener {
+            override fun onTap(flashbar: Flashbar) {
+                Log.d(TAG, "Outside tapped")
+            }
+        })
+        .build()
+```

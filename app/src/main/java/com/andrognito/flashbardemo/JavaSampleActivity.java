@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,6 +16,8 @@ import com.andrognito.flashbar.anim.FlashAnim;
 import org.jetbrains.annotations.NotNull;
 
 public class JavaSampleActivity extends AppCompatActivity {
+
+    private static final String TAG = "Flashbar";
 
     Flashbar flashbar = null;
 
@@ -30,7 +33,7 @@ public class JavaSampleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flashbar == null) {
-                    flashbar = iconAnimation();
+                    flashbar = barTap();
                 }
                 flashbar.show();
             }
@@ -313,6 +316,76 @@ public class JavaSampleActivity extends AppCompatActivity {
                         .alpha()
                         .duration(750)
                         .accelerate())
+                .build();
+    }
+
+    private Flashbar showListener() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.BOTTOM)
+                .title("Hello World!")
+                .message("You can listen to events when the flashbar is shown.")
+                .barShowListener(new Flashbar.OnBarShowListener() {
+                    @Override
+                    public void onShowing(@NotNull Flashbar bar) {
+                        Log.d(TAG, "Flashbar is showing");
+                    }
+
+                    @Override
+                    public void onShowProgress(@NotNull Flashbar bar, float progress) {
+                        Log.d(TAG, "Flashbar is showing with progress: " + progress);
+                    }
+
+                    @Override
+                    public void onShown(@NotNull Flashbar bar) {
+                        Log.d(TAG, "Flashbar is shown");
+                    }
+                })
+                .build();
+    }
+
+    private Flashbar dismissListener() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.BOTTOM)
+                .title("Hello World!")
+                .duration(500)
+                .message("You can listen to events when the flashbar is dismissed.")
+                .barDismissListener(new Flashbar.OnBarDismissListener() {
+                    @Override
+                    public void onDismissing(@NotNull Flashbar bar, boolean isSwiped) {
+                        Log.d(TAG, "Flashbar is dismissing with " + isSwiped);
+                    }
+
+                    @Override
+                    public void onDismissProgress(@NotNull Flashbar bar, float progress) {
+                        Log.d(TAG, "Flashbar is dismissing with progress " + progress);
+                    }
+
+                    @Override
+                    public void onDismissed(@NotNull Flashbar bar,
+                            @NotNull Flashbar.DismissEvent event) {
+                        Log.d(TAG, "Flashbar is dismissed with event " + event);
+                    }
+                })
+                .build();
+    }
+
+    private Flashbar barTap() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can listen to tap events inside or outside te bar.")
+                .listenBarTaps(new Flashbar.OnTapListener() {
+                    @Override
+                    public void onTap(@NotNull Flashbar flashbar) {
+                        Log.d(TAG, "Bar tapped");
+                    }
+                })
+                .listenOutsideTaps(new Flashbar.OnTapListener() {
+                    @Override
+                    public void onTap(@NotNull Flashbar flashbar) {
+                        Log.d(TAG, "Outside tapped");
+                    }
+                })
                 .build();
     }
 }

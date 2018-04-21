@@ -129,11 +129,11 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         this.fbRoot.setBackgroundColor(color)
     }
 
-    internal fun setBarTapListener(listener: Flashbar.OnBarTapListener?) {
+    internal fun setBarTapListener(listener: Flashbar.OnTapListener?) {
         if (listener == null) return
 
         this.fbRoot.setOnClickListener {
-            listener.onBarTapped(parentFlashbarContainer.parentFlashbar)
+            listener.onTap(parentFlashbarContainer.parentFlashbar)
         }
     }
 

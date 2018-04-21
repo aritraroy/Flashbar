@@ -66,7 +66,7 @@ class Flashbar private constructor(private var builder: Builder) {
     private fun initializeContainerDecor() {
         with(flashbarContainerView) {
             setDuration(builder.duration)
-            setBarShownListener(builder.onBarShownListener)
+            setBarShowListener(builder.onBarShowListener)
             setBarDismissListener(builder.onBarDismissListener)
             setBarDismissOnTapOutside(builder.barDismissOnTapOutside)
             setOnTapOutsideListener(builder.onTapOutsideListener)
@@ -146,11 +146,11 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var backgroundColor: Int? = null
         internal var backgroundDrawable: Drawable? = null
         internal var duration: Long = DURATION_INDEFINITE
-        internal var onBarTapListener: OnBarTapListener? = null
-        internal var onBarShownListener: OnBarShowListener? = null
+        internal var onBarTapListener: OnTapListener? = null
+        internal var onBarShowListener: OnBarShowListener? = null
         internal var onBarDismissListener: OnBarDismissListener? = null
         internal var barDismissOnTapOutside: Boolean = false
-        internal var onTapOutsideListener: OnTapOutsideListener? = null
+        internal var onTapOutsideListener: OnTapListener? = null
         internal var overlay: Boolean = false
         internal var overlayColor: Int = ContextCompat.getColor(activity, R.color.modal)
         internal var overlayBlockable: Boolean = false
@@ -249,7 +249,7 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Sets listener to receive tap events on the surface of the bar
          */
-        fun barTapListener(listener: OnBarTapListener) = apply {
+        fun listenBarTaps(listener: OnTapListener) = apply {
             this.onBarTapListener = listener
         }
 
@@ -265,8 +265,8 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Sets listener to receive bar showing/shown events
          */
-        fun barShownListener(listener: OnBarShowListener) = apply {
-            this.onBarShownListener = listener
+        fun barShowListener(listener: OnBarShowListener) = apply {
+            this.onBarShowListener = listener
         }
 
         /**
@@ -279,7 +279,7 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Sets listener to receive tap events outside flashbar surface
          */
-        fun tapOutsideListener(listener: OnTapOutsideListener) = apply {
+        fun listenOutsideTaps(listener: OnTapListener) = apply {
             this.onTapOutsideListener = listener
         }
 
@@ -788,22 +788,18 @@ class Flashbar private constructor(private var builder: Builder) {
     }
 
     interface OnBarDismissListener {
-        fun onDismissing(bar: Flashbar, isSwiping: Boolean)
+        fun onDismissing(bar: Flashbar, isSwiped: Boolean)
         fun onDismissProgress(bar: Flashbar, progress: Float)
         fun onDismissed(bar: Flashbar, event: DismissEvent)
     }
 
-    interface OnTapOutsideListener {
-        fun onTap(bar: Flashbar)
+    interface OnTapListener {
+        fun onTap(flashbar: Flashbar)
     }
 
     interface OnBarShowListener {
         fun onShowing(bar: Flashbar)
         fun onShowProgress(bar: Flashbar, progress: Float)
         fun onShown(bar: Flashbar)
-    }
-
-    interface OnBarTapListener {
-        fun onBarTapped(flashbar: Flashbar)
     }
 }

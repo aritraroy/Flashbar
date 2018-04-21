@@ -5,11 +5,14 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.andrognito.flashbar.Flashbar
 import com.andrognito.flashbar.anim.FlashAnim
 import kotlinx.android.synthetic.main.activity_main.*
 
 class KotlinSampleActivity : AppCompatActivity() {
+
+    private val TAG = "Flashbar"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -284,6 +287,68 @@ class KotlinSampleActivity : AppCompatActivity() {
                         .alpha()
                         .duration(750)
                         .accelerate())
+                .build()
+    }
+
+    private fun showListener(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.BOTTOM)
+                .title("Hello World!")
+                .message("You can listen to events when the flashbar is shown.")
+                .barShowListener(object : Flashbar.OnBarShowListener {
+                    override fun onShowing(bar: Flashbar) {
+                        Log.d(TAG, "Flashbar is showing")
+                    }
+
+                    override fun onShowProgress(bar: Flashbar, progress: Float) {
+                        Log.d(TAG, "Flashbar is showing with progress: $progress")
+                    }
+
+                    override fun onShown(bar: Flashbar) {
+                        Log.d(TAG, "Flashbar is shown")
+                    }
+                })
+                .build()
+    }
+
+    private fun dismissListener(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.BOTTOM)
+                .title("Hello World!")
+                .duration(500)
+                .message("You can listen to events when the flashbar is dismissed.")
+                .barDismissListener(object : Flashbar.OnBarDismissListener {
+                    override fun onDismissing(bar: Flashbar, isSwiped: Boolean) {
+                        Log.d(TAG, "Flashbar is dismissing with $isSwiped")
+                    }
+
+                    override fun onDismissProgress(bar: Flashbar, progress: Float) {
+                        Log.d(TAG, "Flashbar is dismissing with progress $progress")
+                    }
+
+                    override fun onDismissed(bar: Flashbar,
+                                             event: Flashbar.DismissEvent) {
+                        Log.d(TAG, "Flashbar is dismissed with event $event")
+                    }
+                })
+                .build()
+    }
+
+    private fun barTap(): Flashbar {
+        return Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World!")
+                .message("You can listen to tap events inside or outside te bar.")
+                .listenBarTaps(object : Flashbar.OnTapListener {
+                    override fun onTap(flashbar: Flashbar) {
+                        Log.d(TAG, "Bar tapped")
+                    }
+                })
+                .listenOutsideTaps(object : Flashbar.OnTapListener {
+                    override fun onTap(flashbar: Flashbar) {
+                        Log.d(TAG, "Outside tapped")
+                    }
+                })
                 .build()
     }
 }

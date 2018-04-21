@@ -42,7 +42,7 @@ internal class FlashbarContainerView(context: Context)
 
     private var onBarShowListener: Flashbar.OnBarShowListener? = null
     private var onBarDismissListener: Flashbar.OnBarDismissListener? = null
-    private var onTapOutsideListener: Flashbar.OnTapOutsideListener? = null
+    private var onTapOutsideListener: Flashbar.OnTapListener? = null
     private var overlayColor: Int? = null
     private var iconAnimBuilder: FlashAnimIconBuilder? = null
 
@@ -182,7 +182,7 @@ internal class FlashbarContainerView(context: Context)
         this.duration = duration
     }
 
-    internal fun setBarShownListener(listener: Flashbar.OnBarShowListener?) {
+    internal fun setBarShowListener(listener: Flashbar.OnBarShowListener?) {
         this.onBarShowListener = listener
     }
 
@@ -194,7 +194,7 @@ internal class FlashbarContainerView(context: Context)
         this.barDismissOnTapOutside = dismiss
     }
 
-    internal fun setOnTapOutsideListener(listener: Flashbar.OnTapOutsideListener?) {
+    internal fun setOnTapOutsideListener(listener: Flashbar.OnTapListener?) {
         this.onTapOutsideListener = listener
     }
 
