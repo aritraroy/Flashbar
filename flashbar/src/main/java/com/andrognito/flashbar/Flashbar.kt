@@ -8,6 +8,8 @@ import android.graphics.drawable.Drawable
 import android.support.annotation.*
 import android.support.v4.content.ContextCompat
 import android.text.Spanned
+import android.widget.ImageView.ScaleType
+import android.widget.ImageView.ScaleType.CENTER_CROP
 import com.andrognito.flashbar.Flashbar.Gravity.BOTTOM
 import com.andrognito.flashbar.Flashbar.Gravity.TOP
 import com.andrognito.flashbar.anim.FlashAnim
@@ -15,6 +17,7 @@ import com.andrognito.flashbar.anim.FlashAnimBarBuilder
 import com.andrognito.flashbar.anim.FlashAnimIconBuilder
 
 private const val DEFAULT_SHADOW_STRENGTH = 4
+private const val DEFAUT_ICON_SCALE = 1.0f
 
 class Flashbar private constructor(private var builder: Builder) {
 
@@ -134,6 +137,7 @@ class Flashbar private constructor(private var builder: Builder) {
             setNegativeActionTapListener(builder.onNegativeActionTapListener)
 
             showIcon(builder.showIcon)
+            showIconScale(builder.iconScale, builder.iconScaleType)
             setIconDrawable(builder.iconDrawable)
             setIconBitmap(builder.iconBitmap)
             setIconColorFilter(builder.iconColorFilter, builder.iconColorFilterMode)
@@ -205,6 +209,8 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var onNegativeActionTapListener: OnActionTapListener? = null
 
         internal var showIcon: Boolean = false
+        internal var iconScale: Float = DEFAUT_ICON_SCALE
+        internal var iconScaleType: ScaleType = CENTER_CROP
         internal var iconDrawable: Drawable? = null
         internal var iconBitmap: Bitmap? = null
         internal var iconColorFilter: Int? = null
@@ -260,7 +266,7 @@ class Flashbar private constructor(private var builder: Builder) {
          * By default, the duration is infinite
          */
         fun duration(milliseconds: Long) = apply {
-            require(milliseconds > 0) { "Duration can not be negative" }
+            require(milliseconds > 0) { "Duration can not be negative or zero" }
             this.duration = milliseconds
         }
 
@@ -322,7 +328,7 @@ class Flashbar private constructor(private var builder: Builder) {
          */
         @JvmOverloads
         fun castShadow(shadow: Boolean = true, strength: Int = DEFAULT_SHADOW_STRENGTH) = apply {
-            require(strength > 0) { "Shadow strength can not be negative" }
+            require(strength > 0) { "Shadow strength can not be negative or zero" }
 
             this.castShadow = shadow
             this.shadowStrength = strength
@@ -640,12 +646,18 @@ class Flashbar private constructor(private var builder: Builder) {
         }
 
         /**
-         * Specifies if the icon should be shown
+         * Specifies if the icon should be shown. Also configures its scale factor and scale type
          */
-        fun showIcon() = apply {
+        @JvmOverloads
+        fun showIcon(scale: Float = DEFAUT_ICON_SCALE, scaleType: ScaleType = CENTER_CROP) = apply {
             require(progressPosition != ProgressPosition.LEFT,
                     { "Cannot show icon if left progress is set" })
+            require(scale > 0,
+                    { "Icon scale cannot be negative or zero" })
+
             this.showIcon = true
+            this.iconScale = scale
+            this.iconScaleType = scaleType
         }
 
         /**

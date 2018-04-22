@@ -1,13 +1,13 @@
 
 # Flashbar
-A highly customizable, powerful and easy-to-use alerting library for Android
+A highly customizable, powerful and easy-to-use alerting library for Android.
 
 ### Specs
 [![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
 
-This library allows you to show messages or alerts in your app **quickly and easily**. It can be used as an alternative to Snackbar or Toast and offers a plethora of customization options for you to play with.
+This library allows you to show messages or alerts in your app **quickly and easily**. It can be used as an alternative to `Snackbar` or `Toast` and offers a plethora of useful features and customization options for you to play with.
 
-It has been written **100% in Kotlin**.
+It has been written **100% in Kotlin**. ❤️
 
 # Table of Contents
 * [Download](#download)
@@ -48,7 +48,7 @@ It has been written **100% in Kotlin**.
 
 This library is available in **jCenter** which is the default Maven repository used in Android Studio. You can also import this library from source as a module.
  
-```gradle
+```groovy
 dependencies {
     // other dependencies here
     implementation 'com.andrognito.flashbar:flashbar:1.0.0'
@@ -56,22 +56,22 @@ dependencies {
 ```
 
 # Sample Project
-We have an exhaustive sample project demonstrating almost every feature of the library in both Java & Kotlin.
+We have an exhaustive sample project demonstrating almost every feature of the library in both languages - Java & Kotlin.
 
 Checkout the Java samples [here](https://github.com/aritraroy/Flashbar/blob/develop/app/src/main/java/com/andrognito/flashbardemo/JavaSampleActivity.java) and the Kotlin samples [here](https://github.com/aritraroy/Flashbar/blob/develop/app/src/main/java/com/andrognito/flashbardemo/KotlinSampleActivity.kt).
 
 # Usage
-We recommend you to check the sample project to get a complete understanding of all the features offered by the library. You can find the implementation for both Java and Kotlin.
+It is recommended to check the sample project to get a complete understanding of all the features offered by the library.
 
-The library offers a huge amount of customization options and leverages the `Builder` pattern for ease of use.
+The library offers a huge amount of customization options and leverages the `Builder` pattern for ease of use. You will find details of each of these features described below.
 
 ## Basics
 
 ![](/raw/basic.png)
 
-Flashbar attaches a full-height, full-width view (`FlashbarContainerView`) to the decor view of the `Activity` and places a full width, adjustable height view(`FlashbarView`) inside it. These classes are internal classes and are not exposed for public use.
+Flashbar attaches a full-height, full-width view (`FlashbarContainerView`) to the decor view of the `Activity` and places a full width, dynamic height view(`FlashbarView`) inside it. These classes are internal classes and are not exposed for public use.
 
-Here's a basic example of showing a flashbar.
+Here's an example of showing a basic flashbar,
 
 ```kotlin
 Flashbar.Builder(this)
@@ -80,7 +80,7 @@ Flashbar.Builder(this)
         .build()
 ```
 
- You can specify the duration (in millis) for which you want the flashbar to be displayed. The default, the duration is infinite, i.e. it won't dismiss automatically if you do not specify any duration. You can also use these constants, `DURATION_SHORT` or `DURATION_LONG` for convenience.
+ You can specify the duration (in millis) for which you want the flashbar to be displayed. The default duration is infinite, i.e. it won't dismiss automatically if you do not specify any duration. You can also use these constants, `DURATION_SHORT` or `DURATION_LONG` for convenience.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -124,7 +124,7 @@ Flashbar.Builder(this)
 
 ![](/raw/title-advanced.png)
 
-You can change the color using `titleColor()`, size using `titleSizeInSp()`, `titleSizeInPx()`, typeface using `titleTypeface()` and appearance using `titleAppearance()`.
+You can change the color using `titleColor()`, size using `titleSizeInSp()`, `titleSizeInPx()`, typeface using `titleTypeface()` and appearance using `titleAppearance()`. Also, look out for other variants of this methods.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -151,7 +151,7 @@ Flashbar.Builder(this)
 
 ![](/raw/message-advanced.png)
 
-You can change the color using `messageColor()`, size using `messageSizeInSp()`, `messageSizeInPx()`, typeface using `messageTypeface()` and appearance using `messageAppearance()`.
+You can change the color using `messageColor()`, size using `messageSizeInSp()`, `messageSizeInPx()`, typeface using `messageTypeface()` and appearance using `messageAppearance()`. Also, look out for other variants of this methods.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -181,7 +181,7 @@ Flashbar.Builder(this)
 
 ![](/raw/background-advanced.png)
 
-You can also change the background using drawables, like have a cool gradient effect.
+You can also change the background using drawables, like the above, to have a cool gradient effect.
 
 
 ```kotlin
@@ -195,6 +195,8 @@ Flashbar.Builder(this)
 ####  Overlay
 ![](/raw/overlay.gif)
 
+The overlay creates a dim effect over the entire screen bringing more focus on the flashbar and its content. It is automatically added/removed along with the flashbar.
+
 ```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
@@ -204,7 +206,7 @@ Flashbar.Builder(this)
         .showOverlay()
         .build()
 ```
-You can also customize the overlay color using `overlayColor()` and also make the overlay consume click/touch events using `overlayBlockable()`.
+You can also customize the overlay color using `overlayColor()` and also make the overlay block any click/touch events using `overlayBlockable()`.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -226,19 +228,20 @@ There are three types of action buttons available - primary (placed at the right
 
 You can customize the primary action button's text color, size, typeface, appearance and also listen to its tap events.
 
-The quickest way to get an action button is to put some text into it.
+The quickest way to show an action button is to put some text into it.
+
 ```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
         .title("Hello World!")
         .message("You can click on the primary action button.")
-        .primaryActionText("TRY")
+        .primaryActionText("TRY NOW")
         .build()
 ```
 
 ![](/raw/action-primary-advanced.png)
 
-You can also customize its appearance the way you want to,
+You can also customize its appearance in a lot of ways,
 
 ```kotlin
 Flashbar.Builder(this)
@@ -251,7 +254,9 @@ Flashbar.Builder(this)
         .primaryActionTextSizeInSp(20f)
         .build()
 ```
+
 You can also listen to its tap/click events through the `OnActionTapListener`,
+
 ```kotlin
 Flashbar.Builder(this)
         .gravity(Flashbar.Gravity.TOP)
@@ -300,7 +305,7 @@ You can show icon (left) and progress bar (left or right) in the flashbar. You c
 ### Icon
 ![](/raw/icon.png)
 
-You can show an icon on the left side of the view using `showIcon()` which will show a default icon.
+You can show an icon on the left side of the view using `showIcon()` which will show the default icon.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -311,7 +316,7 @@ Flashbar.Builder(this)
         .build()
 ```
 
-You can also use your custom icon (drawable or bitmap) and apply color filters (change modes too) on it easily.
+You can show any custom icon (drawable or bitmap) and apply color filters (change modes too) on it. You can also scale the icon up/down and specify scale type using the variants of `showIcon(scale, scaleType)`.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -319,7 +324,7 @@ Flashbar.Builder(this)
         .title("Hello World!")
         .message("You can show a default icon on the left side of the withView")
         .backgroundColorRes(R.color.colorPrimaryDark)
-        .showIcon()
+        .showIcon(0.8f, ScaleType.CENTER_CROP)
         .icon(R.drawable.ic_drop)
         .iconColorFilterRes(R.color.colorAccent)
         .build()
@@ -329,7 +334,7 @@ Flashbar.Builder(this)
 ### Progress
 ![](/raw/progress_left.gif)
 
-You might also want to show indeterminate progress bars to indicate that you are fetching some data or downloading a file. The progress bars can be shown at either the left or the right side of the view.
+You might also want to show indeterminate progress bars to indicate that you are fetching some data, downloading a file, etc. The progress bar can be shown at either the left or the right side of the view.
 
 If the progress bar is shown on the left side, then you cannot show the icon with it. If the progress bar is shown on the right side, then you cannot show the action button along with it.
 
@@ -435,7 +440,7 @@ You can listen to several events like when the flashbar is showing, or dismissin
 You can also listen to tap events inside or outside the bar.
 
 ### Show
-You can listen to events like `onShowing`, `onShowProgress` and `onShown`.
+You can listen to events like `onShowing`, `onShowProgress` and `onShown`. The progress ranges from from 0.0 to 1.0. But in some special cases (like with bounce interpolator) it can go below 0.0 or above 1.0.
  
 ```kotlin
 Flashbar.Builder(this)
@@ -458,7 +463,9 @@ Flashbar.Builder(this)
         .build()
 ```
 ### Dismiss
-You can listen to events like `onDismissing`, `onDismissProgress` and `onDismissed`. You can also specifically get to know the reason behind the bar dismiss action - `TIMEOUT`, `MANUAL`, `TAP_OUTSIDE` and `SWIPE`.
+You can listen to events like `onDismissing`, `onDismissProgress` and `onDismissed`. The progress ranges from from 0.0 to 1.0. But in some special cases (like with bounce interpolator) it can go below 0.0 or above 1.0. 
+
+You can also specifically get to know the reason behind the bar dismiss action - `TIMEOUT`, `MANUAL`, `TAP_OUTSIDE` and `SWIPE`.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -545,10 +552,10 @@ Flashbar.Builder(this)
 # Roadmap
 These are some of the prioritized features in the pipeline awaiting to be implemented in the near future - 
 
-* Add coordinator layout support
-* Add flashbar manager for queue management
-* Add custom layout inflation support
-* Improve shadow rendering
+- [ ] Add coordinator layout support
+- [ ] Add flashbar manager for queue management
+- [ ] Add custom layout inflation support
+- [ ] Improve shadow rendering
 
 # Contribution
 

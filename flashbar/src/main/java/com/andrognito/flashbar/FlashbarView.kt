@@ -16,6 +16,7 @@ import android.util.TypedValue
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM
@@ -385,6 +386,12 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
 
     internal fun showIcon(showIcon: Boolean) {
         this.fbIcon.visibility = if (showIcon) VISIBLE else GONE
+    }
+
+    internal fun showIconScale(scale: Float, scaleType: ImageView.ScaleType?) {
+        this.fbIcon.scaleX = scale
+        this.fbIcon.scaleY = scale
+        this.fbIcon.scaleType = scaleType
     }
 
     internal fun setIconDrawable(icon: Drawable?) {

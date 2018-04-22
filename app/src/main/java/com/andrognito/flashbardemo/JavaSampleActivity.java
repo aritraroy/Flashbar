@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView.ScaleType;
 
 import com.andrognito.flashbar.Flashbar;
 import com.andrognito.flashbar.anim.FlashAnim;
@@ -33,7 +34,7 @@ public class JavaSampleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flashbar == null) {
-                    flashbar = iconAnimation();
+                    flashbar = iconAdvanced();
                 }
                 flashbar.show();
             }
@@ -246,7 +247,7 @@ public class JavaSampleActivity extends AppCompatActivity {
                 .title("Hello World!")
                 .message("You can show a default icon on the left side of the with view.")
                 .backgroundColorRes(R.color.colorPrimaryDark)
-                .showIcon()
+                .showIcon(0.8f, ScaleType.CENTER_CROP)
                 .icon(R.drawable.ic_drop)
                 .iconColorFilterRes(R.color.colorAccent)
                 .build();
@@ -269,6 +270,7 @@ public class JavaSampleActivity extends AppCompatActivity {
                 .message(
                         "You can customize the look-and-fell of the progress bar.")
                 .backgroundColorRes(R.color.chalk_black)
+                .showIcon()
                 .showProgress(Flashbar.ProgressPosition.RIGHT)
                 .progressTintRes(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP)
                 .build();
