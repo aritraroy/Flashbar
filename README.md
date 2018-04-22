@@ -138,6 +138,8 @@ Flashbar.Builder(this)
 ```
 
 ## Message
+![](/raw/message.png)
+
 You can show an optional message in the flashbar. You can also customize the color, size and appearance of it.
 
 ```kotlin
@@ -146,6 +148,8 @@ Flashbar.Builder(this)
         .message("This is a short message. But your message can be of any length and the view will dynamically adjust itself.")
         .build();
 ```
+
+![](/raw/message-advanced.png)
 
 You can change the color using `messageColor()`, size using `messageSizeInSp()`, `messageSizeInPx()`, typeface using `messageTypeface()` and appearance using `messageAppearance()`.
 
@@ -160,6 +164,8 @@ Flashbar.Builder(this)
 ```
 
 ## Background & Overlay
+![](/raw/background.png)
+
 You can change the background color of the flashbar and add a modal overlay as well.
 
 ####  Background
@@ -172,7 +178,11 @@ Flashbar.Builder(this)
         .backgroundColorRes(R.color.colorPrimaryDark)
         .build()
 ```
+
+![](/raw/background-advanced.png)
+
 You can also change the background using drawables, like have a cool gradient effect.
+
 
 ```kotlin
 Flashbar.Builder(this)
@@ -183,6 +193,7 @@ Flashbar.Builder(this)
         .build()
 ```
 ####  Overlay
+![](/raw/overlay-bar.gif)
 
 ```kotlin
 Flashbar.Builder(this)
@@ -211,6 +222,8 @@ Flashbar.Builder(this)
 There are three types of action buttons available - primary (placed at the right side), positive and negative (placed at the bottom).
 
 ### Primary
+![](/raw/action-primary.png)
+
 You can customize the primary action button's text color, size, typeface, appearance and also listen to its tap events.
 
 The quickest way to get an action button is to put some text into it.
@@ -222,6 +235,9 @@ Flashbar.Builder(this)
         .primaryActionText("TRY")
         .build()
 ```
+
+![](/raw/action-primary-advanced.png)
+
 You can also customize its appearance the way you want to,
 
 ```kotlin
@@ -250,6 +266,8 @@ Flashbar.Builder(this)
         .build()
 ```
 ### Positive/Negative
+![](/raw/action-positive-negative.png)
+
 You can customize the positive and negative buttons in the same way as the primary button. These buttons appear at the bottom part of the view. You can show the positive, or negative or both the buttons. You can also listen to the tap events in the same way as before.
 
 ```kotlin

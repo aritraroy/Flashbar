@@ -33,7 +33,7 @@ public class JavaSampleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flashbar == null) {
-                    flashbar = titleAdvanced();
+                    flashbar = iconAdvanced();
                 }
                 flashbar.show();
             }
@@ -68,7 +68,9 @@ public class JavaSampleActivity extends AppCompatActivity {
     private Flashbar gravityTop() {
         return new Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.TOP)
-                .message("Flashbar is shown at the top. You can also have more than one line in the flashbar. The bar will dynamically adjust its size.")
+                .message(
+                        "Flashbar is shown at the top. You can also have more than one line in "
+                                + "the flashbar. The bar will dynamically adjust its size.")
                 .build();
     }
 
@@ -101,18 +103,23 @@ public class JavaSampleActivity extends AppCompatActivity {
     private Flashbar messageBasic() {
         return new Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World")
                 .message(
                         "This is a short message. But your message can be of any length and the "
-                                + "withView will dynamically adjust itself.")
+                                + "with view will dynamically adjust itself. You can try to put "
+                                + "very long messages as well. This can be really useful for "
+                                + "putting up a lot of information to the user like feature "
+                                + "explanation, tutorials, etc.")
                 .build();
     }
 
     private Flashbar messageAdvanced() {
         return new Flashbar.Builder(this)
-                .gravity(Flashbar.Gravity.TOP)
-                .message("This is a short message")
+                .gravity(Flashbar.Gravity.BOTTOM)
+                .title("Hello World")
+                .message("This is a very short message.")
                 .messageColor(ContextCompat.getColor(this, R.color.white))
-                .messageSizeInSp(16)
+                .messageSizeInSp(24)
                 .messageTypeface(
                         Typeface.createFromAsset(getAssets(), "BeautifulAndOpenHearted.ttf"))
                 .build();
@@ -120,9 +127,8 @@ public class JavaSampleActivity extends AppCompatActivity {
 
     private Flashbar background() {
         return new Flashbar.Builder(this)
-                .gravity(Flashbar.Gravity.TOP)
-                .title("Hello World!")
-                .message("The background color can be changed to any color of your choice.")
+                .gravity(Flashbar.Gravity.BOTTOM)
+                .message("The background color can be changed to any color.")
                 .backgroundColorRes(R.color.colorPrimaryDark)
                 .build();
     }
@@ -131,7 +137,11 @@ public class JavaSampleActivity extends AppCompatActivity {
         return new Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.TOP)
                 .title("Hello World!")
-                .message("The background color can be changed to any color of your choice.")
+                .titleTypeface(Typeface.createFromAsset(getAssets(), "BeautifulAndOpenHearted.ttf"))
+                .titleSizeInSp(32)
+                .message(
+                        "You can add background drawables which can allow you to have cool "
+                                + "gradient effects like this.")
                 .backgroundDrawable(R.drawable.bg_gradient)
                 .build();
     }
@@ -154,28 +164,28 @@ public class JavaSampleActivity extends AppCompatActivity {
                 .backgroundColorRes(R.color.colorPrimaryDark)
                 .showOverlay()
                 .overlayColorRes(R.color.modal)
-                .overlayBlockable()
                 .build();
     }
 
     private Flashbar primaryActionBasic() {
         return new Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.TOP)
+                .backgroundColorRes(R.color.colorAccent)
                 .title("Hello World!")
                 .message("You can click on the primary action button.")
-                .primaryActionText("TRY")
+                .primaryActionText("DOWNLOAD")
                 .build();
     }
 
     private Flashbar primaryActionAdvanced() {
         return new Flashbar.Builder(this)
-                .gravity(Flashbar.Gravity.TOP)
+                .gravity(Flashbar.Gravity.BOTTOM)
                 .title("Hello World!")
                 .backgroundColorRes(R.color.colorPrimaryDark)
-                .message("You can click on the primary action button.")
-                .primaryActionText("TRY")
+                .message("You can customize the the primary action button.")
+                .primaryActionText("TRY NOW")
                 .primaryActionTextColorRes(R.color.colorAccent)
-                .primaryActionTextSizeInSp(20)
+                .primaryActionTextSizeInSp(16)
                 .build();
     }
 
@@ -196,12 +206,12 @@ public class JavaSampleActivity extends AppCompatActivity {
 
     private Flashbar positiveNegativeAction() {
         return new Flashbar.Builder(this)
-                .gravity(Flashbar.Gravity.TOP)
+                .gravity(Flashbar.Gravity.BOTTOM)
                 .title("Hello World!")
                 .message(
                         "You can show either or both of the positive/negative buttons and "
                                 + "customize them similar to the primary button.")
-                .backgroundColorRes(R.color.colorPrimaryDark)
+                .backgroundColorRes(R.color.chalk_black)
                 .positiveActionText("YES")
                 .negativeActionText("NO")
                 .positiveActionTapListener(new Flashbar.OnActionTapListener() {
@@ -216,8 +226,8 @@ public class JavaSampleActivity extends AppCompatActivity {
                         bar.dismiss();
                     }
                 })
-                .positiveActionTextColorRes(R.color.colorAccent)
-                .negativeActionTextColorRes(R.color.colorAccent)
+                .positiveActionTextColorRes(R.color.yellow)
+                .negativeActionTextColorRes(R.color.yellow)
                 .build();
     }
 

@@ -83,14 +83,20 @@ class KotlinSampleActivity : AppCompatActivity() {
     private fun messageBasic(): Flashbar {
         return Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World")
                 .message(
-                        "This is a short message. But your message can be of any length and the " + "withView will dynamically adjust itself.")
+                        "This is a short message. But your message can be of any length and the "
+                                + "with view will dynamically adjust itself. You can try to put "
+                                + "very long messages as well. This can be really useful for "
+                                + "putting up a lot of information to the user like feature "
+                                + "explanation, tutorials, etc.")
                 .build()
     }
 
     private fun messageAdvanced(): Flashbar {
         return Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.TOP)
+                .title("Hello World")
                 .message("This is a short message")
                 .messageColor(ContextCompat.getColor(this, R.color.white))
                 .messageSizeInSp(16f)
