@@ -193,7 +193,7 @@ Flashbar.Builder(this)
         .build()
 ```
 ####  Overlay
-![](/raw/overlay-bar.gif)
+![](/raw/overlay.gif)
 
 ```kotlin
 Flashbar.Builder(this)
@@ -298,6 +298,8 @@ Flashbar.Builder(this)
 You can show icon (left) and progress bar (left or right) in the flashbar. You can also customize their look & feel in a lot of ways.
 
 ### Icon
+![](/raw/icon.png)
+
 You can show an icon on the left side of the view using `showIcon()` which will show a default icon.
 
 ```kotlin
@@ -325,6 +327,8 @@ Flashbar.Builder(this)
 ```
 
 ### Progress
+![](/raw/progress_left.gif)
+
 You might also want to show indeterminate progress bars to indicate that you are fetching some data or downloading a file. The progress bars can be shown at either the left or the right side of the view.
 
 If the progress bar is shown on the left side, then you cannot show the icon with it. If the progress bar is shown on the right side, then you cannot show the action button along with it.
@@ -337,6 +341,7 @@ Flashbar.Builder(this)
         .showProgress(Flashbar.ProgressPosition.LEFT)
         .build()
 ```
+![](/raw/progress_right.gif)
 
 You can also change the color of the progress and also apply custom filter modes.
 
@@ -356,6 +361,8 @@ Flashbar.Builder(this)
 You can customize the enter/exit animation of the flashbar. You can also add custom animations to the icon. The library provides a fluent API styled animation framework to customize these animations.
 
 ### Enter/Exit
+![](/raw/enter_exit_anim.gif)
+
 You can start animating the bar using `FlashAnim.with(this).animateBar()`. You can change the duration of the animation using `duration()`, apply custom interpolators using `interpolator()` or choosing from a set of interpolators available, add alpha transition using `alpha()`.
 
 ```kotlin
@@ -375,6 +382,8 @@ Flashbar.Builder(this)
                 .accelerateDecelerate())
         .build()
 ```
+
+![](/raw/slide_left_anim.gif)
 
 You can also make the flashbar enter/exit from the left/right side of the screen.
 
@@ -398,6 +407,8 @@ Flashbar.Builder(this)
 ```
 
 ### Icon
+![](/raw/icon_anim.gif)
+
 You can start animating the icon using `FlashAnim.with(this).animateIcon()`. You can change the duration of the animation using `duration()`, apply custom interpolators using `interpolator()` or choosing from a set of interpolators available, add pulsating effect using `pulse()` and alpha transition using `alpha()` too.
 
 ```kotlin
