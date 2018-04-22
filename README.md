@@ -5,7 +5,6 @@ A highly customizable, powerful and easy-to-use alerting library for Android
 ### Specs
 [![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
 
-
 This library allows you to show messages or alerts in your app **quickly and easily**. It can be used as an alternative to Snackbar or Toast and offers a plethora of customization options for you to play with.
 
 It has been written **100% in Kotlin**.
@@ -68,18 +67,20 @@ The library offers a huge amount of customization options and leverages the `Bui
 
 ## Basics
 
+![](/raw/basic.png)
+
 Flashbar attaches a full-height, full-width view (`FlashbarContainerView`) to the decor view of the `Activity` and places a full width, adjustable height view(`FlashbarView`) inside it. These classes are internal classes and are not exposed for public use.
 
 Here's a basic example of showing a flashbar.
 
 ```kotlin
 Flashbar.Builder(this)
-        .gravity(Flashbar.Gravity.TOP)
+        .gravity(Flashbar.Gravity.BOTTOM)
         .message("This is a basic flashbar")
         .build()
 ```
 
-  You can specify the duration (in millis) for which you want the flashbar to be displayed. The default, the duration is infinite, i.e. it won't dismiss automatically if you do not specify any duration. You can also use these constants, `DURATION_SHORT` or `DURATION_LONG` for convenience.
+ You can specify the duration (in millis) for which you want the flashbar to be displayed. The default, the duration is infinite, i.e. it won't dismiss automatically if you do not specify any duration. You can also use these constants, `DURATION_SHORT` or `DURATION_LONG` for convenience.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -90,6 +91,8 @@ Flashbar.Builder(this)
 ```
 
 ## Gravity
+![](/raw/gravity-top.png)
+
 You can show the flashbar either at the top or at the bottom of the screen using the gravity property. By default, it is shown at the bottom.
 
 ```kotlin
@@ -108,6 +111,8 @@ Flashbar.Builder(this)
 ```
 
 ## Title
+![](/raw/title.png)
+
 You can show an optional title in the flashbar. You can also customize the color, size, typeface and appearance of it.
 
 ```kotlin
@@ -116,6 +121,8 @@ Flashbar.Builder(this)
         .title("Hello World!")
         .build();
 ```
+
+![](/raw/title-advanced.png)
 
 You can change the color using `titleColor()`, size using `titleSizeInSp()`, `titleSizeInPx()`, typeface using `titleTypeface()` and appearance using `titleAppearance()`.
 

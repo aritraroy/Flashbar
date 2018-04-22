@@ -22,7 +22,7 @@ class KotlinSampleActivity : AppCompatActivity() {
 
         show.setOnClickListener {
             if (flashbar == null) {
-                flashbar = primaryActionListener()
+                flashbar = basic()
             }
             flashbar?.show()
         }
@@ -34,7 +34,7 @@ class KotlinSampleActivity : AppCompatActivity() {
 
     private fun basic(): Flashbar {
         return Flashbar.Builder(this)
-                .gravity(Flashbar.Gravity.TOP)
+                .gravity(Flashbar.Gravity.BOTTOM)
                 .message("This is a basic flashbar")
                 .build()
     }
@@ -64,7 +64,8 @@ class KotlinSampleActivity : AppCompatActivity() {
     private fun titleBasic(): Flashbar {
         return Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.BOTTOM)
-                .title("Hello World!")
+                .title("Hello Flashbar")
+                .message("You can put any message of any length here.")
                 .build()
     }
 
@@ -73,7 +74,8 @@ class KotlinSampleActivity : AppCompatActivity() {
                 .gravity(Flashbar.Gravity.BOTTOM)
                 .title("Hello World")
                 .titleColorRes(R.color.white)
-                .titleSizeInSp(24f)
+                .titleSizeInSp(28f)
+                .message("The font and size of the text is changed here.")
                 .titleTypeface(Typeface.createFromAsset(assets, "BeautifulAndOpenHearted.ttf"))
                 .build()
     }

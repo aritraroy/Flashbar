@@ -33,7 +33,7 @@ public class JavaSampleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flashbar == null) {
-                    flashbar = vibration();
+                    flashbar = titleAdvanced();
                 }
                 flashbar.show();
             }
@@ -52,7 +52,7 @@ public class JavaSampleActivity extends AppCompatActivity {
 
     private Flashbar basic() {
         return new Flashbar.Builder(this)
-                .gravity(Flashbar.Gravity.TOP)
+                .gravity(Flashbar.Gravity.BOTTOM)
                 .message("This is a basic flashbar")
                 .build();
     }
@@ -68,21 +68,22 @@ public class JavaSampleActivity extends AppCompatActivity {
     private Flashbar gravityTop() {
         return new Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.TOP)
-                .message("Flashbar is shown at the top")
+                .message("Flashbar is shown at the top. You can also have more than one line in the flashbar. The bar will dynamically adjust its size.")
                 .build();
     }
 
     private Flashbar gravityBottom() {
         return new Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.BOTTOM)
-                .message("Flashbar is shown at the bottom")
+                .message("Flashbar is shown at the bottom.")
                 .build();
     }
 
     private Flashbar titleBasic() {
         return new Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.BOTTOM)
-                .title("Hello World!")
+                .title("Hello Flashbar")
+                .message("You can put any message of any length here.")
                 .build();
     }
 
@@ -91,7 +92,8 @@ public class JavaSampleActivity extends AppCompatActivity {
                 .gravity(Flashbar.Gravity.BOTTOM)
                 .title("Hello World")
                 .titleColorRes(R.color.white)
-                .titleSizeInSp(24)
+                .titleSizeInSp(28)
+                .message("The font and size of the text is changed here.")
                 .titleTypeface(Typeface.createFromAsset(getAssets(), "BeautifulAndOpenHearted.ttf"))
                 .build();
     }
