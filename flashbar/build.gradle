@@ -2,6 +2,30 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'flashbar'
+
+    publishedGroupId = 'com.andrognito.flashbar'
+    libraryName = 'flashbar'
+    artifact = 'flashbar'
+
+    libraryDescription = 'A highly customizable, powerful and easy-to-use alerting library for Android.'
+
+    siteUrl = 'https://github.com/aritraroy/Flashbar'
+    gitUrl = 'https://github.com/aritraroy/Flashbar.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'aritraroy'
+    developerName = 'Aritra Roy'
+    developerEmail = 'aritra.roy.in@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 android {
     compileSdkVersion project.sdk
 
@@ -9,7 +33,7 @@ android {
         minSdkVersion project.minSdk
         targetSdkVersion project.sdk
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -27,3 +51,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2'
 }
+
+apply from: 'https://raw.githubusercontent.com/aritraroy/LibUtils/master/install.gradle'
+apply from: 'https://raw.githubusercontent.com/aritraroy/LibUtils/master/upload.gradle'

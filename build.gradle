@@ -7,6 +7,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
     }
 }
 
@@ -14,6 +16,10 @@ allprojects {
     repositories {
         google()
         jcenter()
+    }
+
+    tasks.withType(Javadoc).all {
+        enabled = false
     }
 }
 
@@ -24,6 +30,5 @@ task clean(type: Delete) {
 ext {
     sdk = 27
     minSdk = 14
-    libraryVersion = "1.0.7"
-    supportVersion = "27.1.0"
+    supportVersion = "27.1.1"
 }
