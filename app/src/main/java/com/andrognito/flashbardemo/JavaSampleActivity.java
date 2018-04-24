@@ -34,7 +34,7 @@ public class JavaSampleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flashbar == null) {
-                    flashbar = iconAdvanced();
+                    flashbar = swipeToDismiss();
                 }
                 flashbar.show();
             }
@@ -406,7 +406,7 @@ public class JavaSampleActivity extends AppCompatActivity {
 
     private Flashbar swipeToDismiss() {
         return new Flashbar.Builder(this)
-                .gravity(Flashbar.Gravity.TOP)
+                .gravity(Flashbar.Gravity.BOTTOM)
                 .title("Hello World!")
                 .message("You can swipe the flashbar to dismiss it.")
                 .enableSwipeToDismiss()

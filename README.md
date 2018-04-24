@@ -334,9 +334,9 @@ Flashbar.Builder(this)
 ### Progress
 ![](/raw/progress_left.gif)
 
-You might also want to show indeterminate progress bars to indicate that you are fetching some data, downloading a file, etc. The progress bar can be shown at either the left or the right side of the view.
+You might also want to show indeterminate progress bars to indicate that you are fetching some data, downloading a file, etc. The progress bar can be shown at either the left or the right hand side of the view.
 
-If the progress bar is shown on the left side, then you cannot show the icon with it. If the progress bar is shown on the right side, then you cannot show the action button along with it.
+**Caveat**: If the progress bar is shown on the left side, then you cannot show the icon with it. If the progress bar is shown on the right side, then you cannot show the action button along with it.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -348,7 +348,7 @@ Flashbar.Builder(this)
 ```
 ![](/raw/progress_right.gif)
 
-You can also change the color of the progress and also apply custom filter modes.
+You can change the color of the progress and also apply custom filter modes.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -363,12 +363,12 @@ Flashbar.Builder(this)
 
 ## Animations
 
-You can customize the enter/exit animation of the flashbar. You can also add custom animations to the icon. The library provides a fluent API styled animation framework to customize these animations.
+You can customize the enter/exit animation of the flashbar. You can also add custom animations to the icon for drawing attention towards it. The library provides a fluent API-styled animation framework to customize these animations.
 
 ### Enter/Exit
 ![](/raw/enter_exit_anim.gif)
 
-You can start animating the bar using `FlashAnim.with(this).animateBar()`. You can change the duration of the animation using `duration()`, apply custom interpolators using `interpolator()` or choosing from a set of interpolators available, add alpha transition using `alpha()`.
+You can start animating the bar using `FlashAnim.with(this).animateBar()`. You can change the duration of the animation using `duration()`, apply custom interpolators using `interpolator()` or choose from a set of interpolators available, add alpha transition using `alpha()`, etc.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -390,7 +390,7 @@ Flashbar.Builder(this)
 
 ![](/raw/slide_left_anim.gif)
 
-You can also make the flashbar enter/exit from the left/right side of the screen.
+You can also make the flashbar enter/exit from the left/right side of the screen,
 
 ```kotlin
 Flashbar.Builder(this)
@@ -411,10 +411,12 @@ Flashbar.Builder(this)
         .build()
 ```
 
+**Note** - You can configure the animations with your desired specifications in the builder and pass it on. You can not call `build()` on these animations as it is reserved to be used internally from inside the library only.
+
 ### Icon
 ![](/raw/icon_anim.gif)
 
-You can start animating the icon using `FlashAnim.with(this).animateIcon()`. You can change the duration of the animation using `duration()`, apply custom interpolators using `interpolator()` or choosing from a set of interpolators available, add pulsating effect using `pulse()` and alpha transition using `alpha()` too.
+You can start animating the icon using `FlashAnim.with(this).animateIcon()`. You can change the duration of the animation using `duration()`, apply custom interpolators using `interpolator()` or choose from a set of interpolators available, add pulsating effect using `pulse()` and alpha transition using `alpha()`, etc.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -435,12 +437,12 @@ Flashbar.Builder(this)
 ```
 
 ## Event Listeners
-You can listen to several events like when the flashbar is showing, or dismissing. You can also listen to progress updates when the flashbar is being shown or dismissed to perform your own animations if needed.
+You can listen to events like when the flashbar is showing, or dismissing. You can also listen to progress updates when the flashbar is being shown or dismissed to perform animations on other views if needed.
 
 You can also listen to tap events inside or outside the bar.
 
 ### Show
-You can listen to events like `onShowing`, `onShowProgress` and `onShown`. The progress ranges from from 0.0 to 1.0. But in some special cases (like with bounce interpolator) it can go below 0.0 or above 1.0.
+You can listen to events on `OnBarShowListener` like `onShowing`, `onShowProgress` and `onShown`. The progress ranges from from 0.0 to 1.0. But in some special cases (like with bounce interpolator) it can go below 0.0 or above 1.0.
  
 ```kotlin
 Flashbar.Builder(this)
@@ -463,7 +465,7 @@ Flashbar.Builder(this)
         .build()
 ```
 ### Dismiss
-You can listen to events like `onDismissing`, `onDismissProgress` and `onDismissed`. The progress ranges from from 0.0 to 1.0. But in some special cases (like with bounce interpolator) it can go below 0.0 or above 1.0. 
+You can listen to events on `OnBarDismissListener` like `onDismissing`, `onDismissProgress` and `onDismissed`. The progress ranges from from 0.0 to 1.0. But in some special cases (like with bounce interpolator) it can go below 0.0 or above 1.0. 
 
 You can also specifically get to know the reason behind the bar dismiss action - `TIMEOUT`, `MANUAL`, `TAP_OUTSIDE` and `SWIPE`.
 
@@ -490,7 +492,7 @@ Flashbar.Builder(this)
 ```
 
 ### Taps
-You can listen to tap events inside or outside the bar.
+You can listen to tap events inside or outside of the bar.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -511,10 +513,12 @@ Flashbar.Builder(this)
 ```
 
 ## Miscellaneous
-These are a set of miscellaneous features available in flashbar.
+A quick look at some of the miscellaneous features available in flashbar.
 
 ### Swipe-to-dismiss
-You can enable this feature to dismiss the flashbar by swiping on it. By default it is disabled. You can also know if the bar was dismissed by a swipe from the `DismissEvent` as `SWIPE`.
+![](/raw/swipe_bar.gif)
+
+You can enable this feature to dismiss the flashbar by swiping it left/right. By default this feature is disabled. You can also know if the bar was dismissed by a swipe from the `DismissEvent` as `SWIPE`.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -526,7 +530,7 @@ Flashbar.Builder(this)
 ```
 
 ### Shadow
-You can show a synthetically generated shadow on the flashbar irrespective of its position - top or bottom. By default the shadow is always cast.
+You can show a synthetically generated shadow on the flashbar irrespective of its position - top or bottom. By default the shadow is always shown.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -538,7 +542,7 @@ Flashbar.Builder(this)
 ```
 
 ### Vibration
-The flashbar can produce a short vibration when it is shown, dismissed or both.
+The flashbar can produce a short vibration to seek the attention of the user when it is shown, dismissed or both.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -562,11 +566,11 @@ These are some of the prioritized features in the pipeline awaiting to be implem
 I highly encourage the community to step forward and improve this library further. You can fix any reported bug, propose or implement new features, write tests, etc.
 
 Here is a quick list of things to remember -
-* Check the open issues before creating a new one
-* Help us in reducing the number of open issues by fixing any existing bugs
-* Check the roadmap to see if you can help in implementing any new feature
-* You can contribute by writing unit and integration tests for this library
-* If you have any new idea that aligns with the goal of this library, feel free to raise a feature request and discuss it
+* Check the open issues before creating a new one,
+* Help me in reducing the number of open issues by fixing any existing bugs,
+* Check the roadmap to see if you can help in implementing any new feature,
+* You can contribute by writing unit and integration tests for this library,
+* If you have any new idea that aligns with the goal of this library, feel free to raise a feature request and discuss it.
 
 # About The Author
 

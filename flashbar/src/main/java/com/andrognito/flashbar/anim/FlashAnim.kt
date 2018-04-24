@@ -49,6 +49,13 @@ class FlashAnim(private val compositeAnim: AnimatorSet) {
 }
 
 class FlashAnimRetriever(private val context: Context) {
+    /**
+     * Retrieves the builder for animating flashbar
+     */
     fun animateBar() = FlashAnimBarBuilder(context)
+
+    /**
+     * Retrieves the builder for animating the icon in the flashbar
+     */
     fun animateIcon() = FlashAnimIconBuilder(context)
 }

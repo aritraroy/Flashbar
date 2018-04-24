@@ -23,37 +23,70 @@ class FlashAnimBarBuilder(context: Context) : BaseFlashAnimBuilder(context) {
     private var gravity: Flashbar.Gravity? = null
     private var direction: Direction? = null
 
-    override fun withView(view: View) = apply { super.withView(view) }
-
+    /**
+     * Specifies the duration (in millis) for the animation
+     */
     override fun duration(millis: Long) = apply { super.duration(millis) }
 
+    /**
+     * Specifies accelerate interpolator for the animation
+     */
     override fun accelerate() = apply { super.accelerate() }
 
+    /**
+     * Specifies decelerate interpolator for the animation
+     */
     override fun decelerate() = apply { super.decelerate() }
 
+    /**
+     * Specifies accelerate-decelerate interpolator for the animation
+     */
     override fun accelerateDecelerate() = apply { super.accelerateDecelerate() }
 
+    /**
+     * Specifies custom interpolator for the animation
+     */
     override fun interpolator(interpolator: Interpolator) = apply { super.interpolator(interpolator) }
 
+    /**
+     * Specifies custom interpolator resource for the animation
+     */
     override fun interpolator(@InterpolatorRes id: Int) = apply { super.interpolator(id) }
 
+    /**
+     * Specifies that the animation should have alpha effect
+     */
     override fun alpha() = apply { super.alpha() }
 
+    /**
+     * Specifies that the bar should slide to/from the left
+     */
     fun slideFromLeft() = apply {
         this.direction = LEFT
     }
 
+    /**
+     * Specifies that the bar should slide to/from the right
+     */
     fun slideFromRight() = apply {
         this.direction = RIGHT
     }
 
+    /**
+     * Specifies overshoot interpolator for the animation
+     */
     fun overshoot() = apply {
         this.interpolator = OvershootInterpolator()
     }
 
+    /**
+     * Specifies overshoot-anticipate interpolator for the animation
+     */
     fun anticipateOvershoot() = apply {
         this.interpolator = AnticipateInterpolator()
     }
+
+    override fun withView(view: View) = apply { super.withView(view) }
 
     internal fun enter() = apply {
         this.type = ENTER
