@@ -9,6 +9,8 @@ This library allows you to show messages or alerts in your app **quickly and eas
 
 It has been written **100% in Kotlin**. ❤️
 
+![](/raw/banner.png)
+
 # Table of Contents
 * [Download](#download)
 * [Sample Project](#sample-project)
