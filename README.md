@@ -3,7 +3,7 @@
 A highly customizable, powerful and easy-to-use alerting library for Android.
 
 ### Specs
-[![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
+[![Download](https://api.bintray.com/packages/aritraroy/maven/flashbar/images/download.svg)](https://bintray.com/aritraroy/maven/flashbar/_latestVersion) [![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)  
 
 This library allows you to show messages or alerts in your app **quickly and easily**. It can be used as an alternative to `Snackbar` or `Toast` and offers a plethora of useful features and customization options for you to play with.
 
@@ -91,7 +91,7 @@ Flashbar.Builder(this)
 ```
 
 ## Gravity
-![](/raw/gravity-top.png)
+![](/raw/gravity.png)
 
 You can show the flashbar either at the top or at the bottom of the screen using the gravity property. By default, it is shown at the bottom.
 

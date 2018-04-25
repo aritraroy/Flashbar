@@ -34,7 +34,7 @@ public class JavaSampleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flashbar == null) {
-                    flashbar = swipeToDismiss();
+                    flashbar = gravityTop();
                 }
                 flashbar.show();
             }
