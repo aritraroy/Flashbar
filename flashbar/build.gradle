@@ -34,8 +34,6 @@ android {
         targetSdkVersion project.sdk
         versionCode 1
         versionName "1.0.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -49,7 +47,6 @@ android {
 dependencies {
     implementation "com.android.support:appcompat-v7:$project.supportVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2'
 }
 
 apply from: 'https://raw.githubusercontent.com/aritraroy/LibUtils/master/install.gradle'

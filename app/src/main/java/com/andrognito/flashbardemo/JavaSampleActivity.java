@@ -1,6 +1,5 @@
 package com.andrognito.flashbardemo;
 
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,7 +33,7 @@ public class JavaSampleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flashbar == null) {
-                    flashbar = gravityTop();
+                    flashbar = progressAdvanced();
                 }
                 flashbar.show();
             }
@@ -212,7 +211,7 @@ public class JavaSampleActivity extends AppCompatActivity {
                 .message(
                         "You can show either or both of the positive/negative buttons and "
                                 + "customize them similar to the primary button.")
-                .backgroundColorRes(R.color.chalk_black)
+                .backgroundColorRes(R.color.slate_black)
                 .positiveActionText("YES")
                 .negativeActionText("NO")
                 .positiveActionTapListener(new Flashbar.OnActionTapListener() {
@@ -269,10 +268,10 @@ public class JavaSampleActivity extends AppCompatActivity {
                 .gravity(Flashbar.Gravity.BOTTOM)
                 .message(
                         "You can customize the look-and-fell of the progress bar.")
-                .backgroundColorRes(R.color.chalk_black)
+                .backgroundColorRes(R.color.slate_black)
                 .showIcon()
                 .showProgress(Flashbar.ProgressPosition.RIGHT)
-                .progressTintRes(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP)
+                .progressTintRes(R.color.colorAccent)
                 .build();
     }
 
@@ -300,7 +299,7 @@ public class JavaSampleActivity extends AppCompatActivity {
                 .gravity(Flashbar.Gravity.BOTTOM)
                 .title("Hello World!")
                 .message("You can make the flashbar slide from the left/right as well.")
-                .backgroundColorRes(R.color.chalk_black)
+                .backgroundColorRes(R.color.slate_black)
                 .showIcon()
                 .icon(R.drawable.ic_drop)
                 .enterAnimation(FlashAnim.with(this)

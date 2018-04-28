@@ -1,6 +1,5 @@
 package com.andrognito.flashbardemo
 
-import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -239,7 +238,7 @@ class KotlinSampleActivity : AppCompatActivity() {
                 .message("You can show the progress bar on either the left or right side of the view")
                 .backgroundColorRes(R.color.colorPrimaryDark)
                 .showProgress(Flashbar.ProgressPosition.RIGHT)
-                .progressTintRes(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP)
+                .progressTintRes(R.color.colorAccent)
                 .build()
     }
 

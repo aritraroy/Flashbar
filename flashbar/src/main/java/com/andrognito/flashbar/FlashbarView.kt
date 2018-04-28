@@ -442,7 +442,6 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     }
 
     internal fun setProgressTint(progressTint: Int?,
-                                 progressTintMode: PorterDuff.Mode?,
                                  position: Flashbar.ProgressPosition?) {
         if (position == null || progressTint == null) return
 
@@ -451,11 +450,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
             RIGHT -> fbRightProgress
         }
 
-        if (progressTintMode == null) {
-            progressBar.indeterminateDrawable.setColorFilter(progressTint, PorterDuff.Mode.SRC_IN)
-        } else {
-            progressBar.indeterminateDrawable.setColorFilter(progressTint, progressTintMode)
-        }
+        progressBar.setBarColor(progressTint)
     }
 
     private fun castShadow(shadowType: ShadowView.ShadowType, strength: Int) {

@@ -28,4 +28,10 @@
         <item name="android:focusable">true</item>
     </style>
 
+    <style name="FbCircularIndeterminateProgressStyle">
+        <item name="fbp_barColor">@color/white</item>
+        <item name="fbp_barWidth">2dp</item>
+        <item name="fbp_progressIndeterminate">true</item>
+    </style>
+
 </resources>

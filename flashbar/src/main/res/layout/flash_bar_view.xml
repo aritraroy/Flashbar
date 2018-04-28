@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fbRoot"
     android:layout_width="match_parent"
@@ -23,17 +22,15 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
 
-            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            <com.andrognito.flashbar.view.FbProgress
                 android:id="@+id/fbLeftProgress"
-                style="@style/Widget.MaterialProgressBar.ProgressBar"
+                style="@style/FbCircularIndeterminateProgressStyle"
                 android:layout_width="@dimen/fb_progress_size"
                 android:layout_height="@dimen/fb_progress_size"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/fb_margin_progress"
                 android:layout_marginRight="@dimen/fb_margin_progress"
-                android:indeterminate="true"
-                android:visibility="gone"
-                app:mpb_indeterminateTint="@color/white" />
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/fbIcon"
@@ -86,17 +83,15 @@
                 tools:text="CLICK"
                 tools:visibility="visible" />
 
-            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            <com.andrognito.flashbar.view.FbProgress
                 android:id="@+id/fbRightProgress"
-                style="@style/Widget.MaterialProgressBar.ProgressBar"
+                style="@style/FbCircularIndeterminateProgressStyle"
                 android:layout_width="@dimen/fb_progress_size"
                 android:layout_height="@dimen/fb_progress_size"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/fb_margin_progress"
                 android:layout_marginStart="@dimen/fb_margin_progress"
-                android:indeterminate="true"
-                android:visibility="gone"
-                app:mpb_indeterminateTint="@color/white" />
+                android:visibility="gone" />
 
         </LinearLayout>
 

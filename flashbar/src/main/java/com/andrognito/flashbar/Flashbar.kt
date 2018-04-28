@@ -143,7 +143,7 @@ class Flashbar private constructor(private var builder: Builder) {
             setIconColorFilter(builder.iconColorFilter, builder.iconColorFilterMode)
 
             setProgressPosition(builder.progressPosition)
-            setProgressTint(builder.progressTint, builder.progressTintMode, builder.progressPosition)
+            setProgressTint(builder.progressTint, builder.progressPosition)
         }
     }
 
@@ -219,7 +219,6 @@ class Flashbar private constructor(private var builder: Builder) {
 
         internal var progressPosition: ProgressPosition? = null
         internal var progressTint: Int? = null
-        internal var progressTintMode: PorterDuff.Mode? = null
 
         internal var enterAnimBuilder: FlashAnimBarBuilder? = null
         internal var exitAnimBuilder: FlashAnimBarBuilder? = null
@@ -718,19 +717,15 @@ class Flashbar private constructor(private var builder: Builder) {
         /**
          * Specifies the indeterminate progress tint
          */
-        @JvmOverloads
-        fun progressTint(@ColorInt color: Int, mode: PorterDuff.Mode? = null) = apply {
+        fun progressTint(@ColorInt color: Int) = apply {
             this.progressTint = color
-            this.progressTintMode = mode
         }
 
         /**
          * Specifies the indeterminate progress tint resource
          */
-        @JvmOverloads
-        fun progressTintRes(@ColorRes colorId: Int, mode: PorterDuff.Mode? = null) = apply {
+        fun progressTintRes(@ColorRes colorId: Int) = apply {
             this.progressTint = ContextCompat.getColor(activity, colorId)
-            this.progressTintMode = mode
         }
 
         /**

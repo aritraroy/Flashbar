@@ -350,7 +350,7 @@ Flashbar.Builder(this)
 ```
 ![](/raw/progress_right.gif)
 
-You can change the color of the progress and also apply custom filter modes.
+You can change the color of the progress bar to any color of your choice.
 
 ```kotlin
 Flashbar.Builder(this)
@@ -359,7 +359,7 @@ Flashbar.Builder(this)
         .message("You can show the progress bar on either the left or right side of the view")
         .backgroundColorRes(R.color.colorPrimaryDark)
         .showProgress(Flashbar.ProgressPosition.RIGHT)
-        .progressTintRes(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP)
+        .progressTintRes(R.color.colorAccent)
         .build()
 ```
 
