@@ -1,4 +1,10 @@
 buildscript {
+    ext.versions = [
+            sdkMin        : 14,
+            sdkTarget     : 27,
+            kotlin        : '1.2.40',
+            supportVersion: '27.1.1'
+    ]
     ext.kotlin_version = '1.2.40'
     repositories {
         google()
@@ -6,9 +12,9 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
     }
 }
 
@@ -25,10 +31,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-ext {
-    sdk = 27
-    minSdk = 14
-    supportVersion = "27.1.1"
 }

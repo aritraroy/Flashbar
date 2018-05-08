@@ -3,26 +3,20 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion project.sdk
+    compileSdkVersion versions.sdkTarget
 
     defaultConfig {
         applicationId "com.andrognito.flashbardemo"
-        minSdkVersion project.minSdk
-        targetSdkVersion project.sdk
+        minSdkVersion versions.sdkMin
+        targetSdkVersion versions.sdkTarget
         versionCode 1
         versionName "1.0"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
     }
 }
 
 dependencies {
     implementation project(':flashbar')
 
-    implementation "com.android.support:appcompat-v7:$project.supportVersion"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:$versions.supportVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 }

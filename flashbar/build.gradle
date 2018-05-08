@@ -15,7 +15,7 @@ ext {
     siteUrl = 'https://github.com/aritraroy/Flashbar'
     gitUrl = 'https://github.com/aritraroy/Flashbar.git'
 
-    libraryVersion = '1.0.1'
+    libraryVersion = '1.0.2'
 
     developerId = 'aritraroy'
     developerName = 'Aritra Roy'
@@ -27,26 +27,21 @@ ext {
 }
 
 android {
-    compileSdkVersion project.sdk
+    compileSdkVersion versions.sdkTarget
 
     defaultConfig {
-        minSdkVersion project.minSdk
-        targetSdkVersion project.sdk
-        versionCode 2
-        versionName "1.0.1"
-    }
+        minSdkVersion versions.sdkMin
+        targetSdkVersion versions.sdkTarget
+        versionCode 3
+        versionName "1.0.2"
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+        consumerProguardFiles 'proguard-rules.pro'
     }
 }
 
 dependencies {
-    implementation "com.android.support:appcompat-v7:$project.supportVersion"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:$versions.supportVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 }
 
 apply from: 'https://raw.githubusercontent.com/aritraroy/LibUtils/master/install.gradle'
