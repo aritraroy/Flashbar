@@ -18,8 +18,11 @@ internal fun Activity.getStatusBarHeightInPx(): Int {
 
     val statusBarHeight = rectangle.top
     val contentViewTop = window.findViewById<View>(Window.ID_ANDROID_CONTENT).top
-
-    return contentViewTop - statusBarHeight
+    return if (contentViewTop == 0) { //Actionbar is not present
+        statusBarHeight
+    } else {
+        contentViewTop - statusBarHeight
+    }
 }
 
 internal fun Activity.getNavigationBarPosition(): NavigationBarPosition {
