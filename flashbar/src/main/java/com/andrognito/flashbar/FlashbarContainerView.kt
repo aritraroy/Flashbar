@@ -45,6 +45,7 @@ internal class FlashbarContainerView(context: Context)
     private var onTapOutsideListener: Flashbar.OnTapListener? = null
     private var overlayColor: Int? = null
     private var iconAnimBuilder: FlashAnimIconBuilder? = null
+    private var dismissRunnable: Runnable? = null
 
     private var duration = DURATION_INDEFINITE
     private var isBarShowing = false
@@ -81,6 +82,8 @@ internal class FlashbarContainerView(context: Context)
     }
 
     override fun onDismiss(view: View) {
+        removeCallbacks(dismissRunnable)
+
         (parent as? ViewGroup)?.removeView(this@FlashbarContainerView)
         isBarShown = false
 
@@ -232,7 +235,8 @@ internal class FlashbarContainerView(context: Context)
 
     private fun handleDismiss() {
         if (duration != DURATION_INDEFINITE) {
-            postDelayed({ dismissInternal(TIMEOUT) }, duration)
+            dismissRunnable = Runnable { dismissInternal(TIMEOUT) }
+            postDelayed(dismissRunnable, duration)
         }
     }
 
@@ -240,6 +244,8 @@ internal class FlashbarContainerView(context: Context)
         if (isBarDismissing || isBarShowing || !isBarShown) {
             return
         }
+
+        removeCallbacks(dismissRunnable)
 
         val exitAnim = exitAnimBuilder.withView(flashbarView).build()
         exitAnim.start(object : FlashAnim.InternalAnimListener {
