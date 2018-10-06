@@ -32,6 +32,8 @@ import com.andrognito.flashbar.util.getRootView
 internal class FlashbarContainerView(context: Context)
     : RelativeLayout(context), DismissCallbacks {
 
+    private val dismissRunnable = Runnable { dismissInternal(TIMEOUT) }
+
     internal lateinit var parentFlashbar: Flashbar
 
     private lateinit var flashbarView: FlashbarView
@@ -45,7 +47,6 @@ internal class FlashbarContainerView(context: Context)
     private var onTapOutsideListener: Flashbar.OnTapListener? = null
     private var overlayColor: Int? = null
     private var iconAnimBuilder: FlashAnimIconBuilder? = null
-    private var dismissRunnable: Runnable? = null
 
     private var duration = DURATION_INDEFINITE
     private var isBarShowing = false
@@ -235,7 +236,6 @@ internal class FlashbarContainerView(context: Context)
 
     private fun handleDismiss() {
         if (duration != DURATION_INDEFINITE) {
-            dismissRunnable = Runnable { dismissInternal(TIMEOUT) }
             postDelayed(dismissRunnable, duration)
         }
     }
