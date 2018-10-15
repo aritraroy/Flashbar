@@ -1,5 +1,6 @@
 package com.andrognito.flashbar
 
+import android.animation.ArgbEvaluator
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
@@ -23,6 +24,9 @@ import com.andrognito.flashbar.util.afterMeasured
 import com.andrognito.flashbar.util.getNavigationBarPosition
 import com.andrognito.flashbar.util.getNavigationBarSizeInPx
 import com.andrognito.flashbar.util.getRootView
+import android.animation.ValueAnimator
+import android.support.v4.content.ContextCompat
+
 
 /**
  * Container withView matching the height and width of the parent to hold a FlashbarView.
@@ -31,6 +35,8 @@ import com.andrognito.flashbar.util.getRootView
  */
 internal class FlashbarContainerView(context: Context)
     : RelativeLayout(context), DismissCallbacks {
+
+    private val translucent = ContextCompat.getColor(context, R.color.translucent)
 
     internal lateinit var parentFlashbar: Flashbar
 
@@ -44,6 +50,7 @@ internal class FlashbarContainerView(context: Context)
     private var onBarDismissListener: Flashbar.OnBarDismissListener? = null
     private var onTapOutsideListener: Flashbar.OnTapListener? = null
     private var overlayColor: Int? = null
+    private var overlayColorAnimator : ValueAnimator? = null
     private var iconAnimBuilder: FlashAnimIconBuilder? = null
 
     private var duration = DURATION_INDEFINITE
@@ -101,7 +108,11 @@ internal class FlashbarContainerView(context: Context)
         isHapticFeedbackEnabled = true
 
         if (showOverlay) {
-            setBackgroundColor(overlayColor!!)
+            overlayColorAnimator = ValueAnimator.ofObject(ArgbEvaluator(), translucent, overlayColor).also {
+                // Duration will only ever be used by setting currentPlayTime to a fraction of its value;
+                // we never start the animator
+                it.duration = 1000
+            }
 
             if (overlayBlockable) {
                 isClickable = true
@@ -140,6 +151,8 @@ internal class FlashbarContainerView(context: Context)
         // Only add the withView to the parent once
         if (this.parent == null) activityRootView.addView(this)
 
+        overlayColorAnimator?.addUpdateListener { animator -> this.setBackgroundColor(animator.animatedValue as Int) }
+
         activityRootView.afterMeasured {
             val enterAnim = enterAnimBuilder.withView(flashbarView).build()
             enterAnim.start(object : FlashAnim.InternalAnimListener {
@@ -150,6 +163,9 @@ internal class FlashbarContainerView(context: Context)
 
                 override fun onUpdate(progress: Float) {
                     onBarShowListener?.onShowProgress(parentFlashbar, progress)
+                    overlayColorAnimator?.duration?.let { duration ->
+                        overlayColorAnimator?.currentPlayTime = (duration * progress).toLong()
+                    }
                 }
 
                 override fun onStop() {
@@ -250,6 +266,9 @@ internal class FlashbarContainerView(context: Context)
 
             override fun onUpdate(progress: Float) {
                 onBarDismissListener?.onDismissProgress(parentFlashbar, progress)
+                overlayColorAnimator?.duration?.let { duration ->
+                    overlayColorAnimator?.currentPlayTime = duration - (duration * progress).toLong()
+                }
             }
 
             override fun onStop() {
@@ -259,6 +278,8 @@ internal class FlashbarContainerView(context: Context)
                 if (vibrationTargets.contains(DISMISS)) {
                     performHapticFeedback(VIRTUAL_KEY)
                 }
+
+                overlayColorAnimator?.removeAllUpdateListeners()
 
                 onBarDismissListener?.onDismissed(parentFlashbar, event)
 
