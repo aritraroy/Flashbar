@@ -5,11 +5,11 @@ import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.support.annotation.*
-import android.support.v4.content.ContextCompat
 import android.text.Spanned
 import android.widget.ImageView.ScaleType
 import android.widget.ImageView.ScaleType.CENTER_CROP
+import androidx.annotation.*
+import androidx.core.content.ContextCompat
 import com.andrognito.flashbar.Flashbar.Gravity.BOTTOM
 import com.andrognito.flashbar.Flashbar.Gravity.TOP
 import com.andrognito.flashbar.anim.FlashAnim

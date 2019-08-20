@@ -15,7 +15,7 @@ ext {
     siteUrl = 'https://github.com/aritraroy/Flashbar'
     gitUrl = 'https://github.com/aritraroy/Flashbar.git'
 
-    libraryVersion = '1.0.2'
+    libraryVersion = '1.0.4'
 
     developerId = 'aritraroy'
     developerName = 'Aritra Roy'
@@ -32,15 +32,15 @@ android {
     defaultConfig {
         minSdkVersion versions.sdkMin
         targetSdkVersion versions.sdkTarget
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 5
+        versionName "1.0.4"
 
         consumerProguardFiles 'proguard-rules.pro'
     }
 }
 
 dependencies {
-    implementation "com.android.support:appcompat-v7:$versions.supportVersion"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 }
 

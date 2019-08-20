@@ -10,6 +10,7 @@ import android.view.*
 import android.view.Surface.*
 import com.andrognito.flashbar.util.NavigationBarPosition.*
 import java.lang.reflect.InvocationTargetException
+import kotlin.math.roundToInt
 
 internal fun Activity.getStatusBarHeightInPx(): Int {
     val rectangle = Rect()
@@ -47,18 +48,18 @@ internal fun Activity.getNavigationBarSizeInPx(): Int {
 }
 
 internal fun Activity?.getRootView(): ViewGroup? {
-    if (this == null || window == null || window.decorView == null) {
+    if (this == null || window?.decorView == null) {
         return null
     }
     return window.decorView as ViewGroup
 }
 
 internal fun Context.convertDpToPx(dp: Int): Int {
-    return Math.round(dp * (resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
+    return (dp * (resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
 }
 
 internal fun Context.convertPxToDp(px: Int): Int {
-    return Math.round(px / (resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
+    return (px / (resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
 }
 
 private fun Activity.getRealScreenSize(): Point {

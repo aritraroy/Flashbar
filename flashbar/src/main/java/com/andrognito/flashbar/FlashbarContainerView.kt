@@ -121,7 +121,7 @@ internal class FlashbarContainerView(context: Context)
     }
 
     internal fun adjustOrientation(activity: Activity) {
-        val flashbarContainerViewLp = RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+        val flashbarContainerViewLp = LayoutParams(MATCH_PARENT, MATCH_PARENT)
 
         val navigationBarPosition = activity.getNavigationBarPosition()
         val navigationBarSize = activity.getNavigationBarSizeInPx()

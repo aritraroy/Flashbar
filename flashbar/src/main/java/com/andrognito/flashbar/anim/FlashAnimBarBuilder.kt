@@ -4,11 +4,11 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.support.annotation.InterpolatorRes
 import android.view.View
 import android.view.animation.AnticipateInterpolator
 import android.view.animation.Interpolator
 import android.view.animation.OvershootInterpolator
+import androidx.annotation.InterpolatorRes
 import com.andrognito.flashbar.Flashbar
 import com.andrognito.flashbar.Flashbar.Gravity.BOTTOM
 import com.andrognito.flashbar.Flashbar.Gravity.TOP
@@ -114,7 +114,7 @@ class FlashAnimBarBuilder(context: Context) : BaseFlashAnimBuilder(context) {
         // Slide from left/right animation is not specified, default top/bottom
         // animation is applied
         if (direction == null) {
-            translationAnim.propertyName = "translationY"
+            translationAnim.setPropertyName("translationY")
 
             when (type!!) {
                 ENTER -> when (gravity!!) {
@@ -127,7 +127,7 @@ class FlashAnimBarBuilder(context: Context) : BaseFlashAnimBuilder(context) {
                 }
             }
         } else {
-            translationAnim.propertyName = "translationX"
+            translationAnim.setPropertyName("translationX")
 
             when (type!!) {
                 ENTER -> when (direction!!) {
@@ -146,7 +146,7 @@ class FlashAnimBarBuilder(context: Context) : BaseFlashAnimBuilder(context) {
 
         if (alpha) {
             val alphaAnim = ObjectAnimator()
-            alphaAnim.propertyName = "alpha"
+            alphaAnim.setPropertyName("alpha")
             alphaAnim.target = view
 
             when (type!!) {
