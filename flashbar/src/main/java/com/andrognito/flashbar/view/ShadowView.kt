@@ -3,10 +3,10 @@ package com.andrognito.flashbar.view
 import android.content.Context
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.JELLY_BEAN
-import android.support.annotation.DrawableRes
-import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import com.andrognito.flashbar.R
 import com.andrognito.flashbar.view.ShadowView.ShadowType.BOTTOM
 import com.andrognito.flashbar.view.ShadowView.ShadowType.TOP

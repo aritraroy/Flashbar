@@ -2,13 +2,14 @@ package com.andrognito.flashbardemo;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView.ScaleType;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.andrognito.flashbar.Flashbar;
 import com.andrognito.flashbar.anim.FlashAnim;
@@ -267,7 +268,7 @@ public class JavaSampleActivity extends AppCompatActivity {
         return new Flashbar.Builder(this)
                 .gravity(Flashbar.Gravity.BOTTOM)
                 .message(
-                        "You can customize the look-and-fell of the progress bar.")
+                        "You can customize the look-and-feel of the progress bar.")
                 .backgroundColorRes(R.color.slate_black)
                 .showIcon()
                 .showProgress(Flashbar.ProgressPosition.RIGHT)

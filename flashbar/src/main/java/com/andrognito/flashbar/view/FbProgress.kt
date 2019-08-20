@@ -15,6 +15,10 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import com.andrognito.flashbar.R
+import kotlin.math.cos
+import kotlin.math.min
+import kotlin.math.pow
+import kotlin.math.roundToLong
 
 /**
  * Forked from Todd Davies' Progress Wheel https://github.com/Todd-Davies/ProgressWheel
@@ -69,26 +73,26 @@ class FbProgress : View {
         val viewWidth = circleRadius + this.paddingLeft + this.paddingRight
         val viewHeight = circleRadius + this.paddingTop + this.paddingBottom
 
-        val widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
-        val widthSize = View.MeasureSpec.getSize(widthMeasureSpec)
-        val heightMode = View.MeasureSpec.getMode(heightMeasureSpec)
-        val heightSize = View.MeasureSpec.getSize(heightMeasureSpec)
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+        val widthSize = MeasureSpec.getSize(widthMeasureSpec)
+        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
+        val heightSize = MeasureSpec.getSize(heightMeasureSpec)
 
         val width: Int
         val height: Int
 
-        if (widthMode == View.MeasureSpec.EXACTLY) {
+        if (widthMode == MeasureSpec.EXACTLY) {
             width = widthSize
-        } else if (widthMode == View.MeasureSpec.AT_MOST) {
-            width = Math.min(viewWidth, widthSize)
+        } else if (widthMode == MeasureSpec.AT_MOST) {
+            width = min(viewWidth, widthSize)
         } else {
             width = viewWidth
         }
 
-        if (heightMode == View.MeasureSpec.EXACTLY || widthMode == View.MeasureSpec.EXACTLY) {
+        if (heightMode == MeasureSpec.EXACTLY || widthMode == MeasureSpec.EXACTLY) {
             height = heightSize
-        } else if (heightMode == View.MeasureSpec.AT_MOST) {
-            height = Math.min(viewHeight, heightSize)
+        } else if (heightMode == MeasureSpec.AT_MOST) {
+            height = min(viewHeight, heightSize)
         } else {
             height = viewHeight
         }
@@ -148,7 +152,7 @@ class FbProgress : View {
                 val deltaTime = (SystemClock.uptimeMillis() - lastTimeAnimated).toFloat() / 1000
                 val deltaNormalized = deltaTime * spinSpeed
 
-                progress = Math.min(progress + deltaNormalized, targetProgress)
+                progress = min(progress + deltaNormalized, targetProgress)
                 lastTimeAnimated = SystemClock.uptimeMillis()
             }
 
@@ -160,8 +164,8 @@ class FbProgress : View {
             var progress = this.progress
             if (!linearProgress) {
                 val factor = 2.0f
-                offset = (1.0f - Math.pow((1.0f - this.progress / 360.0f).toDouble(), (2.0f * factor).toDouble())).toFloat() * 360.0f
-                progress = (1.0f - Math.pow((1.0f - this.progress / 360.0f).toDouble(), factor.toDouble())).toFloat() * 360.0f
+                offset = (1.0f - (1.0f - this.progress / 360.0f).toDouble().pow((2.0f * factor).toDouble())).toFloat() * 360.0f
+                progress = (1.0f - (1.0f - this.progress / 360.0f).toDouble().pow(factor.toDouble())).toFloat() * 360.0f
             }
 
             if (isInEditMode) {
@@ -179,13 +183,13 @@ class FbProgress : View {
     override fun onVisibilityChanged(changedView: View, visibility: Int) {
         super.onVisibilityChanged(changedView, visibility)
 
-        if (visibility == View.VISIBLE) {
+        if (visibility == VISIBLE) {
             lastTimeAnimated = SystemClock.uptimeMillis()
         }
     }
 
     public override fun onSaveInstanceState(): Parcelable? {
-        val superState = super.onSaveInstanceState()
+        val superState = super.onSaveInstanceState() ?: return null
 
         val ss = WheelSavedState(superState)
 
@@ -263,7 +267,7 @@ class FbProgress : View {
             return
         }
 
-        targetProgress = Math.min(progressUpdate * 360.0f, 360.0f)
+        targetProgress = min(progressUpdate * 360.0f, 360.0f)
         progress = targetProgress
         lastTimeAnimated = SystemClock.uptimeMillis()
         invalidate()
@@ -296,7 +300,7 @@ class FbProgress : View {
             lastTimeAnimated = SystemClock.uptimeMillis()
         }
 
-        targetProgress = Math.min(progress * 360.0f, 360.0f)
+        targetProgress = min(progress * 360.0f, 360.0f)
 
         invalidate()
     }
@@ -373,7 +377,7 @@ class FbProgress : View {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private fun setAnimationEnabled() {
-        val currentApiVersion = android.os.Build.VERSION.SDK_INT
+        val currentApiVersion = Build.VERSION.SDK_INT
 
         val animationValue: Float
         animationValue = if (currentApiVersion >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -394,10 +398,9 @@ class FbProgress : View {
         val paddingRight = paddingRight
 
         if (!fillRadius) {
-            val minValue = Math.min(layoutWidth - paddingLeft - paddingRight,
-                    layoutHeight - paddingBottom - paddingTop)
+            val minValue = min(layoutWidth - paddingLeft - paddingRight, layoutHeight - paddingBottom - paddingTop)
 
-            val circleDiameter = Math.min(minValue, circleRadius * 2 - barWidth * 2)
+            val circleDiameter = min(minValue, circleRadius * 2 - barWidth * 2)
 
             val xOffset = (layoutWidth - paddingLeft - paddingRight - circleDiameter) / 2 + paddingLeft
             val yOffset = (layoutHeight - paddingTop - paddingBottom - circleDiameter) / 2 + paddingTop
@@ -468,7 +471,7 @@ class FbProgress : View {
                 barGrowingFromFront = !barGrowingFromFront
             }
 
-            val distance = Math.cos((timeStartGrowing / barSpinCycleTime + 1) * Math.PI).toFloat() / 2 + 0.5f
+            val distance = cos((timeStartGrowing / barSpinCycleTime + 1) * Math.PI).toFloat() / 2 + 0.5f
             val destLength = (barMaxLength - barLength).toFloat()
 
             if (barGrowingFromFront) {
@@ -491,7 +494,7 @@ class FbProgress : View {
 
     private fun runCallback() {
         if (callback != null) {
-            val normalizedProgress = Math.round(progress * 100 / 360.0f).toFloat() / 100
+            val normalizedProgress = (progress * 100 / 360.0f).roundToLong().toFloat() / 100
             callback!!.onProgressUpdate(normalizedProgress)
         }
     }
@@ -500,7 +503,7 @@ class FbProgress : View {
         fun onProgressUpdate(progress: Float)
     }
 
-    internal class WheelSavedState : View.BaseSavedState {
+    internal class WheelSavedState : BaseSavedState {
         var mProgress: Float = 0.toFloat()
         var mTargetProgress: Float = 0.toFloat()
         var isSpinning: Boolean = false
@@ -545,6 +548,7 @@ class FbProgress : View {
         }
 
         companion object {
+            @JvmField
             val CREATOR: Parcelable.Creator<WheelSavedState> = object : Parcelable.Creator<WheelSavedState> {
                 override fun createFromParcel(`in`: Parcel): WheelSavedState {
                     return WheelSavedState(`in`)

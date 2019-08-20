@@ -9,11 +9,9 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.M
-import android.support.annotation.ColorInt
 import android.text.Spanned
 import android.text.TextUtils
 import android.util.TypedValue
-import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
@@ -21,6 +19,7 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM
 import android.widget.RelativeLayout.ALIGN_PARENT_TOP
+import androidx.annotation.ColorInt
 import com.andrognito.flashbar.Flashbar.Gravity
 import com.andrognito.flashbar.Flashbar.Gravity.BOTTOM
 import com.andrognito.flashbar.Flashbar.Gravity.TOP
@@ -57,7 +56,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         if (!isMarginCompensationApplied) {
             isMarginCompensationApplied = true
 
-            val params = layoutParams as ViewGroup.MarginLayoutParams
+            val params = layoutParams as MarginLayoutParams
             when (gravity) {
                 TOP -> params.topMargin = -TOP_COMPENSATION_MARGIN
                 BOTTOM -> params.bottomMargin = -BOTTOM_COMPENSATION_MARGIN
@@ -93,7 +92,7 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         val flashbarViewLp = RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
         val statusBarHeight = activity.getStatusBarHeightInPx()
 
-        val flashbarViewContentLp = fbContent.layoutParams as LinearLayout.LayoutParams
+        val flashbarViewContentLp = fbContent.layoutParams as LayoutParams
 
         when (gravity) {
             TOP -> {

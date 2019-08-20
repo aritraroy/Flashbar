@@ -4,11 +4,14 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.os.Build
-import android.support.annotation.RequiresApi
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.View
 import android.view.ViewConfiguration
+import androidx.annotation.RequiresApi
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
 internal class SwipeDismissTouchListener(
         private val view: View,
@@ -56,11 +59,11 @@ internal class SwipeDismissTouchListener(
                     velocityTracker!!.addMovement(motionEvent)
                     velocityTracker!!.computeCurrentVelocity(1000)
                     val velocityX = velocityTracker!!.xVelocity
-                    val absVelocityX = Math.abs(velocityX)
-                    val absVelocityY = Math.abs(velocityTracker!!.yVelocity)
+                    val absVelocityX = abs(velocityX)
+                    val absVelocityY = abs(velocityTracker!!.yVelocity)
                     var dismiss = false
                     var dismissRight = false
-                    if (Math.abs(deltaX) > viewWidth / 2 && swiping) {
+                    if (abs(deltaX) > viewWidth / 2 && swiping) {
                         dismiss = true
                         dismissRight = deltaX > 0
                     } else if (minFlingVelocity <= absVelocityX && absVelocityY < absVelocityX && swiping) {
@@ -116,7 +119,7 @@ internal class SwipeDismissTouchListener(
                     velocityTracker!!.addMovement(motionEvent)
                     val deltaX = motionEvent.rawX - downX
                     val deltaY = motionEvent.rawY - downY
-                    if (Math.abs(deltaX) > slop && Math.abs(deltaY) < Math.abs(deltaX) / 2) {
+                    if (abs(deltaX) > slop && abs(deltaY) < abs(deltaX) / 2) {
                         swiping = true
                         callbacks.onSwipe(true)
                         swipingSlop = if (deltaX > 0) slop else -slop
@@ -131,7 +134,7 @@ internal class SwipeDismissTouchListener(
                     if (swiping) {
                         translationX = deltaX
                         this.view.translationX = deltaX - swipingSlop
-                        this.view.alpha = Math.max(0f, Math.min(1f, 1f - 2f * Math.abs(deltaX) / viewWidth))
+                        this.view.alpha = max(0f, min(1f, 1f - 2f * abs(deltaX) / viewWidth))
                         return true
                     }
                 }
