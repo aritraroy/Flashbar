@@ -16,8 +16,15 @@ internal fun Activity.getStatusBarHeightInPx(): Int {
 
     window.decorView.getWindowVisibleDisplayFrame(rectangle)
 
-    val statusBarHeight = rectangle.top
+    var statusBarHeight = rectangle.top
     val contentViewTop = window.findViewById<View>(Window.ID_ANDROID_CONTENT).top
+    //#40
+    if (statusBarHeight < 0 || statusBarHeight > 500) {
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            statusBarHeight = resources.getDimensionPixelSize(resourceId)
+        }
+    }
     return if (contentViewTop == 0) { //Actionbar is not present
         statusBarHeight
     } else {
