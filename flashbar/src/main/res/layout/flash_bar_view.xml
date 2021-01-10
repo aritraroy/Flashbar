@@ -30,7 +30,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/fb_margin_progress"
                 android:layout_marginRight="@dimen/fb_margin_progress"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <ImageView
                 android:id="@+id/fbIcon"
