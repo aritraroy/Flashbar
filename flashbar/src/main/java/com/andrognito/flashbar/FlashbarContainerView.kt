@@ -20,10 +20,8 @@ import com.andrognito.flashbar.anim.FlashAnimBarBuilder
 import com.andrognito.flashbar.anim.FlashAnimIconBuilder
 import com.andrognito.flashbar.util.NavigationBarPosition.*
 import com.andrognito.flashbar.util.afterMeasured
-import com.andrognito.flashbar.util.getContentView
 import com.andrognito.flashbar.util.getNavigationBarPosition
 import com.andrognito.flashbar.util.getNavigationBarSizeInPx
-import com.andrognito.flashbar.util.getRootView
 
 /**
  * Container withView matching the height and width of the parent to hold a FlashbarView.
