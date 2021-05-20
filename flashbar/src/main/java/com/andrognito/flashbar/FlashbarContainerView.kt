@@ -20,6 +20,7 @@ import com.andrognito.flashbar.anim.FlashAnimBarBuilder
 import com.andrognito.flashbar.anim.FlashAnimIconBuilder
 import com.andrognito.flashbar.util.NavigationBarPosition.*
 import com.andrognito.flashbar.util.afterMeasured
+import com.andrognito.flashbar.util.getContentView
 import com.andrognito.flashbar.util.getNavigationBarPosition
 import com.andrognito.flashbar.util.getNavigationBarSizeInPx
 import com.andrognito.flashbar.util.getRootView
@@ -139,16 +140,14 @@ internal class FlashbarContainerView(context: Context)
         layoutParams = flashbarContainerViewLp
     }
 
-
-    internal fun show(activity: Activity) {
+    internal fun show(anchorViewGroup: ViewGroup) {
         if (isBarShowing || isBarShown) return
 
-        val activityRootView = activity.getRootView() ?: return
 
         // Only add the withView to the parent once
-        if (this.parent == null) activityRootView.addView(this)
+        if (this.parent == null) anchorViewGroup.addView(this)
 
-        activityRootView.afterMeasured {
+        anchorViewGroup.afterMeasured {
             val enterAnim = enterAnimBuilder.withView(flashbarView).build()
             enterAnim.start(object : FlashAnim.InternalAnimListener {
                 override fun onStart() {
