@@ -56,6 +56,10 @@ internal class FlashbarContainerView(context: Context)
     private var showOverlay: Boolean = false
     private var overlayBlockable: Boolean = false
 
+    init {
+        layoutParams = RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+    }
+
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
             ACTION_DOWN -> {
