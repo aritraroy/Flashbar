@@ -50,7 +50,7 @@ internal fun Activity?.getRootView(): ViewGroup? {
     if (this == null || window == null || window.decorView == null) {
         return null
     }
-    return window.decorView as ViewGroup
+    return window.decorView.findViewById(android.R.id.content) as? ViewGroup
 }
 
 internal fun Context.convertDpToPx(dp: Int): Int {
