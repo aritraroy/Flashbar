@@ -15,6 +15,8 @@ import com.andrognito.flashbar.Flashbar.Gravity.TOP
 import com.andrognito.flashbar.anim.FlashAnim
 import com.andrognito.flashbar.anim.FlashAnimBarBuilder
 import com.andrognito.flashbar.anim.FlashAnimIconBuilder
+import com.andrognito.flashbar.util.getContentView
+import com.andrognito.flashbar.util.getRootView
 
 private const val DEFAULT_SHADOW_STRENGTH = 4
 private const val DEFAUT_ICON_SCALE = 1.0f
@@ -28,7 +30,13 @@ class Flashbar private constructor(private var builder: Builder) {
      * Shows a flashbar
      */
     fun show() {
-        flashbarContainerView.show(builder.activity)
+        val anchorViewGroup = if (builder.gravity == TOP) {
+            builder.activity.getRootView()
+        } else {
+            builder.activity.getContentView()
+        } ?: return
+
+        flashbarContainerView.show(anchorViewGroup)
     }
 
     /**
