@@ -52,7 +52,6 @@ class Flashbar private constructor(private var builder: Builder) {
 
     private fun construct() {
         flashbarContainerView = FlashbarContainerView(builder.activity)
-        flashbarContainerView.adjustOrientation(builder.activity)
         flashbarContainerView.addParent(this)
 
         flashbarView = FlashbarView(builder.activity)
