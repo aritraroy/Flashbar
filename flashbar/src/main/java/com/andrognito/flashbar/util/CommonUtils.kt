@@ -50,6 +50,13 @@ internal fun Activity?.getRootView(): ViewGroup? {
     if (this == null || window == null || window.decorView == null) {
         return null
     }
+    return window.decorView as? ViewGroup
+}
+
+internal fun Activity?.getContentView(): ViewGroup? {
+    if (this == null || window == null || window.decorView == null) {
+        return null
+    }
     return window.decorView.findViewById(android.R.id.content) as? ViewGroup
 }
 
