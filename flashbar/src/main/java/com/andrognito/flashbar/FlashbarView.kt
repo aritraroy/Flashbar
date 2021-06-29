@@ -48,8 +48,6 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     private lateinit var parentFlashbarContainer: FlashbarContainerView
     private lateinit var gravity: Gravity
 
-    private var isMarginCompensationApplied: Boolean = false
-
     internal fun init(
             gravity: Gravity,
             castShadow: Boolean,
