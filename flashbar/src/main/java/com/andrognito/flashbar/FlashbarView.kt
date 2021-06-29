@@ -44,27 +44,11 @@ import kotlinx.android.synthetic.main.flash_bar_view.view.*
 internal class FlashbarView(context: Context) : LinearLayout(context) {
 
     private val TOP_COMPENSATION_MARGIN = resources.getDimension(R.dimen.fb_top_compensation_margin).toInt()
-    private val BOTTOM_COMPENSATION_MARGIN = resources.getDimension(R.dimen.fb_bottom_compensation_margin).toInt()
 
     private lateinit var parentFlashbarContainer: FlashbarContainerView
     private lateinit var gravity: Gravity
 
     private var isMarginCompensationApplied: Boolean = false
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-
-        if (!isMarginCompensationApplied) {
-            isMarginCompensationApplied = true
-
-            val params = layoutParams as ViewGroup.MarginLayoutParams
-            when (gravity) {
-                TOP -> params.topMargin = -TOP_COMPENSATION_MARGIN
-                BOTTOM -> params.bottomMargin = -BOTTOM_COMPENSATION_MARGIN
-            }
-            requestLayout()
-        }
-    }
 
     internal fun init(
             gravity: Gravity,
@@ -101,7 +85,6 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
                 flashbarViewLp.addRule(ALIGN_PARENT_TOP)
             }
             BOTTOM -> {
-                flashbarViewContentLp.bottomMargin = BOTTOM_COMPENSATION_MARGIN
                 flashbarViewLp.addRule(ALIGN_PARENT_BOTTOM)
             }
         }
