@@ -99,6 +99,7 @@ class Flashbar private constructor(private var builder: Builder) {
             setTitleSizeInPx(builder.titleSizeInPx)
             setTitleSizeInSp(builder.titleSizeInSp)
             setTitleColor(builder.titleColor)
+            setTitleGravity(builder.titleGravity)
             setTitleAppearance(builder.titleAppearance)
 
             setMessage(builder.message)
@@ -107,6 +108,7 @@ class Flashbar private constructor(private var builder: Builder) {
             setMessageSizeInPx(builder.messageSizeInPx)
             setMessageSizeInSp(builder.messageSizeInSp)
             setMessageColor(builder.messageColor)
+            setMessageGravity(builder.messageGravity)
             setMessageAppearance(builder.messageAppearance)
 
             setPrimaryActionText(builder.primaryActionText)
@@ -171,6 +173,7 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var titleSizeInPx: Float? = null
         internal var titleSizeInSp: Float? = null
         internal var titleColor: Int? = null
+        internal var titleGravity: Int? = null
         internal var titleAppearance: Int? = null
 
         internal var message: String? = null
@@ -179,6 +182,7 @@ class Flashbar private constructor(private var builder: Builder) {
         internal var messageSizeInPx: Float? = null
         internal var messageSizeInSp: Float? = null
         internal var messageColor: Int? = null
+        internal var messageGravity: Int? = null
         internal var messageAppearance: Int? = null
 
         internal var primaryActionText: String? = null
@@ -398,6 +402,11 @@ class Flashbar private constructor(private var builder: Builder) {
         fun titleColor(@ColorInt color: Int) = apply { this.titleColor = color }
 
         /**
+         * Specifies the title gravity
+         */
+        fun titleGravity(gravity: Int) = apply { this.titleGravity = gravity }
+
+        /**
          * Specifies the title color resource
          */
         fun titleColorRes(@ColorRes colorId: Int) = apply {
@@ -448,12 +457,15 @@ class Flashbar private constructor(private var builder: Builder) {
          */
         fun messageColor(@ColorInt color: Int) = apply { this.messageColor = color }
 
+        fun messageGravity(gravity: Int) = apply { this.messageGravity = gravity }
+
         /**
          * Specifies the message color resource
          */
         fun messageColorRes(@ColorRes colorId: Int) = apply {
             this.messageColor = ContextCompat.getColor(activity, colorId)
         }
+
 
         /**
          * Specifies the message appearance
