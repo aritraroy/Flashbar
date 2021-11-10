@@ -169,6 +169,11 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
         if (color == null) return
         fbTitle.setTextColor(color)
     }
+    
+    internal fun setTitleGravity(gravity: Int?) {
+        if (gravity == null) return
+        fbTitle.setGravity(gravity);
+    }
 
     internal fun setTitleAppearance(titleAppearance: Int?) {
         if (titleAppearance == null) return
@@ -212,6 +217,11 @@ internal class FlashbarView(context: Context) : LinearLayout(context) {
     internal fun setMessageColor(color: Int?) {
         if (color == null) return
         this.fbMessage.setTextColor(color)
+    }
+
+    internal fun setMessageGravity(gravity: Int?) {
+        if (gravity == null) return
+        this.fbMessage.setGravity(gravity);
     }
 
     internal fun setMessageAppearance(messageAppearance: Int?) {
